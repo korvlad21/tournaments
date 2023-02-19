@@ -13,12 +13,15 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::controller(API\RegisterController::class)->group(function(){
+    Route::post('register', 'register');
+    Route::post('login', 'login');
+});
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => 'auth:sanctum'], function() {
-    Route::group(['middleware' => 'role:web-developer'], function() {
+    Route::group(['middleware' => 'role:admin'], function() {
         Route::get('/get', 'GetController');
     });
 });
