@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->unsignedbigInteger('portal_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('type', 30);
             $table->text('content')->nullable();
             $table->foreign('user_id')
                 ->references('id')
