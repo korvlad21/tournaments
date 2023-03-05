@@ -15,9 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedbigInteger('portal_id');
             $table->string('username');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('slug');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

@@ -15,7 +15,6 @@ class CreateAchievementsTable extends Migration
     {
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedbigInteger('portal_id');
             $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->text('description')->nullable();

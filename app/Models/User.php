@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -19,9 +20,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'username',
         'name',
         'email',
         'password',
+        'avatar',
+        'phone',
+        'min_age',
+        'max_age',
+        'description',
+        'categories'
     ];
 
     /**
@@ -42,6 +50,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setUsernameAttribute($value)
+    {
+        $this->attributes['username'] = $value;
+        $this->attributes['slug'] = Str::slug($value, '-');;
+    }
 
 
 
