@@ -21,6 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::prefix('user')->group(function () {
+        Route::controller(API\UserController::class)->group(function () {
+            Route::post('get_info', 'getInfo');
+        });
+    });
     Route::group(['middleware' => 'role:admin'], function() {
         Route::get('/get', 'GetController');
     });

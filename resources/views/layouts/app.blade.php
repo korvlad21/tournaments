@@ -203,7 +203,7 @@
             </div>
         </aside>
         @endguest
-        <main class="py-4">
+        <main class="sm:ml-64">
             @yield('content')
         </main>
     </div>

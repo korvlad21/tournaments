@@ -10206,6 +10206,10 @@ video {
 }
 @media (min-width: 640px) {
 
+  .sm\:ml-64 {
+    margin-left: 16rem;
+  }
+
   .sm\:h-9 {
     height: 2.25rem;
   }

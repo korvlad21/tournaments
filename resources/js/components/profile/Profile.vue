@@ -136,7 +136,7 @@
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Имя Пользователя</div>
-                  <div class="px-4 py-2">KILLER 228</div>
+                  <div class="px-4 py-2">{{ this.user.username }}</div>
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Пол</div>
@@ -158,7 +158,7 @@
                   <div class="px-4 py-2 font-semibold">Email.</div>
                   <div class="px-4 py-2">
                     <a class="text-blue-800" href="mailto:jane@example.com"
-                      >почта@example.com</a
+                      >{{ this.user.email }}</a
                     >
                   </div>
                 </div>
@@ -273,6 +273,32 @@
 <script>
 export default {
   name: "Profile",
+  data() {
+    return {
+      user: {
+        username: '',
+        email: '',
+      },
+    }
+  },
+  created() {
+    this.getUserInfo();
+  },
+  methods: {
+    getUserInfo() {
+        axios.post('api/user/get_info/')
+            .then(({data}) => {
+                this.user.username = data.username;
+                this.user.email = data.email;
+
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
+            });
+    },
+  }
 };
 </script>
 
