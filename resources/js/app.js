@@ -1,8 +1,9 @@
-require('./bootstrap')
 
+require('./bootstrap')
 import { createApp } from 'vue'
 import ExampleComponent from './components/ExampleComponent'
 import TestComponent from './components/TestComponent'
+import Profile from "./components/profile/Profile.vue";
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -18,5 +19,6 @@ const app = createApp({})
 
 app.component('example-component', ExampleComponent)
 app.component('test-component', TestComponent)
+app.component('profile', Profile)
 
 app.use(vuetify).mount('#app')

@@ -32,6 +32,7 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::group(['middleware' => 'role:admin'], function() {
+Route::middleware(['auth'])->group(function() {
+    Route::get('/profile', 'ProfileController');
     Route::get('/get', 'GetController');
 });
