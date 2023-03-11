@@ -157,7 +157,9 @@
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Email.</div>
                   <div class="px-4 py-2">
-                    <a class="text-blue-800" href="mailto:jane@example.com"
+                    <a
+                        class="text-blue-800"
+                        :href="this.getHrefEmail()"
                       >{{ this.user.email }}</a
                     >
                   </div>
@@ -290,13 +292,15 @@ export default {
             .then(({data}) => {
                 this.user.username = data.username;
                 this.user.email = data.email;
-
             })
             .catch((error) => {
                 console.error(error);
             })
             .finally(() => {
             });
+    },
+    getHrefEmail() {
+        return "mailto:" + this.email;
     },
   }
 };
