@@ -27,8 +27,8 @@ class User extends Authenticatable
         'password',
         'avatar',
         'phone',
-        'min_age',
-        'max_age',
+        'sex',
+        'birthday',
         'description',
         'categories'
     ];
@@ -51,6 +51,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public const SEX_MAN = 'Муж';
+    public const SEX_WOMAN = 'Жен';
 
     public function setUsernameAttribute($value)
     {

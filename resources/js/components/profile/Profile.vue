@@ -132,7 +132,7 @@
               <div class="grid md:grid-cols-2 text-sm">
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Имя</div>
-                  <div class="px-4 py-2">Вася</div>
+                  <div class="px-4 py-2">{{ this.user.name }}</div>
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Имя Пользователя</div>
@@ -140,11 +140,11 @@
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Пол</div>
-                  <div class="px-4 py-2">Муж</div>
+                  <div class="px-4 py-2">{{ this.user.sex }}</div>
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Телефон</div>
-                  <div class="px-4 py-2">+79992342342</div>
+                  <div class="px-4 py-2">{{ this.user.phone }}</div>
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Вид спорта</div>
@@ -166,7 +166,7 @@
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">День рождения</div>
-                  <div class="px-4 py-2">Апр 01, 1998</div>
+                  <div class="px-4 py-2">{{ this.user.birthday }}</div>
                 </div>
               </div>
             </div>
@@ -279,7 +279,11 @@ export default {
     return {
       user: {
         username: '',
+        name: '',
         email: '',
+        phone: '',
+        sex: '',
+        birthday: '',
       },
     }
   },
@@ -291,7 +295,11 @@ export default {
         axios.post('api/user/get_info/')
             .then(({data}) => {
                 this.user.username = data.username;
+                this.user.name = data.name;
                 this.user.email = data.email;
+                this.user.phone = data.phone;
+                this.user.sex = data.sex;
+                this.user.birthday = data.birthday;
             })
             .catch((error) => {
                 console.error(error);

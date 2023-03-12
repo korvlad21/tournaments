@@ -16,7 +16,11 @@ class UserResource extends JsonResource
     {
         return [
             'username' => $this->username,
-            'email' => $this->email
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'sex' => $this->sex,
+            'birthday' => date('M', strtotime($this->birthday)),
         ];
     }
 }

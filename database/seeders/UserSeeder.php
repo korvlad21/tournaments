@@ -25,8 +25,12 @@ class UserSeeder extends Seeder
 //        $user1->roles()->attach($admin);
         $user1 = new User();
         $user1->username = 'leomessi';
+        $user1->name = 'Леонид';
         $user1->email = 'leo@inbox.com';
         $user1->password = bcrypt('secret');
+        $user1->phone = '+79501234567';
+        $user1->sex = User::SEX_WOMAN;
+        $user1->birthday = '2000-06-21';
         $user1->save();
     }
 }

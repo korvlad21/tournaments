@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->binary('avatar')->nullable();
             $table->string('phone', 20)->nullable();
-            $table->unsignedTinyInteger('min_age')->nullable();
-            $table->unsignedTinyInteger('max_age')->nullable();
+            $table->enum('sex', ['Муж', 'Жен'])->nullable();
+            $table->date('birthday')->nullable();
             $table->text('description')->nullable();
             $table->text('сategories')->nullable();
             $table->timestamps();
