@@ -292,7 +292,7 @@ export default {
   },
   methods: {
     getUserInfo() {
-        axios.post('api/user/get_info/')
+        axios.get('api/user/get_info/')
             .then(({data}) => {
                 this.user.username = data.username;
                 this.user.name = data.name;

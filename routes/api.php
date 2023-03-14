@@ -23,10 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('user')->group(function () {
         Route::controller(API\UserController::class)->group(function () {
-            Route::post('get_info', 'getInfo');
+            Route::get('get_info', 'getInfo');
         });
     });
-    Route::group(['middleware' => 'role:admin'], function() {
-        Route::get('/get', 'GetController');
-    });
+    Route::get('/get', 'GetController');
 });
