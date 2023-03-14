@@ -17,7 +17,6 @@ class UserController extends Controller
      */
     public function getInfo(Request $request)
     {
-        dd(new UserResource(Auth::user()));
         return response()->json(new UserResource(Auth::user()));
     }
 }
