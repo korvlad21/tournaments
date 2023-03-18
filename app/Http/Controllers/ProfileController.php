@@ -57,7 +57,7 @@ class ProfileController extends Controller
      */
     public function edit($slug)
     {
-        dd($slug);
+        return (Auth::user()->slug === $slug) ? view('profile.update', compact('slug')) : abort(404);
     }
 
     /**
