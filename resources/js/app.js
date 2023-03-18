@@ -1,8 +1,11 @@
 
+
 require('./bootstrap')
 import { createApp } from 'vue'
 import ExampleComponent from './components/ExampleComponent'
 import TestComponent from './components/TestComponent'
+import ProfileUpdate from "./components/profile/ProfileUpdate.vue";
+import ProfileShow from "./components/profile/ProfileShow.vue";
 import Profile from "./components/profile/Profile.vue";
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -19,6 +22,8 @@ const app = createApp({})
 
 app.component('example-component', ExampleComponent)
 app.component('test-component', TestComponent)
+app.component('profile-show', ProfileShow)
+app.component('profile-update', ProfileUpdate)
 app.component('profile', Profile)
 
 app.use(vuetify).mount('#app')

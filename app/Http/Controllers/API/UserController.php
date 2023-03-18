@@ -17,6 +17,8 @@ class UserController extends Controller
      */
     public function getInfo(Request $request)
     {
-        return response()->json(new UserResource(Auth::user()));
+        $slug = $request->post('slug');
+        $user = User::where('slug', $slug)->first();
+        return response()->json(new UserResource($user));
     }
 }

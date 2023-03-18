@@ -33,6 +33,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::middleware(['auth'])->group(function() {
-    Route::get('/profile', 'ProfileController');
-    Route::get('/get', 'GetController');
+//    Route::get('/profile', 'ProfileController@index')->name('profile.index');
+    Route::get('/profile/{slug}', 'ProfileController@show')->name('profile.show');
+    Route::get('/profile/{slug}', 'ProfileController@update')->name('profile.update');
+    Route::get('/', 'GetController');
 });
