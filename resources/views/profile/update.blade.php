@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <profile-update></profile-update>
+    <profile-update :slug="{{ json_encode($slug)}}"></profile-update>
 @endsection

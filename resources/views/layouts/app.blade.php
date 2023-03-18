@@ -21,6 +21,9 @@
 
 </head>
 <body>
+    @php
+        $user = \Illuminate\Support\Facades\Auth::user();
+    @endphp
     <div id="app">
 
         <button
@@ -156,7 +159,7 @@
                     </li>
                     <li>
                         <a
-                            href="/profile"
+                            href="{{ route('profile.show', $user->slug) }}"
                             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                             <svg

@@ -175,6 +175,12 @@
             >
               Подробная информация
             </button>
+              <a
+                  class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
+                  :href="this.getHrefUpdate()"
+              >
+                  Редактировать
+              </a>
           </div>
           <!-- End of info section -->
 
@@ -275,7 +281,9 @@
 <script>
 export default {
   name: "ProfileShow",
-  props: ['slug'],
+  props: {
+      slug: String,
+  },
   data() {
     return {
       user: {
@@ -312,6 +320,9 @@ export default {
     },
     getHrefEmail() {
         return "mailto:" + this.email;
+    },
+    getHrefUpdate() {
+        return window.location.origin + '/profile/edit/' + this.slug;
     },
   }
 };
