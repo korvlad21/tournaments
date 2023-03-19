@@ -61,6 +61,11 @@ class User extends Authenticatable
         $this->attributes['slug'] = Str::slug($value, '-');;
     }
 
+    public function hasVerified()
+    {
+        return null !== $this->attributes['verified_user'];
+    }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));

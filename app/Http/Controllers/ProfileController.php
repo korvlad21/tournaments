@@ -74,10 +74,15 @@ class ProfileController extends Controller
         $userData = $request->post('user');
 
         $user = User::where('slug', $slug)->first();
-        if (!$user->hasVerifiedEmail()) {
+        if (!$user->hasVerified()) {
             $user->name = $userData['name'];
             $user->sex = $userData['sex'];
             $user->birthday = $userData['birthday'];
+        }
+        $user->sendEmailVerificationNotification();
+        if ($user->email !== $userData['email']) {
+
+            $user->email = $userData['email'];
         }
         $user->save();
         return response()->json([
