@@ -79,7 +79,7 @@ class ProfileController extends Controller
             $user->sex = $userData['sex'];
             $user->birthday = $userData['birthday'];
         }
-        $user->sendEmailVerificationNotification();
+//        $user->sendEmailVerificationNotification();
         if ($user->email !== $userData['email']) {
 
             $user->email = $userData['email'];
