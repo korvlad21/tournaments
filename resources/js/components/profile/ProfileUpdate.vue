@@ -6,6 +6,7 @@
                 v-model="user.username"
                 type="text"
                 class="form-control"
+                readonly="readonly"
             >
         </div>
         <div class="form-group col-md-4">
@@ -53,6 +54,13 @@
                 class="form-control"
             >
         </div>
+        <button
+            type="submit"
+            class="btn btn-primary btn15"
+            @click="updateData"
+        >
+            Обновить данные
+        </button>
     </div>
 
 </template>
@@ -106,6 +114,20 @@ export default {
         },
         getHrefUpdate() {
             return window.location.origin + '/profile/edit/' + this.slug;
+        },
+        updateData() {
+            axios.post('/profile/update/', {
+                slug: this.slug,
+                user: this.user
+            })
+                .then(({data}) => {
+                    console.log(data)
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                });
         },
     }
 };

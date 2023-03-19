@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,7 +54,7 @@ class ProfileController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  string  $slug
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($slug)
     {
@@ -64,12 +65,24 @@ class ProfileController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  string  $slug
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $slug = $request->post('slug');
+        $userData = $request->post('user');
+
+        $user = User::where('slug', $slug)->first();
+        if (!$user->hasVerifiedEmail()) {
+            $user->name = $userData['name'];
+            $user->sex = $userData['sex'];
+            $user->birthday = $userData['birthday'];
+        }
+        $user->save();
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     /**
