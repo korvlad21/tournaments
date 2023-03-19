@@ -34,7 +34,6 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 

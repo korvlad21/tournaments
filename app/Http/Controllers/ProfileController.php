@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -79,12 +80,13 @@ class ProfileController extends Controller
             $user->sex = $userData['sex'];
             $user->birthday = $userData['birthday'];
         }
-//        $user->sendEmailVerificationNotification();
         if ($user->email !== $userData['email']) {
-
-            $user->email = $userData['email'];
+            $user->email_verified_at = null;
         }
+        $user->email = $userData['email'];
+        $user->phone = $userData['phone'];
         $user->save();
+        event(new Registered($user));
         return response()->json([
             'success' => true,
         ]);
