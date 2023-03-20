@@ -29,8 +29,10 @@ class UserSeeder extends Seeder
         $user1->email = 'leo@inbox.com';
         $user1->password = bcrypt('secret');
         $user1->phone = '+79501234567';
+        $user1->status = 'Когда ты поднимаешься, друзья узнают тебя, когда ты падаешь ты узнаёшь друзей!';
         $user1->sex = User::SEX_WOMAN;
         $user1->birthday = '2000-06-21';
+        $user1->description = 'Я Леонид Месси выиграл множество турниров, включая Чмепионат мира, Лигу Чемпионов и много много другого';
         $user1->save();
     }
 }

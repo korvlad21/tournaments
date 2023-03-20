@@ -36,6 +36,22 @@
             >
         </div>
         <div class="form-group col-md-4">
+            <span>Статус</span>
+            <input
+                v-model="user.status"
+                type="text"
+                class="form-control"
+            >
+        </div>
+        <div class="form-group col-md-4">
+            <span>Описание о себе</span>
+            <input
+                v-model="user.description"
+                type="textarea"
+                class="form-control"
+            >
+        </div>
+        <div class="form-group col-md-4">
             <span>Пол</span>
             <select
                 v-model="user.sex"
@@ -78,8 +94,10 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
+                status: '',
                 sex: '',
                 birthday: '',
+                description: '',
             },
             sexOptions: [
                 { text: 'Муж', value: 'Муж' },
@@ -100,8 +118,10 @@ export default {
                     this.user.name = data.name;
                     this.user.email = data.email;
                     this.user.phone = data.phone;
+                    this.user.status = data.status;
                     this.user.sex = data.sex;
                     this.user.birthday = data.birthday;
+                    this.user.description= data.description;
                 })
                 .catch((error) => {
                     console.error(error);

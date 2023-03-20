@@ -14,13 +14,13 @@
               />
             </div>
             <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">
-              Вася Пупкин
+                {{user.name}}
             </h1>
             <h3 class="text-gray-600 font-lg text-semibold leading-6">
-              чемпион литрбола
+                {{user.status}}
             </h3>
             <p class="text-sm text-gray-500 hover:text-gray-600 leading-6">
-              Пьет многа пива и играет в кс сутками
+              {{user.description}}
             </p>
             <ul
               class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm"
@@ -36,7 +36,7 @@
               </li>
               <li class="flex items-center py-3">
                 <span>Зарегистрирован</span>
-                <span class="ml-auto">Ноя 07, 2023</span>
+                <span class="ml-auto">{{ user.created_at }}</span>
               </li>
             </ul>
           </div>
@@ -291,8 +291,11 @@ export default {
         name: '',
         email: '',
         phone: '',
+        status: '',
         sex: '',
         birthday: '',
+        description: '',
+        created_at: '',
       },
     }
   },
@@ -308,9 +311,12 @@ export default {
                 this.user.username = data.username;
                 this.user.name = data.name;
                 this.user.email = data.email;
+                this.user.status = data.status;
                 this.user.phone = data.phone;
                 this.user.sex = data.sex;
                 this.user.birthday = data.birthday;
+                this.user.description= data.description;
+                this.user.created_at = data.created_at;
             })
             .catch((error) => {
                 console.error(error);

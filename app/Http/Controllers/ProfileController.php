@@ -85,6 +85,8 @@ class ProfileController extends Controller
         }
         $user->email = $userData['email'];
         $user->phone = $userData['phone'];
+        $user->status = $userData['status'];
+        $user->description = $userData['description'];
         $user->save();
         event(new Registered($user));
         return response()->json([

@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->binary('avatar')->nullable();
             $table->string('phone', 20)->nullable();
+            $table->string('status')->nullable();
             $table->enum('sex', ['Муж', 'Жен'])->nullable();
             $table->date('birthday')->nullable();
             $table->text('description')->nullable();
