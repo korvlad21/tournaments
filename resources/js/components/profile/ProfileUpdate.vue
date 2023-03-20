@@ -70,6 +70,10 @@
                 class="form-control"
             >
         </div>
+        <div class="form-group col-md-4">
+            <span>Аватар</span>
+            <v-file-input label="File input"></v-file-input>
+        </div>
         <button
             type="submit"
             class="btn btn-primary btn15"
