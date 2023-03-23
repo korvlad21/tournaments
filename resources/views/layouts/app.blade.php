@@ -178,7 +178,7 @@
                             <span class="flex-1 ml-3 whitespace-nowrap">Профиль</span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a
                             href="#"
                             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -198,11 +198,11 @@
                             </svg>
                             <span class="flex-1 ml-3 whitespace-nowrap">Пункт 2</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
-                        <form action="{{ route('logout') }}" method="POST" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <form action="{{ route('logout') }}" method="POST" >
                             @csrf
-                        <button type="submit"
+                        <button type="submit" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                             <svg
                                 aria-hidden="true"
@@ -217,7 +217,7 @@
                                     clip-rule="evenodd"
                                 ></path>
                             </svg>
-                            <span class="flex-1 ml-3 whitespace-nowrap">Выход</span>
+                            <span class="flex-1 ml-3 whitespace-nowrap dark:text-white">Выход</span>
                         </button>
                         </form>
                     </li>
