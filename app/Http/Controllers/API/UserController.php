@@ -21,4 +21,19 @@ class UserController extends Controller
         $user = User::where('slug', $slug)->first();
         return response()->json(new UserResource($user));
     }
+
+    /**
+     * Register api
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function isAuthUser(Request $request)
+    {
+        $user = Auth::user();
+        $slug = $request->post('slug');
+        return response()->json([
+            'success'=> true,
+            'isAuthUser' => $user->slug === $slug
+        ]);
+    }
 }

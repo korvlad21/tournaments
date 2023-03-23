@@ -176,6 +176,7 @@
               Подробная информация
             </button>
               <a
+                  v-show="isAuthUser"
                   class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
                   :href="this.getHrefUpdate()"
               >
@@ -297,10 +298,12 @@ export default {
         description: '',
         created_at: '',
       },
+      isAuthUser: false
     }
   },
   created() {
     this.getUserInfo();
+    this.getAuthUser();
   },
   methods: {
     getUserInfo() {
@@ -324,6 +327,21 @@ export default {
             .finally(() => {
             });
     },
+    getAuthUser() {
+      axios.post('/api/user/is_auth_user/', {
+          slug: this.slug
+      })
+          .then(({data}) => {
+              this.isAuthUser = data.isAuthUser;
+              console.log(this.isAuthUser)
+          })
+          .catch((error) => {
+              console.error(error);
+          })
+          .finally(() => {
+
+          });
+      },
     getHrefEmail() {
         return "mailto:" + this.email;
     },

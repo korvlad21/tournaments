@@ -6,7 +6,7 @@ import ExampleComponent from './components/ExampleComponent'
 import TestComponent from './components/TestComponent'
 import ProfileUpdate from "./components/profile/ProfileUpdate.vue";
 import ProfileShow from "./components/profile/ProfileShow.vue";
-import Profile from "./components/profile/Profile.vue";
+import Profile from "./components/profile/ProfileTest.vue";
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'

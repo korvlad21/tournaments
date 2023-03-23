@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('user')->group(function () {
         Route::controller(API\UserController::class)->group(function () {
             Route::post('get_info', 'getInfo');
+            Route::post('is_auth_user', 'isAuthUser');
         });
     });
     Route::get('/get', 'GetController');

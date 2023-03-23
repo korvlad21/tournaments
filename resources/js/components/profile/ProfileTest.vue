@@ -249,7 +249,7 @@
                       />
                     </svg>
                   </span>
-                  <span class="tracking-wide">Достижения</span>
+                  <span class="tracking-wide">Достижения3</span>
                 </div>
                 <ul class="list-inside space-y-2">
                   <li>
@@ -285,15 +285,18 @@ export default {
         sex: '',
         birthday: '',
       },
+      isAuthUser: false
     }
   },
   created() {
     this.getUserInfo();
+    this.getAuthUser();
   },
   methods: {
     getUserInfo() {
-        axios.get('api/user/get_info/')
+        axios.post('api/user/get_info/')
             .then(({data}) => {
+                console.log(1)
                 this.user.username = data.username;
                 this.user.name = data.name;
                 this.user.email = data.email;
@@ -306,6 +309,19 @@ export default {
             })
             .finally(() => {
             });
+    },
+    getAuthUser() {
+      axios.post('api/user/is_auth_user/')
+        .then(({data}) => {
+          this.isAuthUser = data.isAuthUser;
+            console.log(this.isAuthUser)
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+
+        });
     },
     getHrefEmail() {
         return "mailto:" + this.email;

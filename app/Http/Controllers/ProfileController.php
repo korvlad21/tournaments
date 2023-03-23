@@ -50,7 +50,7 @@ class ProfileController extends Controller
      */
     public function show($slug)
     {
-        return (Auth::user()->slug === $slug) ? view('profile.show', compact('slug')) : abort(404);
+        return view('profile.show', compact('slug'));
     }
 
     /**
