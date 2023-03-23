@@ -72,7 +72,15 @@
         </div>
         <div class="form-group col-md-4">
             <span>Аватар</span>
-            <v-file-input label="File input"></v-file-input>
+            <v-file-input
+                v-model="user.avatar"
+                :rules="rules"
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                placeholder="Pick an avatar"
+                prepend-icon="mdi-camera"
+                label="Avatar"
+            >
+            </v-file-input>
         </div>
         <button
             type="submit"
@@ -102,11 +110,17 @@ export default {
                 sex: '',
                 birthday: '',
                 description: '',
+                avatar: {}
             },
             sexOptions: [
                 { text: 'Муж', value: 'Муж' },
                 { text: 'Жен', value: 'Жен' },
-            ]
+            ],
+            rules: [
+                value => {
+                    return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
+                },
+            ],
         }
     },
     created() {

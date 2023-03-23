@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enum\UserSexEnum;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -30,9 +31,20 @@ class UserSeeder extends Seeder
         $user1->password = bcrypt('secret');
         $user1->phone = '+79501234567';
         $user1->status = 'Когда ты поднимаешься, друзья узнают тебя, когда ты падаешь ты узнаёшь друзей!';
-        $user1->sex = User::SEX_WOMAN;
+        $user1->sex = UserSexEnum::WOMAN;
         $user1->birthday = '2000-06-21';
         $user1->description = 'Я Леонид Месси выиграл множество турниров, включая Чмепионат мира, Лигу Чемпионов и много много другого';
         $user1->save();
+        $user2 = new User();
+        $user2->username = 'Ney-21';
+        $user2->name = 'Неймар';
+        $user2->email = 'ney@inbox.com';
+        $user2->password = bcrypt('secret');
+        $user2->phone = '+79501234568';
+        $user2->status = 'Когда ты поднимаешься, друзья узнают тебя, когда ты падаешь ты узнаёшь друзей!';
+        $user2->sex = UserSexEnum::MAN;
+        $user2->birthday = '2000-06-22';
+        $user2->description = 'Я Неймар выиграл множество турниров, включая Чмепионат мира, Лигу Чемпионов и много много другого';
+        $user2->save();
     }
 }

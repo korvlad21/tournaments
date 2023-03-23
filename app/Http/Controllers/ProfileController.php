@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -72,10 +73,23 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+
         $slug = $request->post('slug');
         $userData = $request->post('user');
 
+
         $user = User::where('slug', $slug)->first();
+
+        $rules = $user->getRules();
+        $messages = $user->getMessages();
+
+        $validated = Validator::make($userData, $rules, $messages);
+        if ($validated->fails()) {
+            return response()->json([
+                'success' => false,
+                'validated' => $validated->errors()
+            ]);
+        }
         if (!$user->hasVerified()) {
             $user->name = $userData['name'];
             $user->sex = $userData['sex'];

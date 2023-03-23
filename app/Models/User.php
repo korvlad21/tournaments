@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\UserSexEnum;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use App\Traits\HasRolesAndPermissions;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Enum;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -55,9 +57,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public const SEX_MAN = 'Муж';
-    public const SEX_WOMAN = 'Жен';
-
     public function setUsernameAttribute($value)
     {
         $this->attributes['username'] = $value;
@@ -79,9 +78,31 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new VerifyEmailNotification);
     }
 
-    public function getRules()
+    /**
+     * @return array
+     */
+    public function getRules(): array
     {
-        
+        return [
+            'name' => 'required|string|max:255|',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$this->id,
+            'phone' => 'required|numeric|min:10|unique:users,phone,'.$this->id,
+            'status' => 'string|max:255|',
+            'description' => 'string',
+            'sex' => ['required', new Enum(UserSexEnum::class)],
+            'birthday'=> 'required|date|before:tomorrow',
+        ];
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getMessages(): array
+    {
+        return [
+            'email.required' => 'Email должен быть заполнен',
+        ];
     }
 
 
