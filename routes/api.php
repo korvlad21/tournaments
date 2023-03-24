@@ -27,5 +27,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('is_auth_user', 'isAuthUser');
         });
     });
+    Route::prefix('image')->group(function () {
+        Route::controller(API\ImageController::class)->group(function () {
+            Route::post('avatar_upload', 'avatarUpload');
+        });
+    });
     Route::get('/get', 'GetController');
 });

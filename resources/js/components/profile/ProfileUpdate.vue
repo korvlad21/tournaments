@@ -75,8 +75,10 @@
                 >
                     <span>Выбрать изображение</span>
                     <input
+                        v-on:change ="handleFileUpload()"
                         id="file-upload"
                         name="file-upload"
+                        ref="file-upload"
                         type="file"
                         class="sr-only"
                     />
@@ -152,10 +154,11 @@ export default {
                 sex: "",
                 birthday: "",
                 description: "",
-                avatar: {},
+
                 // для кнопки подтверждения учетки
                 verified: false,
             },
+            avatar: '',
             sexOptions: [
                 { text: "Муж", value: "Муж" },
                 { text: "Жен", value: "Жен" },
@@ -177,8 +180,7 @@ export default {
     },
     methods: {
         getUserInfo() {
-            axios
-                .post("/api/user/get_info/", {
+            axios.post("/api/user/get_info/", {
                     slug: this.slug,
                 })
                 .then(({ data }) => {
@@ -216,6 +218,27 @@ export default {
                 })
                 .finally(() => {});
         },
+        handleFileUpload(){
+            this.avatar = this.$refs["file-upload"].files[0];
+            let formData = new FormData();
+            formData.append('avatar', this.avatar);
+            axios.post("/api/image/avatar_upload/",  formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    slug: this.slug,
+                    avatar: this.avatar,
+
+            })
+                .then(({ data }) => {
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        }
     },
 };
 </script>
