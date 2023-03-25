@@ -58,6 +58,7 @@
                 <span
                     class="inline-block h-12 w-12 overflow-hidden rounded-full bg-gray-100"
                 >
+                    <img :src="path">
                     <!-- Если аватар есть прячем свг и показивыаем <img> -->
                     <svg
                         class="h-full w-full text-gray-300"
@@ -159,6 +160,7 @@ export default {
                 verified: false,
             },
             avatar: '',
+            path: '',
             sexOptions: [
                 { text: "Муж", value: "Муж" },
                 { text: "Жен", value: "Жен" },
@@ -192,6 +194,7 @@ export default {
                     this.user.sex = data.sex;
                     this.user.birthday = data.birthday;
                     this.user.description = data.description;
+                    this.path= data.path;
                 })
                 .catch((error) => {
                     console.error(error);
@@ -231,7 +234,8 @@ export default {
                     },
             })
                 .then(({ data }) => {
-                    console.log(data);
+                    this.path = data.path
+                    console.log(this.path)
                 })
                 .catch((error) => {
                     console.error(error);

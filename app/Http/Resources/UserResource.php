@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'sex' => $this->sex,
             'birthday' => date('Y-m-d', strtotime($this->birthday)),
             'description' => $this->description,
+            'path' => ($this->avatar) ? '/storage/images/thumbnail/'.$this->avatar : '',
             'created_at' => date('Y-m-d', strtotime($this->created_at)),
 
         ];

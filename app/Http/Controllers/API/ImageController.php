@@ -34,7 +34,23 @@ class ImageController extends Controller
             Storage::delete('public/images/medium/'.$oldAvatar);
             Storage::delete('public/images/large/'.$oldAvatar);
         }
+        $path = '/storage/images/thumbnail/'.$filename;
+        return response()->json([
+            'path' => $path
+        ]);
+    }
 
-        return response()->json(new UserResource($user));
+    /**
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvatar(Request $request)
+    {
+        $slug = $request->post('slug');
+        $user = User::where('slug', $slug)->first();
+        $path = ($user->avatar) ? '/storage/images/thumbnail/'.$user->avatar : '';
+        return response()->json([
+            'path' => $path
+        ]);
     }
 }
