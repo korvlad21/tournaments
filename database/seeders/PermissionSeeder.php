@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
@@ -13,6 +14,9 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $accessAccount = new Permission();
+        $accessAccount->name = 'Подтверждение аккаунта';
+        $accessAccount->slug = 'access-account';
+        $accessAccount->save();
     }
 }

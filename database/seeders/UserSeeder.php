@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-//        $admin = Role::where('slug','admin')->first();
+        $admin = Role::where('slug','admin')->first();
+        $accessAccount = Permission::where('slug','access-account')->first();;
 //        $user1 = new User();
 //        $user1->name = 'Jhon Deo';
 //        $user1->email = 'jhon@deo.com';
@@ -35,6 +36,8 @@ class UserSeeder extends Seeder
         $user1->birthday = '2000-06-21';
         $user1->description = 'Я Леонид Месси выиграл множество турниров, включая Чмепионат мира, Лигу Чемпионов и много много другого';
         $user1->save();
+        $user1->roles()->attach($admin);
+        $user1->permissions()->attach($accessAccount);
         $user2 = new User();
         $user2->username = 'Ney-21';
         $user2->name = 'Неймар';

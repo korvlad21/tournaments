@@ -219,17 +219,16 @@ export default {
                 .finally(() => {});
         },
         handleFileUpload(){
+            console.log(1);
             this.avatar = this.$refs["file-upload"].files[0];
             let formData = new FormData();
             formData.append('avatar', this.avatar);
-            axios.post("/api/image/avatar_upload/",  formData,
+            formData.append('slug', this.slug);
+            axios.post("/api/image/avatar_upload/", formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
-                    slug: this.slug,
-                    avatar: this.avatar,
-
             })
                 .then(({ data }) => {
                     console.log(data);
