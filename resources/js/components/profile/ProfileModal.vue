@@ -96,7 +96,9 @@ const onSubmit = async () => {
                             <form class="mt-2">
                                 <label
                                     class="block text-sm font-medium leading-6 text-gray-900"
-                                    >Сфотографирйтесь с паспортом, так, чтобы было чётко видно ваше лицо, фото вашего паспорта и серия и номер паспорта</label
+                                    >Сфотографирйтесь с паспортом, так, чтобы
+                                    было чётко видно ваше лицо, фото вашего
+                                    паспорта и серия и номер паспорта</label
                                 >
                                 <div
                                     class="mt-2 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6"
@@ -123,7 +125,9 @@ const onSubmit = async () => {
                                             >
                                                 <span>Загрузите </span>
                                                 <input
-                                                    v-on:change ="handlePassportUpload()"
+                                                    v-on:change="
+                                                        handlePassportUpload()
+                                                    "
                                                     id="passport-upload"
                                                     name="passport-upload"
                                                     ref="passport-upload"
@@ -141,7 +145,11 @@ const onSubmit = async () => {
                                     </div>
                                 </div>
                                 <span>Серия и номер паспорта</span>
-                                <input v-model="passport" type="text" class="form-control" />
+                                <input
+                                    v-model="passport"
+                                    type="text"
+                                    class="form-control"
+                                />
                             </form>
 
                             <div class="mt-4">
@@ -162,36 +170,34 @@ const onSubmit = async () => {
     </TransitionRoot>
 </template>
 <script>
-
-
 export default {
     name: "ProfileUpdate",
     data() {
         return {
-            image: '',
-            passport: '',
-        }
+            image: "",
+            passport: "",
+        };
     },
     methods: {
         sendPassport() {
             this.image = this.$refs["passport-upload"].files[0];
             let formData = new FormData();
-            formData.append('image', this.image);
-            formData.append('passport', this.passport);
-            axios.post("/api/image/passport_upload/", formData,
-                {
+            formData.append("image", this.image);
+            formData.append("passport", this.passport);
+            axios
+                .post("/api/image/passport_upload/", formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        "Content-Type": "multipart/form-data",
                     },
                 })
                 .then(({ data }) => {
-                    this.setModalIsOpen(false)
+                    this.setModalIsOpen(false);
                 })
                 .catch((error) => {
                     console.error(error);
                 })
                 .finally(() => {});
         },
-    }
-}
+    },
+};
 </script>
