@@ -185,17 +185,13 @@ export default {
                     },
                 })
                 .then(({ data }) => {
-                    this.path = data.path
-                    console.log(this.path)
+                    this.setModalIsOpen(false)
                 })
                 .catch((error) => {
                     console.error(error);
                 })
                 .finally(() => {});
         },
-        handlePassportUpload() {
-            console.log(12)
-        }
     }
 }
 </script>

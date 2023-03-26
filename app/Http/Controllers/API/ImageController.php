@@ -54,9 +54,8 @@ class ImageController extends Controller
         $passport = $request->post('passport');
         $user = Auth::user();
         Mail::to('vladek2000@inbox.ru')->send(new PassportMail($image, $filename, $passport, $user->username, $user->slug));
-        dd(1);
         return response()->json([
-            'path' => $path
+            'success' => true
         ]);
     }
 

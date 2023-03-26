@@ -124,9 +124,9 @@
     <ModalDialog
         :isOpen="isSharedOpen"
         :setModalIsOpen="setSharedModalIsOpen"
-        title="Я модалко"
-        content="Привед я модалка"
-        buttonText="Закрыть модалко"
+        :title="modal.title"
+        :content="modal.content"
+        :buttonText="modal.button"
     />
 </template>
 
@@ -165,6 +165,11 @@ export default {
                 { text: "Муж", value: "Муж" },
                 { text: "Жен", value: "Жен" },
             ],
+            modal: {
+                title: "модал",
+                content: "ваы",
+                button: "Закрыть",
+            },
             rules: [
                 (value) => {
                     return (
@@ -214,7 +219,9 @@ export default {
                     user: this.user,
                 })
                 .then(({ data }) => {
-                    console.log(data);
+                    this.modal.title = "Данные обновлены";
+                    this.modal.description = "Данные успешно обновлены";
+                    this.setSharedModalIsOpen(true)
                 })
                 .catch((error) => {
                     console.error(error);

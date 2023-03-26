@@ -73,7 +73,6 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        dd($request->post('avatar'));
         $slug = $request->post('slug');
         $userData = $request->post('user');
 
