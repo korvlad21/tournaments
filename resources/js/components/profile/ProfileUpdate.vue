@@ -222,7 +222,6 @@ export default {
                 .finally(() => {});
         },
         handleFileUpload(){
-            console.log(1);
             this.avatar = this.$refs["file-upload"].files[0];
             let formData = new FormData();
             formData.append('avatar', this.avatar);
@@ -235,7 +234,6 @@ export default {
             })
                 .then(({ data }) => {
                     this.path = data.path
-                    console.log(this.path)
                 })
                 .catch((error) => {
                     console.error(error);

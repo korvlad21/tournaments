@@ -96,7 +96,7 @@ const onSubmit = async () => {
                             <form class="mt-2">
                                 <label
                                     class="block text-sm font-medium leading-6 text-gray-900"
-                                    >Скан паспорта</label
+                                    >Сфотографирйтесь с паспортом, так, чтобы было чётко видно ваше лицо, фото вашего паспорта и серия и номер паспорта</label
                                 >
                                 <div
                                     class="mt-2 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6"
@@ -118,13 +118,15 @@ const onSubmit = async () => {
                                         </svg>
                                         <div class="flex text-sm text-gray-600">
                                             <label
-                                                for="file-upload"
+                                                for="passport-upload"
                                                 class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                                             >
                                                 <span>Загрузите </span>
                                                 <input
-                                                    id="file-upload"
-                                                    name="file-upload"
+                                                    v-on:change ="handlePassportUpload()"
+                                                    id="passport-upload"
+                                                    name="passport-upload"
+                                                    ref="passport-upload"
                                                     type="file"
                                                     class="sr-only"
                                                 />
@@ -138,6 +140,8 @@ const onSubmit = async () => {
                                         </p>
                                     </div>
                                 </div>
+                                <span>Серия и номер паспорта</span>
+                                <input v-model="passport" type="text" class="form-control" />
                             </form>
 
                             <div class="mt-4">
@@ -145,7 +149,7 @@ const onSubmit = async () => {
                                     type="submit"
                                     class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                     @submit.prevent="onSubmit()"
-                                    @click="setModalIsOpen(false)"
+                                    @click="sendPassport()"
                                 >
                                     Отправить
                                 </button>
@@ -157,3 +161,41 @@ const onSubmit = async () => {
         </Dialog>
     </TransitionRoot>
 </template>
+<script>
+
+
+export default {
+    name: "ProfileUpdate",
+    data() {
+        return {
+            image: '',
+            passport: '',
+        }
+    },
+    methods: {
+        sendPassport() {
+            this.image = this.$refs["passport-upload"].files[0];
+            let formData = new FormData();
+            formData.append('image', this.image);
+            formData.append('passport', this.passport);
+            axios.post("/api/image/passport_upload/", formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                })
+                .then(({ data }) => {
+                    this.path = data.path
+                    console.log(this.path)
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        handlePassportUpload() {
+            console.log(12)
+        }
+    }
+}
+</script>

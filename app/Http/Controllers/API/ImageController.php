@@ -4,9 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Mail\PassportMail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -35,6 +38,23 @@ class ImageController extends Controller
             Storage::delete('public/images/large/'.$oldAvatar);
         }
         $path = '/storage/images/thumbnail/'.$filename;
+        return response()->json([
+            'path' => $path
+        ]);
+    }
+
+    /**
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function passportUpload(Request $request)
+    {
+        $image = $request->file('image');
+        $filename = 'passport.' . $image->getClientOriginalExtension();
+        $passport = $request->post('passport');
+        $user = Auth::user();
+        Mail::to('vladek2000@inbox.ru')->send(new PassportMail($image, $filename, $passport, $user->username, $user->slug));
+        dd(1);
         return response()->json([
             'path' => $path
         ]);
