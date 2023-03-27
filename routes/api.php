@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::controller(API\UserController::class)->group(function () {
             Route::post('get_info', 'getInfo');
             Route::post('is_auth_user', 'isAuthUser');
+            Route::post('get_roles', 'getRoles');
         });
     });
     Route::prefix('image')->group(function () {

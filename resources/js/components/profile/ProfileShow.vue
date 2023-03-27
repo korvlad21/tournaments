@@ -313,6 +313,8 @@ export default {
         description: '',
         created_at: '',
       },
+      roles: '',
+      is_admin: false,
       path: '',
       isAuthUser: false
     }
@@ -320,6 +322,7 @@ export default {
   created() {
     this.getUserInfo();
     this.getAuthUser();
+    this.getRoles();
   },
   methods: {
     getUserInfo() {
@@ -350,7 +353,6 @@ export default {
       })
           .then(({data}) => {
               this.isAuthUser = data.isAuthUser;
-              console.log(this.isAuthUser)
           })
           .catch((error) => {
               console.error(error);
@@ -365,6 +367,19 @@ export default {
     getHrefUpdate() {
         return window.location.origin + '/profile/edit/' + this.slug;
     },
+    getRoles() {
+       axios.post('/api/user/get_roles/')
+       .then(({data}) => {
+         this.roles = data.roles
+         this.is_admin = this.roles.indexOf('admin') !== -1;
+         console.log(this.is_admin)
+       })
+       .catch((error) => {
+         console.error(error);
+       })
+       .finally(() => {
+       });
+      },
   }
 };
 </script>

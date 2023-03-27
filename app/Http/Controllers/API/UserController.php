@@ -36,4 +36,17 @@ class UserController extends Controller
             'isAuthUser' => $user->slug === $slug
         ]);
     }
+
+    /**
+     * Register api
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRoles(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'roles' => Auth::user()->roles()->pluck('slug')->toArray(),
+        ]);
+    }
 }

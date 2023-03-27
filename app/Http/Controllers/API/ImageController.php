@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Images\AvatarRequest;
+use App\Http\Requests\Images\PassportRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\PassportMail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class ImageController extends Controller
@@ -19,7 +23,7 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function avatarUpload(Request $request)
+    public function avatarUpload(AvatarRequest $request)
     {
         $slug = $request->post('slug');
         $user = User::where('slug', $slug)->first();
@@ -47,7 +51,7 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function passportUpload(Request $request)
+    public function passportUpload(PassportRequest $request)
     {
         $image = $request->file('image');
         $filename = 'passport.' . $image->getClientOriginalExtension();
