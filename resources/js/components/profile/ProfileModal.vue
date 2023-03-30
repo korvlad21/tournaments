@@ -125,9 +125,6 @@ const onSubmit = async () => {
                                             >
                                                 <span>Загрузите </span>
                                                 <input
-                                                    v-on:change="
-                                                        handlePassportUpload()
-                                                    "
                                                     id="passport-upload"
                                                     name="passport-upload"
                                                     ref="passport-upload"
@@ -174,30 +171,30 @@ export default {
     name: "ProfileUpdate",
     data() {
         return {
-            image: "",
-            passport: "",
-        };
+            image: '',
+            passport: '',
+        }
     },
     methods: {
         sendPassport() {
             this.image = this.$refs["passport-upload"].files[0];
             let formData = new FormData();
-            formData.append("image", this.image);
-            formData.append("passport", this.passport);
-            axios
-                .post("/api/image/passport_upload/", formData, {
+            formData.append('image', this.image);
+            formData.append('passport', this.passport);
+            axios.post("/api/image/passport_upload/", formData,
+                {
                     headers: {
-                        "Content-Type": "multipart/form-data",
+                        'Content-Type': 'multipart/form-data'
                     },
                 })
                 .then(({ data }) => {
-                    this.setModalIsOpen(false);
+                    this.setModalIsOpen(false)
                 })
                 .catch((error) => {
                     console.error(error);
                 })
                 .finally(() => {});
         },
-    },
-};
+    }
+}
 </script>
