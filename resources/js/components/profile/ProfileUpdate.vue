@@ -58,7 +58,7 @@
                 <span
                     class="inline-block h-12 w-12 overflow-hidden rounded-full bg-gray-100"
                 >
-                    <img :src="user.path" />
+                    <img :src="path" />
                     <!-- Если аватар есть прячем свг и показивыаем <img> -->
                     <svg
                         class="h-full w-full text-gray-300"
@@ -130,147 +130,141 @@
     />
 </template>
 
-<script setup>
+<script>
+// модалка паспорта
 import ProfileModal from "./ProfileModal";
+// переносимая модалка
 import ModalDialog from "../shared/ModalDialog.vue";
 
-import { ref, onMounted, reactive } from "vue";
-
-const props = defineProps({
-    slug: String,
-});
-
-onMounted(() => {
-    getUserInfo();
-});
-
-const user = reactive({
-    username: "",
-    name: "",
-    email: "",
-    phone: "",
-    status: "",
-    sex: "",
-    birthday: "",
-    description: "",
-
-    // для кнопки подтверждения учетки
-    verified: false,
-
-    avatar: "",
-    path: "",
-});
-
-const sexOptions = [
-    { text: "Муж", value: "Муж" },
-    { text: "Жен", value: "Жен" },
-];
-
-const modal = reactive({
-    title: "модал",
-    content: "ваы",
-    button: "Закрыть",
-});
-
-const rules = [
-    (value) => {
-        return (
-            !value ||
-            !value.length ||
-            value[0].size < 2000000 ||
-            "Avatar size should be less than 2 MB!"
-        );
-    },
-];
-
-function getUserInfo() {
-    axios
-        .post("/api/user/get_info/", {
-            slug: props.slug,
-        })
-        .then(({ data }) => {
-            user.username = data.username;
-            user.name = data.name;
-            user.email = data.email;
-            user.phone = data.phone;
-            user.status = data.status;
-            user.sex = data.sex;
-            user.birthday = data.birthday;
-            user.description = data.description;
-            user.path = data.path;
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-        .finally(() => {});
-}
-
-function getHrefEmail() {
-    // не понял откуда берется имэил
-    return "mailto:" + user.email;
-}
-
-function getHrefUpdate() {
-    return window.location.origin + "/profile/edit/" + props.slug;
-}
-
-function updateData() {
-    // проверка при нажати на конопку - удалить
-
-    axios
-        .post("/profile/update/", {
-            slug: props.slug,
-            user: user,
-        })
-        .then(({ data }) => {
-            modal.title = "Данные обновлены";
-            modal.content = "Данные успешно обновлены";
-            setSharedModalIsOpen(true);
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-        .finally(() => {});
-}
-
-function handleFileUpload() {
-    user.avatar = ref(["file-upload"]).value;
-    let formData = new FormData();
-    formData.append("avatar", user.avatar);
-    formData.append("slug", props.slug);
-    axios
-        .post("/api/image/avatar_upload/", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        })
-        .then(({ data }) => {
-            user.path = data.path;
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-        .finally(() => {});
-}
-// для модалки паспорта
+import { ref } from "vue";
 const isOpen = ref(false);
-
-function setModalIsOpen(value) {
-    isOpen.value = value;
-}
-// для общей модалки
 const isSharedOpen = ref(false);
 
-function setSharedModalIsOpen(value) {
-    isSharedOpen.value = value;
-}
-// для демонстрации кнопки - удалить
+export default {
+    name: "ProfileUpdate",
+    components: {
+        ProfileModal,
+    },
+    props: {
+        slug: String,
+    },
+    data() {
+        return {
+            user: {
+                username: "",
+                name: "",
+                email: "",
+                phone: "",
+                status: "",
+                sex: "",
+                birthday: "",
+                description: "",
+                // для кнопки подтверждения учетки
+                verified: false,
+            },
+            avatar: "",
+            path: "",
+            sexOptions: [
+                { text: "Муж", value: "Муж" },
+                { text: "Жен", value: "Жен" },
+            ],
+            modal: {
+                title: "модал",
+                content: "ваы",
+                button: "Закрыть",
+            },
+            rules: [
+                (value) => {
+                    return (
+                        !value ||
+                        !value.length ||
+                        value[0].size < 2000000 ||
+                        "Avatar size should be less than 2 MB!"
+                    );
+                },
+            ],
+        };
+    },
+    created() {
+        this.getUserInfo();
+    },
+    methods: {
+        getUserInfo() {
+            axios
+                .post("/api/user/get_info/", {
+                    slug: this.slug,
+                })
+                .then(({ data }) => {
+                    this.user.username = data.username;
+                    this.user.name = data.name;
+                    this.user.email = data.email;
+                    this.user.phone = data.phone;
+                    this.user.status = data.status;
+                    this.user.sex = data.sex;
+                    this.user.birthday = data.birthday;
+                    this.user.description = data.description;
+                    this.path = data.path;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getHrefEmail() {
+            return "mailto:" + this.email;
+        },
+        getHrefUpdate() {
+            return window.location.origin + "/profile/edit/" + this.slug;
+        },
+        updateData() {
+            axios
+                .post("/profile/update/", {
+                    slug: this.slug,
+                    user: this.user,
+                })
+                .then(({ data }) => {
+                    this.modal.title = "Данные обновлены";
+                    this.modal.content = "Данные успешно обновлены";
+                    this.setSharedModalIsOpen(true);
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        handleFileUpload() {
+            this.avatar = this.$refs["file-upload"].files[0];
+            let formData = new FormData();
+            formData.append("avatar", this.avatar);
+            formData.append("slug", this.slug);
+            axios
+                .post("/api/image/avatar_upload/", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then(({ data }) => {
+                    this.path = data.path;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        setModalIsOpen(value) {
+            isOpen.value = value;
+        },
+        setSharedModalIsOpen(value) {
+            isSharedOpen.value = value;
+        },
+    },
+};
+</script>
+
+<script setup>
 const verified = ref(false);
 
-// для демонстрации кнопки - удалить
 function handleVerifiedClick() {
     verified.value = !verified.value;
 }
 </script>
-
-<style scoped></style>
