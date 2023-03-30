@@ -43,11 +43,20 @@
               <li class="flex items-center py-3">
                 <span>Статус</span>
                 <span class="ml-auto"
-                  ><span
-                    class="bg-green-500 py-1 px-2 rounded text-white text-sm"
-                    >В сети</span
-                  ></span
-                >
+                  >
+                    <span
+                        v-if="user.is_online"
+                        class="bg-green-500 py-1 px-2 rounded text-white text-sm"
+                    >
+                        В сети
+                    </span>
+                    <span
+                        v-else
+                        class="bg-red-500 py-1 px-2 rounded text-white text-sm"
+                    >
+                        Не в сети
+                    </span>
+                </span>
               </li>
               <li class="flex items-center py-3">
                 <span>Зарегистрирован</span>
@@ -312,11 +321,12 @@ export default {
         birthday: '',
         description: '',
         created_at: '',
+        is_online: false,
       },
       roles: '',
       is_admin: false,
       path: '',
-      isAuthUser: false
+      isAuthUser: false,
     }
   },
   created() {
@@ -339,6 +349,7 @@ export default {
                 this.user.birthday = data.birthday;
                 this.user.description= data.description;
                 this.user.created_at = data.created_at;
+                this.user.is_online = data.is_online;
                 this.path= data.path;
             })
             .catch((error) => {
@@ -371,8 +382,7 @@ export default {
        axios.post('/api/user/get_roles/')
        .then(({data}) => {
          this.roles = data.roles
-         this.is_admin = this.roles.indexOf('admin') !== -1;
-         console.log(this.is_admin)
+         this.is_admin = this.roles.indexOf('admin') !== -1
        })
        .catch((error) => {
          console.error(error);

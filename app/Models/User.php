@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Enum;
 use Laravel\Sanctum\HasApiTokens;
@@ -103,6 +104,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email.required' => 'Email должен быть заполнен',
         ];
+    }
+
+    /**
+     * Check is user online.
+     * @return bool
+     */
+    public function isOnline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
     }
 
 
