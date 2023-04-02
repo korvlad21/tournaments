@@ -89,14 +89,12 @@ class ProfileController extends Controller
                 'validated' => $validated->errors()
             ]);
         }
-        if (!$user->hasVerified()) {
-            $user->name = $userData['name'];
-            $user->sex = $userData['sex'];
-            $user->birthday = $userData['birthday'];
-        }
         if ($user->email !== $userData['email']) {
             $user->email_verified_at = null;
         }
+        $user->name = $userData['name'];
+        $user->sex = $userData['sex'];
+        $user->birthday = $userData['birthday'];
         $user->email = $userData['email'];
         $user->phone = $userData['phone'];
         $user->status = $userData['status'];
