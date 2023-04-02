@@ -28,9 +28,17 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_roles', 'getRoles');
         });
     });
+    Route::prefix('team')->group(function () {
+        Route::controller(API\TeamController::class)->group(function () {
+            Route::post('create', 'create');
+            Route::post('get_info', 'getInfo');
+            Route::post('is_own', 'isOwn');
+        });
+    });
     Route::prefix('image')->group(function () {
         Route::controller(API\ImageController::class)->group(function () {
             Route::post('avatar_upload', 'avatarUpload');
+            Route::post('logo_upload', 'logoUpload');
             Route::post('passport_upload', 'passportUpload');
             Route::post('get_avatar', 'getAvatar');
         });

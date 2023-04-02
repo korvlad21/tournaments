@@ -41,6 +41,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::middleware(['auth'])->group(function() {
 //    Route::get('/profile', 'ProfileController@index')->name('profile.index');
+    Route::prefix('team')->group(function () {
+        Route::get('create', 'TeamController@create')->name('team.create');
+        Route::get('{id}', 'TeamController@show')->name('team.show');
+    });
     Route::get('/profile/{slug}', 'ProfileController@show')->name('profile.show');
     Route::get('/profile/edit/{slug}', 'ProfileController@edit')->name('profile.update');
     Route::post('/profile/update', 'ProfileController@update')->name('profile.update');
