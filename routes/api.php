@@ -26,6 +26,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_info', 'getInfo');
             Route::post('is_auth_user', 'isAuthUser');
             Route::post('get_roles', 'getRoles');
+            Route::post('get_friends', 'getFriends');
+            Route::post('is_subscribe', 'isSubscribe');
         });
     });
     Route::prefix('team')->group(function () {

@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Friend extends Model
 {
-    use HasFactory;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'subscriber_id',
+        'subscription_id'
+    ];
 }

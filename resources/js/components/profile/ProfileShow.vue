@@ -194,6 +194,27 @@
                 </div>
               </div>
             </div>
+              <div
+                  v-show="!isAuthUser"
+              >
+                  <button
+                      v-if="friend.subscriber"
+                      class="btn"
+                      :class="[friend.subscription ? 'bg-green-500' : 'bg-red-500']"
+                      @click="handleSubscribeClick()"
+                  >
+                      {{ !friend.subscription ? "Подписан на вас" : "В друзьях" }}
+                  </button>
+                  <button
+                      v-else
+                      class="btn"
+                      :class="[friend.subscription ? 'bg-green-500' : 'bg-red-500']"
+                      @click="handleSubscribeClick()"
+                  >
+                      {{ !friend.subscription ? "Добавить в друзья" : "Вы подписаны" }}
+                  </button>
+              </div>
+
             <button
               class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
             >
@@ -206,6 +227,7 @@
               >
                   Редактировать
               </a>
+
           </div>
           <!-- End of info section -->
 
@@ -323,6 +345,10 @@ export default {
         created_at: '',
         is_online: false,
       },
+      friend: {
+        subscriber: false,
+        subscription: false,
+      },
       roles: '',
       is_admin: false,
       path: '',
@@ -364,6 +390,9 @@ export default {
       })
           .then(({data}) => {
               this.isAuthUser = data.isAuthUser;
+              if (false === this.isAuthUser) {
+                  this.getFriends();
+              }
           })
           .catch((error) => {
               console.error(error);
@@ -389,7 +418,32 @@ export default {
        })
        .finally(() => {
        });
-      },
+    },
+    getFriends() {
+       axios.post('/api/user/get_friends/', {
+           slug: this.slug
+       })
+           .then(({data}) => {
+               this.friend.subscriber = data.subscriber
+               this.friend.subscription = data.subscription
+           })
+           .catch((error) => {
+               console.error(error);
+           })
+           .finally(() => {});
+    },
+    handleSubscribeClick() {
+        axios.post('/api/user/is_subscribe/', {
+            slug: this.slug
+        })
+            .then(({data}) => {
+                this.friend.subscription = data.subscription
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {});
+    }
   }
 };
 </script>

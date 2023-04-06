@@ -49,5 +49,16 @@ class UserSeeder extends Seeder
         $user2->birthday = '2000-06-22';
         $user2->description = 'Я Неймар выиграл множество турниров, включая Чмепионат мира, Лигу Чемпионов и много много другого';
         $user2->save();
+        $user3 = new User();
+        $user3->username = 'kvaradona';
+        $user3->name = 'Хвича}';
+        $user3->email = 'kvara@inbox.com';
+        $user3->password = bcrypt('secret');
+        $user3->phone = '+79501234511';
+        $user3->status = 'Когда ты поднимаешься, друзья узнают тебя, когда ты падаешь ты узнаёшь друзей!';
+        $user3->sex = UserSexEnum::MAN;
+        $user3->birthday = '2000-06-24';
+        $user3->description = 'Я Хвича выиграл множество турниров, включая Чмепионат мира, Лигу Чемпионов и много много другого';
+        $user3->save();
     }
 }
