@@ -16,4 +16,9 @@ class Friend extends Model
         'subscriber_id',
         'subscription_id'
     ];
+
+    public function userSubscription()
+    {
+        return $this->belongsTo(User::class, 'subscription_id');
+    }
 }

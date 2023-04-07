@@ -90,13 +90,16 @@
               <span>Друзья</span>
             </div>
             <div class="grid grid-cols-3">
-              <div class="text-center my-2">
+              <div
+                  v-for="friendUser in friends"
+                  class="text-center my-2"
+              >
                 <img
                   class="h-16 w-16 rounded-full mx-auto"
-                  src="https://cdn.australianageingagenda.com.au/wp-content/uploads/2015/06/28085920/Phil-Beckett-2-e1435107243361.jpg"
-                  alt=""
+                  :src="friendUser.path"
+                  :alt="friendUser.name"
                 />
-                <a href="#" class="text-main-color">Петя</a>
+                <a :href="this.getHrefFriend(friendUser.slug)" class="text-main-color">{{friendUser.name}}</a>
               </div>
               <div class="text-center my-2">
                 <img
@@ -349,6 +352,7 @@ export default {
         subscriber: false,
         subscription: false,
       },
+      friends: {},
       roles: '',
       is_admin: false,
       path: '',
@@ -359,6 +363,7 @@ export default {
     this.getUserInfo();
     this.getAuthUser();
     this.getRoles();
+    this.getFriends();
   },
   methods: {
     getUserInfo() {
@@ -391,7 +396,7 @@ export default {
           .then(({data}) => {
               this.isAuthUser = data.isAuthUser;
               if (false === this.isAuthUser) {
-                  this.getFriends();
+                  this.isFriend();
               }
           })
           .catch((error) => {
@@ -407,6 +412,9 @@ export default {
     getHrefUpdate() {
         return window.location.origin + '/profile/edit/' + this.slug;
     },
+    getHrefFriend(slug) {
+        return window.location.origin + '/profile/' + slug;
+    },
     getRoles() {
        axios.post('/api/user/get_roles/')
        .then(({data}) => {
@@ -420,7 +428,19 @@ export default {
        });
     },
     getFriends() {
-       axios.post('/api/user/get_friends/', {
+        axios.post('/api/user/get_friends/', {
+            slug: this.slug
+        })
+            .then(({data}) => {
+                this.friends = data.friends
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {});
+    },
+    isFriend() {
+       axios.post('/api/user/is_friend/', {
            slug: this.slug
        })
            .then(({data}) => {

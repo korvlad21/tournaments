@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('is_auth_user', 'isAuthUser');
             Route::post('get_roles', 'getRoles');
             Route::post('get_friends', 'getFriends');
+            Route::post('is_friend', 'isFriend');
             Route::post('is_subscribe', 'isSubscribe');
         });
     });

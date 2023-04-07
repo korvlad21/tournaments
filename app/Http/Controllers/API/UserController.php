@@ -50,12 +50,31 @@ class UserController extends Controller
      */
     public function getFriends(Request $request)
     {
+        $profile = User::where('slug', $request->post('slug'))->first();
+        $friendsSubscription = Friend::where('subscriber_id', $profile->id)
+            ->pluck('subscription_id');
+        $friendsSubscriber = Friend::with(['userSubscription'])
+            ->whereIn('subscriber_id', $friendsSubscription)
+            ->where('subscription_id', $profile->id)
+            ->pluck('subscriber_id');
+        $users = User::whereIn('id', $friendsSubscription)->get();
+        return response()->json([
+            'success' => true,
+            'friends' => UserResource::collection($users),
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function isFriend(Request $request)
+    {
         $user = Auth::user();
         $profile = User::where('slug', $request->post('slug'))->first();
         $friends = Friend::where(
-            [['subscriber_id', $user->id], ['subscription_id', $profile->id]]
-        )->whereOr(
-            [['subscriber_id', $profile->id], ['subscription_id', $user->id]]
+            [['subscriber_id', '=', $user->id], ['subscription_id', '=', $profile->id]]
+        )->orWhere(
+            [['subscriber_id', '=', $profile->id], ['subscription_id', '=', $user->id]]
         )->get();
         return response()->json([
             'success' => true,
