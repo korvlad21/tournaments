@@ -8,6 +8,7 @@ use App\Models\Friend;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -51,13 +52,11 @@ class UserController extends Controller
     public function getFriends(Request $request)
     {
         $profile = User::where('slug', $request->post('slug'))->first();
-        $friendsSubscription = Friend::where('subscriber_id', $profile->id)
-            ->pluck('subscription_id');
-        $friendsSubscriber = Friend::with(['userSubscription'])
-            ->whereIn('subscriber_id', $friendsSubscription)
-            ->where('subscription_id', $profile->id)
-            ->pluck('subscriber_id');
-        $users = User::whereIn('id', $friendsSubscription)->get();
+        $users = User::whereHas('subscribers', function ($query) use ($profile) {
+            $query->where('subscriber_id', $profile->id);
+        })->whereHas('subscriptions', function ($query) use ($profile) {
+            $query->where('subscription_id', $profile->id);
+        })->get();
         return response()->json([
             'success' => true,
             'friends' => UserResource::collection($users),

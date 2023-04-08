@@ -9,6 +9,7 @@ use App\Traits\HasRolesAndPermissions;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
@@ -62,6 +63,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->attributes['username'] = $value;
         $this->attributes['slug'] = Str::slug($value, '-');;
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Friend::class, 'subscriber_id');
+    }
+
+    public function subscribers()
+    {
+        return $this->hasMany(Friend::class, 'subscription_id');
+    }
+
+    public function friends(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)
+            ->using(Friend::class);
     }
 
     public function hasVerified()

@@ -97,33 +97,9 @@
                 <img
                   class="h-16 w-16 rounded-full mx-auto"
                   :src="friendUser.path"
-                  :alt="friendUser.name"
+                  alt=""
                 />
                 <a :href="this.getHrefFriend(friendUser.slug)" class="text-main-color">{{friendUser.name}}</a>
-              </div>
-              <div class="text-center my-2">
-                <img
-                  class="h-16 w-16 rounded-full mx-auto"
-                  src="https://avatars2.githubusercontent.com/u/24622175?s=60&amp;v=4"
-                  alt=""
-                />
-                <a href="#" class="text-main-color">Миша</a>
-              </div>
-              <div class="text-center my-2">
-                <img
-                  class="h-16 w-16 rounded-full mx-auto"
-                  src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
-                  alt=""
-                />
-                <a href="#" class="text-main-color">ЗДРТ</a>
-              </div>
-              <div class="text-center my-2">
-                <img
-                  class="h-16 w-16 rounded-full mx-auto"
-                  src="https://bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com/public/images/f04b52da-12f2-449f-b90c-5e4d5e2b1469_361x361.png"
-                  alt=""
-                />
-                <a href="#" class="text-main-color">Костя</a>
               </div>
             </div>
           </div>
@@ -413,6 +389,8 @@ export default {
         return window.location.origin + '/profile/edit/' + this.slug;
     },
     getHrefFriend(slug) {
+        console.log(slug)
+        console.log(this.friends)
         return window.location.origin + '/profile/' + slug;
     },
     getRoles() {
