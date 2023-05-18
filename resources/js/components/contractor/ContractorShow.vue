@@ -1,9 +1,4 @@
 <template>
-  <div class="bg-gray-100">
-    <div class="container mx-auto my-5 p-5">
-      <div class="md:flex no-wrap md:-mx-2">
-        <!-- Left Side -->
-        <div class="w-full md:w-3/12 md:mx-2">
           <!-- Profile Card -->
           <div class="bg-white p-3 border-t-4 border-green-400">
             <div class="image overflow-hidden">
@@ -33,28 +28,37 @@
                   for="file-upload"
                   class="ml-5 rounded-md border border-gray-300 bg-white py-1.5 px-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50"
               >
-                  <span>Выбрать изображение</span>
-                  <input
-                      v-on:change="handleFileUpload()"
-                      id="file-upload"
-                      name="file-upload"
-                      ref="file-upload"
-                      type="file"
-                      class="sr-only"
-                  />
               </label>
-            <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">
-                {{team.name}}
-            </h1>
-            <h3 class="text-gray-600 font-lg text-semibold leading-6">
-                {{team.description}}
-            </h3>
+            <div class="form-row p-6">
+                <div class="form-group col-md-4">
+                    <span>ИНН</span>
+                    {{contractor.INN}}
+                </div>
+                <div class="form-group col-md-4">
+                    <span>КПП</span>
+                    {{contractor.KPP}}
+                </div>
+                <div class="form-group col-md-4">
+                    <span>Сфера деятельности</span>
+                    {{contractor.field_of_activity}}
+                </div>
+            </div>
+            <div class="form-row p-6">
+              <div class="form-group col-md-4">
+                  <span>Имя</span>
+                  {{contractor.name}}
+              </div>
+              <div class="form-group col-md-4">
+                  <span>Описание</span>
+                  {{contractor.description}}
+              </div>
+              <div class="form-group col-md-4">
+                  <span>Контактная информация</span>
+                  {{contractor.contact}}
+              </div>
           </div>
         </div>
         <!-- Right Side -->
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -65,9 +69,13 @@ export default {
   },
   data() {
     return {
-        team: {
+        contractor: {
+            INN: "",
+            KPP: "",
             name: "",
+            field_of_activity: "",
             description: "",
+            contact: "",
         },
         logo: "",
         path: "",
@@ -75,18 +83,21 @@ export default {
     }
   },
   created() {
-    this.getTeamInfo();
+    this.getContractorInfo();
     this.getOwn();
-    this.getRoles();
   },
   methods: {
-    getTeamInfo() {
-        axios.post('/api/team/get_info/', {
+     getContractorInfo() {
+        axios.post('/api/contractor/get_info/', {
             id: this.id
         })
             .then(({data}) => {
-                this.team.name = data.name;
-                this.team.description = data.description;
+                this.contractor.INN = data.INN;
+                this.contractor.KPP = data.KPP;
+                this.contractor.name = data.name;
+                this.contractor.field_of_activity = data.field_of_activity;
+                this.contractor.description = data.description;
+                this.contractor.contact = data.contact;
                 this.path= data.path;
             })
             .catch((error) => {
@@ -96,7 +107,7 @@ export default {
             });
     },
     getOwn() {
-      axios.post('/api/team/is_own/', {
+      axios.post('/api/contractor/is_own/', {
           id: this.id
       })
           .then(({data}) => {
@@ -108,18 +119,6 @@ export default {
           .finally(() => {
 
           });
-      },
-    getRoles() {
-       axios.post('/api/user/get_roles/')
-       .then(({data}) => {
-         this.roles = data.roles
-         this.is_admin = this.roles.indexOf('admin') !== -1
-       })
-       .catch((error) => {
-         console.error(error);
-       })
-       .finally(() => {
-       });
       },
       handleFileUpload() {
           this.logo = this.$refs["file-upload"].files[0];

@@ -38,10 +38,17 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('is_own', 'isOwn');
         });
     });
+    Route::prefix('contractor')->group(function () {
+        Route::controller(API\ContractorController::class)->group(function () {
+            Route::post('create', 'create');
+            Route::post('get_info', 'getInfo');
+            Route::post('is_own', 'isOwn');
+        });
+    });
     Route::prefix('image')->group(function () {
         Route::controller(API\ImageController::class)->group(function () {
             Route::post('avatar_upload', 'avatarUpload');
-            Route::post('logo_upload', 'logoUpload');
+            Route::post('logo_team_upload', 'logoTeamUpload');
             Route::post('passport_upload', 'passportUpload');
             Route::post('get_avatar', 'getAvatar');
         });

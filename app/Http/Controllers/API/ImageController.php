@@ -83,7 +83,7 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logoUpload(LogoRequest $request)
+    public function logoTeamUpload(LogoRequest $request)
     {
         $team = Team::find($request->post('id'));
         $oldLogo = $team->logo;
