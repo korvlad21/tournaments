@@ -218,8 +218,7 @@ export default {
         },
         updateData() {
             axios
-                .post("/profile/update/", {
-                    slug: this.slug,
+                .post("/api/user/update/"+this.slug, {
                     user: this.user,
                 })
                 .then(({ data }) => {

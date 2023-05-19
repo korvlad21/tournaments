@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
 {
@@ -23,7 +25,7 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('team.create');
+        return view('team.update');
     }
 
     /**
@@ -52,11 +54,11 @@ class TeamController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        //
+        return view('team.update', compact('id'));
     }
 
     /**

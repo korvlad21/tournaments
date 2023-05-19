@@ -50,12 +50,19 @@
     </div>
     <div class="form-row p-6">
         <div class="form-group col-md-4">
-            <button
+            <button v-if="undefined === this.id"
                 type="submit"
                 class="btn btn-primary btn15"
                 @click="createTeam"
             >
                 Создать команду
+            </button>
+            <button v-else
+                type="submit"
+                class="btn btn-primary btn15"
+                @click="updateTeam"
+            >
+                Изменить команду
             </button>
         </div>
     </div>
@@ -72,7 +79,7 @@ const isSharedOpen = ref(false);
 export default {
     name: "TeamUpdate",
     props: {
-        slug: String,
+        id: String,
     },
     data() {
         return {
@@ -81,7 +88,11 @@ export default {
                 description: "",
             },
             logo: "",
+            path: '',
         };
+    },
+    created() {
+        this.getTeamInfo();
     },
     methods: {
         createTeam() {
@@ -105,6 +116,46 @@ export default {
                     console.error(error);
                 })
                 .finally(() => {});
+        },
+        updateTeam() {
+            this.logo = this.$refs["file-upload"].files[0];
+            let formData = new FormData();
+            formData.append("name", this.team.name);
+            formData.append("description", this.team.description);
+            formData.append("logo", this.logo);
+            axios
+                .post("/api/team/update/" +this.id, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then(({ data }) => {
+                    this.modal.title = "Команда успешно изменена";
+                    this.modal.content = "Команда успешно изменена";
+                    this.setSharedModalIsOpen(true);
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getTeamInfo() {
+            if (undefined === this.id) {
+                return;
+            }
+            axios.post('/api/team/get_info/', {
+                id: this.id
+            })
+                .then(({data}) => {
+                    this.team.name = data.name;
+                    this.team.description = data.description;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                });
+
         },
         setModalIsOpen(value) {
             isOpen.value = value;

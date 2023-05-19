@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Friend;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -103,6 +105,46 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'subscription' => $subscription,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param $rules
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $slug)
+    {
+        $userData = $request->post('user');
+
+        $user = User::where('slug', $slug)->first();
+
+        $rules = $user->getRules();
+        $messages = $user->getMessages();
+
+        $validated = Validator::make($userData, $rules, $messages);
+        if ($validated->fails()) {
+            return response()->json([
+                'success' => false,
+                'validated' => $validated->errors()
+            ]);
+        }
+        if ($user->email !== $userData['email']) {
+            $user->email_verified_at = null;
+        }
+        $user->name = $userData['name'];
+        $user->sex = $userData['sex'];
+        $user->birthday = $userData['birthday'];
+        $user->email = $userData['email'];
+        $user->phone = $userData['phone'];
+        $user->status = $userData['status'];
+        $user->description = $userData['description'];
+        $user->save();
+        event(new Registered($user));
+        return response()->json([
+            'success' => true,
         ]);
     }
 }

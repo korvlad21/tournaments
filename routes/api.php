@@ -29,11 +29,13 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_friends', 'getFriends');
             Route::post('is_friend', 'isFriend');
             Route::post('is_subscribe', 'isSubscribe');
+            Route::middleware(['profile'])->post('update/{slug}', 'update')->name('profile.update');
         });
     });
     Route::prefix('team')->group(function () {
         Route::controller(API\TeamController::class)->group(function () {
             Route::post('create', 'create');
+            Route::middleware(['team'])->post('update/{id}', 'update');
             Route::post('get_info', 'getInfo');
             Route::post('is_own', 'isOwn');
         });

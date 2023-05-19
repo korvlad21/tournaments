@@ -44,11 +44,11 @@ Route::middleware(['auth'])->group(function() {
     Route::prefix('team')->group(function () {
         Route::get('create', 'TeamController@create')->name('team.create');
         Route::get('{id}', 'TeamController@show')->name('team.show');
+        Route::get('edit/{id}', 'TeamController@edit')->name('team.edit');
     });
     Route::prefix('profile')->group(function () {
         Route::get('{slug}', 'ProfileController@show')->name('profile.show');
-        Route::get('edit/{slug}', 'ProfileController@edit')->name('profile.update');
-        Route::get('update', 'ProfileController@update')->name('profile.update');
+        Route::middleware(['profile'])->get('edit/{slug}', 'ProfileController@edit')->name('profile.update');
     });
     Route::prefix('contractor')->group(function () {
         Route::get('create', 'ContractorController@create')->name('contractor.create');
