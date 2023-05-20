@@ -66,13 +66,19 @@
             </button>
         </div>
     </div>
-    <!-- модалка паспорта -->
-    <ProfileModal :isOpen="isOpen" :setModalIsOpen="setModalIsOpen" />
+    <ModalDialog
+        :isOpen="isSharedOpen"
+        :setModalIsOpen="setSharedModalIsOpen"
+        :title="modal.title"
+        :content="modal.content"
+        :buttonText="modal.button"
+    />
 </template>
 
 <script>
 
 import { ref } from "vue";
+import ModalDialog from "../shared/ModalDialog.vue";
 const isOpen = ref(false);
 const isSharedOpen = ref(false);
 
@@ -89,6 +95,11 @@ export default {
             },
             logo: "",
             path: '',
+            modal: {
+                title: "",
+                content: "",
+                button: "Закрыть",
+            },
         };
     },
     created() {

@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('contractor')->group(function () {
         Route::controller(API\ContractorController::class)->group(function () {
             Route::post('create', 'create');
+            Route::middleware(['contractor'])->post('update/{id}', 'update');
             Route::post('get_info', 'getInfo');
             Route::post('is_own', 'isOwn');
         });

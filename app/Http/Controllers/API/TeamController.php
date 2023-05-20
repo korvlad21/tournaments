@@ -49,14 +49,8 @@ class TeamController extends Controller
      */
     public function update(TeamRequest $request, $id)
     {
-        $user = Auth::user();
         $logo = $request->file('logo');
         $team = Team::find($id);
-        if ($user->id !== $team->owner_id) {
-            return response()->json([
-                'success' => false
-            ]);
-        }
         $team->name = $request->post('name');
         $team->description = $request->post('description');
 //        if ($logo) {

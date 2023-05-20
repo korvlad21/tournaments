@@ -74,27 +74,42 @@
     </div>
     <div class="form-row p-6">
         <div class="form-group col-md-4">
-            <button
+            <button v-if="undefined === this.id"
                 type="submit"
                 class="btn btn-primary btn15"
                 @click="createContractor"
             >
                 Создать контрагента
             </button>
+            <button v-else
+                    type="submit"
+                    class="btn btn-primary btn15"
+                    @click="updateContractor"
+            >
+                Обновить контрагента
+            </button>
         </div>
     </div>
+    <ModalDialog
+        :isOpen="isSharedOpen"
+        :setModalIsOpen="setSharedModalIsOpen"
+        :title="modal.title"
+        :content="modal.content"
+        :buttonText="modal.button"
+    />
 </template>
 
 <script>
 
 import { ref } from "vue";
+import ModalDialog from "../shared/ModalDialog.vue";
 const isOpen = ref(false);
 const isSharedOpen = ref(false);
 
 export default {
     name: "ContractorUpdate",
     props: {
-        slug: String,
+        id: String,
     },
     data() {
         return {
@@ -107,7 +122,15 @@ export default {
                 contact: "",
             },
             logo: "",
+            modal: {
+                title: "",
+                content: "",
+                button: "Закрыть",
+            },
         };
+    },
+    created() {
+        this.getContractorInfo();
     },
     methods: {
         createContractor() {
@@ -135,6 +158,54 @@ export default {
                     console.error(error);
                 })
                 .finally(() => {});
+        },
+        updateContractor() {
+            this.logo = this.$refs["file-upload"].files[0];
+            let formData = new FormData();
+            formData.append("INN", this.contractor.INN);
+            formData.append("KPP", this.contractor.KPP);
+            formData.append("name", this.contractor.name);
+            formData.append("field_of_activity", this.contractor.field_of_activity);
+            formData.append("description", this.contractor.description);
+            formData.append("contact", this.contractor.contact);
+            formData.append("logo", this.logo);
+            axios
+                .post("/api/contractor/update/" +this.id, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then(({ data }) => {
+                    this.modal.title = "Контрагент успешно обновлён";
+                    this.modal.content = "Контрагент успешно обновлён";
+                    this.setSharedModalIsOpen(true);
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getContractorInfo() {
+            if (undefined === this.id) {
+                return;
+            }
+            axios.post('/api/contractor/get_info/', {
+                id: this.id
+            })
+                .then(({data}) => {
+                    this.contractor.INN = data.INN;
+                    this.contractor.KPP = data.KPP;
+                    this.contractor.name = data.name;
+                    this.contractor.field_of_activity = data.field_of_activity;
+                    this.contractor.description = data.description;
+                    this.contractor.contact = data.contact;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                });
+
         },
         setModalIsOpen(value) {
             isOpen.value = value;

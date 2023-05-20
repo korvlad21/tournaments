@@ -23,7 +23,7 @@ class ContractorController extends Controller
      */
     public function create()
     {
-        return view('contractor.create');
+        return view('contractor.update');
     }
 
     /**
@@ -52,11 +52,11 @@ class ContractorController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        //
+        return view('contractor.update', compact('id'));
     }
 
     /**

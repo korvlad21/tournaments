@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function() {
     Route::prefix('team')->group(function () {
         Route::get('create', 'TeamController@create')->name('team.create');
         Route::get('{id}', 'TeamController@show')->name('team.show');
-        Route::get('edit/{id}', 'TeamController@edit')->name('team.edit');
+        Route::middleware(['team'])->get('edit/{id}', 'TeamController@edit')->name('team.edit');
     });
     Route::prefix('profile')->group(function () {
         Route::get('{slug}', 'ProfileController@show')->name('profile.show');
@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function() {
     });
     Route::prefix('contractor')->group(function () {
         Route::get('create', 'ContractorController@create')->name('contractor.create');
+        Route::middleware(['contractor'])->get('edit/{id}', 'ContractorController@edit')->name('contractor.edit');
         Route::get('{id}', 'ContractorController@show')->name('contractor.show');
     });
 });
