@@ -22,7 +22,7 @@ class TeamMiddleware
         $user = Auth::user();
         $team = Team::find($teamId);
 
-        if ($user->id !== $team->owner_id) {
+        if ($team === null || $user->id !== $team->owner_id) {
             abort(404, 'Страницы не существует'); // если текущий пользователь не владелец команды, то возвращаем ошибку 403
         }
         return $next($request);

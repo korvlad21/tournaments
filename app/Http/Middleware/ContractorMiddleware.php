@@ -22,7 +22,7 @@ class ContractorMiddleware
         $user = Auth::user();
         $contractor = Contractor::find($id);
 
-        if ($user->id !== $contractor->user_id) {
+        if ($contractor === null || $user->id !== $contractor->user_id) {
             abort(404, 'Страницы не существует'); // если текущий пользователь не владелец команды, то возвращаем ошибку 403
         }
         return $next($request);

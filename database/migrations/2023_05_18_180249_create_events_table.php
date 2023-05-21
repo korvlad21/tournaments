@@ -19,10 +19,10 @@ class CreateEventsTable extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->unsignedBigInteger('contragent_id');
-            $table->foreign('contragent_id')
+            $table->unsignedBigInteger('contractor_id');
+            $table->foreign('contractor_id')
                 ->references('id')
-                ->on('contragents');
+                ->on('contractors');
             $table->string('name', 200);
             $table->text('description')->nullable();
             $table->enum('status', ['Анонс', 'Текущий', 'Завершённый'])->nullable();

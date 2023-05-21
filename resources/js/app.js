@@ -1,4 +1,5 @@
 
+
 require('./bootstrap')
 import { createApp } from 'vue'
 import ExampleComponent from './components/ExampleComponent'
@@ -10,6 +11,7 @@ import ProfileShow from "./components/profile/ProfileShow.vue";
 import Profile from "./components/profile/ProfileTest.vue";
 import ContractorUpdate from "./components/contractor/ContractorUpdate.vue";
 import ContractorShow from "./components/contractor/ContractorShow.vue";
+import EventUpdate from "./components/event/EventUpdate.vue";
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -32,5 +34,6 @@ app.component('team-update', TeamUpdate)
 app.component('team-show', TeamShow)
 app.component('contractor-update', ContractorUpdate)
 app.component('contractor-show', ContractorShow)
+app.component('event-update', EventUpdate)
 
 app.use(vuetify).mount('#app')

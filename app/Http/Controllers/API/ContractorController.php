@@ -82,10 +82,14 @@ class ContractorController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function delete($id)
     {
-        $contractor = Contractor::find($request->post('id'));
-        return response()->json(new ContractorResource($contractor));
+        $contractor = Contractor::find($id);
+        $contractor->delete();
+        return response()->json([
+            'success' => true
+        ]);
+
     }
 
     /**
@@ -93,13 +97,25 @@ class ContractorController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function isOwn(Request $request)
+    public function getInfo(Request $request)
     {
-        $team = Team::find($request->post('id'));
+        $contractor = Contractor::find($request->post('id'));
+        return response()->json(new ContractorResource($contractor));
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOptions(Request $request)
+    {
         $user = Auth::user();
+        $contractorOptions = Contractor::select('id', 'name')->where('user_id', $user->id)->get();
         return response()->json([
             'success'=> true,
-            'isOwn' => $user->id === $team->owner_id
+            'contractorOptions' => $contractorOptions
         ]);
     }
 }

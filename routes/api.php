@@ -44,7 +44,19 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::controller(API\ContractorController::class)->group(function () {
             Route::post('create', 'create');
             Route::middleware(['contractor'])->post('update/{id}', 'update');
+            Route::middleware(['contractor'])->post('delete/{id}', 'delete');
             Route::post('get_info', 'getInfo');
+            Route::post('get_options', 'getOptions');
+            Route::post('is_own', 'isOwn');
+        });
+    });
+    Route::prefix('event')->group(function () {
+        Route::controller(API\EventController::class)->group(function () {
+            Route::post('create', 'create');
+            Route::middleware(['event'])->post('update/{id}', 'update');
+            Route::middleware(['event'])->post('delete/{id}', 'delete');
+            Route::post('get_info', 'getInfo');
+            Route::post('get_options', 'getOptions');
             Route::post('is_own', 'isOwn');
         });
     });

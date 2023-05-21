@@ -1,24 +1,24 @@
 <template>
     <div class="form-row p-6">
         <div class="form-group col-md-4">
-            <span>ИНН</span>
-            <input
-                v-model="contractor.INN"
-                type="text"
-                class="form-control"
-            />
-        </div>
-        <div class="form-group col-md-4">
-            <span>КПП</span>
-            <input
-                v-model="contractor.KPP"
-                type="text"
-                class="form-control"
-            />
-        </div>
-        <div class="form-group col-md-4">
             <span>Название</span>
-            <input v-model="contractor.name" type="text" class="form-control" />
+            <input
+                v-model="event.name"
+                type="text"
+                class="form-control"
+            />
+        </div>
+        <div class="form-group col-md-4">
+            <span>Описание</span>
+            <input
+                v-model="event.description"
+                type="text"
+                class="form-control"
+            />
+        </div>
+        <div class="form-group col-md-4">
+            <span>Дата начала</span>
+            <input v-model="event.start" type="date" class="form-control" />
         </div>
     </div>
     <div class="form-row p-6">
@@ -58,42 +58,43 @@
             </div>
         </div>
             <div class="form-group col-md-4">
-                <span>Сфера деятельности</span>
-                <input v-model="contractor.field_of_activity" type="text" class="form-control" />
+                <span>Дата окончания</span>
+                <input v-model="event.end" type="date" class="form-control" />
             </div>
             <div class="form-group col-md-4">
-                <span>Описание</span>
-                <input v-model="contractor.description" type="text" class="form-control" />
+                <span>Контрагент</span>
+                <select v-model="event.contractor" class="form-control">
+                    <option
+                        v-for="contractorOption in contractorOptions"
+                        :value="contractorOption.id"
+                    >
+                        {{ contractorOption.name }}
+                    </option>
+                </select>
             </div>
         </div>
-    <div class="form-row p-6">
-        <div class="form-group col-md-4">
-            <span>Контактная информация</span>
-            <input v-model="contractor.contact" type="text" class="form-control" />
-        </div>
-    </div>
     <div class="form-row p-6">
         <div class="form-group col-md-4">
             <button v-if="undefined === this.id"
                 type="submit"
                 class="btn btn-primary btn15"
-                @click="createContractor"
+                @click="createEvent"
             >
-                Создать контрагента
+                Создать эвент
             </button>
             <button v-else
                     type="submit"
                     class="btn btn-primary btn15"
-                    @click="updateContractor"
+                    @click="updateEvent"
             >
-                Обновить контрагента
+                Обновить эвент
             </button>
             <button v-if="undefined !== this.id"
                     type="submit"
                     class="btn btn-primary btn15"
-                    @click="deleteContractor"
+                    @click="deleteEvent"
             >
-                Удалить контрагента
+                Удалить эвент
             </button>
         </div>
     </div>
@@ -114,21 +115,21 @@ const isOpen = ref(false);
 const isSharedOpen = ref(false);
 
 export default {
-    name: "ContractorUpdate",
+    name: "EventUpdate",
     props: {
         id: String,
     },
     data() {
         return {
-            contractor: {
-                INN: "",
-                KPP: "",
+            event: {
                 name: "",
-                field_of_activity: "",
                 description: "",
-                contact: "",
+                start: "",
+                end: "",
+                contractor: "",
             },
             logo: "",
+            contractorOptions: [],
             modal: {
                 title: "",
                 content: "",
@@ -137,28 +138,27 @@ export default {
         };
     },
     created() {
-        this.getContractorInfo();
+        this.getEventInfo();
+        this.getContractorOptions();
     },
     methods: {
-        createContractor() {
+        createEvent() {
             this.logo = this.$refs["file-upload"].files[0];
             let formData = new FormData();
-            formData.append("INN", this.contractor.INN);
-            formData.append("KPP", this.contractor.KPP);
-            formData.append("name", this.contractor.name);
-            formData.append("field_of_activity", this.contractor.field_of_activity);
-            formData.append("description", this.contractor.description);
-            formData.append("contact", this.contractor.contact);
+            formData.append("name", this.event.name);
+            formData.append("description", this.event.description);
+            formData.append("start", this.event.start);
+            formData.append("end", this.event.end);
             formData.append("logo", this.logo);
             axios
-                .post("/api/contractor/create/", formData, {
+                .post("/api/event/create/", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then(({ data }) => {
-                    this.modal.title = "Контрагент успешно создан успешно создана";
-                    this.modal.content = "Контрагент успешно создан создана";
+                    this.modal.title = "Эвент успешно создан успешно создана";
+                    this.modal.content = "Эвент успешно создан создана";
                     this.setSharedModalIsOpen(true);
                 })
                 .catch((error) => {
@@ -166,7 +166,7 @@ export default {
                 })
                 .finally(() => {});
         },
-        updateContractor() {
+        updateEvent() {
             this.logo = this.$refs["file-upload"].files[0];
             let formData = new FormData();
             formData.append("INN", this.contractor.INN);
@@ -209,11 +209,11 @@ export default {
                 })
                 .finally(() => {});
         },
-        getContractorInfo() {
+        getEventInfo() {
             if (undefined === this.id) {
                 return;
             }
-            axios.post('/api/contractor/get_info/', {
+            axios.post('/api/event/get_info/', {
                 id: this.id
             })
                 .then(({data}) => {
@@ -223,6 +223,19 @@ export default {
                     this.contractor.field_of_activity = data.field_of_activity;
                     this.contractor.description = data.description;
                     this.contractor.contact = data.contact;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                });
+        },
+
+        getContractorOptions() {
+            axios.post('/api/contractor/get_options/')
+                .then(({data}) => {
+                    console.log(data.contractorOptions)
+                    this.contractorOptions = data.contractorOptions
                 })
                 .catch((error) => {
                     console.error(error);

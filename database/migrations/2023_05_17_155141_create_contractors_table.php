@@ -28,6 +28,7 @@ class CreateContractorsTable extends Migration
             $table->string('logo')->nullable();
             $table->string('contact')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
