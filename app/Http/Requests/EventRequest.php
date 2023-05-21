@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContractorRequest extends FormRequest
+class EventRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,11 @@ class ContractorRequest extends FormRequest
     public function rules()
     {
         return [
-            'INN' => ['required','string', 'max:12'],
-            'KPP' => ['required', 'string', 'max:9'],
             'name' => ['required','string', 'max:200'],
-            'field_of_activity' => ['required','string', 'max:200'],
             'description' => ['string'],
-            'contact' => ['required','string'],
-            'logo' => ['image','mimes:jpeg,png,jpg,gif','max:1024'],
+            'start' => ['date', 'before_or_equal:end'],
+            'end' => ['date'],
+            'contractor_id' => ['required', 'numeric'],
         ];
     }
 }

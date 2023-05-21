@@ -63,7 +63,7 @@
             </div>
             <div class="form-group col-md-4">
                 <span>Контрагент</span>
-                <select v-model="event.contractor" class="form-control">
+                <select v-model="event.contractor_id" class="form-control">
                     <option
                         v-for="contractorOption in contractorOptions"
                         :value="contractorOption.id"
@@ -88,13 +88,6 @@
                     @click="updateEvent"
             >
                 Обновить эвент
-            </button>
-            <button v-if="undefined !== this.id"
-                    type="submit"
-                    class="btn btn-primary btn15"
-                    @click="deleteEvent"
-            >
-                Удалить эвент
             </button>
         </div>
     </div>
@@ -126,7 +119,7 @@ export default {
                 description: "",
                 start: "",
                 end: "",
-                contractor: "",
+                contractor_id: "",
             },
             logo: "",
             contractorOptions: [],
@@ -149,6 +142,7 @@ export default {
             formData.append("description", this.event.description);
             formData.append("start", this.event.start);
             formData.append("end", this.event.end);
+            formData.append("contractor_id", this.event.contractor_id);
             formData.append("logo", this.logo);
             axios
                 .post("/api/event/create/", formData, {
@@ -169,39 +163,21 @@ export default {
         updateEvent() {
             this.logo = this.$refs["file-upload"].files[0];
             let formData = new FormData();
-            formData.append("INN", this.contractor.INN);
-            formData.append("KPP", this.contractor.KPP);
-            formData.append("name", this.contractor.name);
-            formData.append("field_of_activity", this.contractor.field_of_activity);
-            formData.append("description", this.contractor.description);
-            formData.append("contact", this.contractor.contact);
+            formData.append("name", this.event.name);
+            formData.append("description", this.event.description);
+            formData.append("start", this.event.start);
+            formData.append("end", this.event.end);
+            formData.append("contractor_id", this.event.contractor_id);
             formData.append("logo", this.logo);
             axios
-                .post("/api/contractor/update/" +this.id, formData, {
+                .post("/api/event/update/" +this.id, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then(({ data }) => {
-                    this.modal.title = "Контрагент успешно обновлён";
-                    this.modal.content = "Контрагент успешно обновлён";
-                    this.setSharedModalIsOpen(true);
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
-        },
-        deleteContractor() {
-            axios
-                .post("/api/contractor/delete/" +this.id, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then(({ data }) => {
-                    this.modal.title = "Контрагент успешно удалён";
-                    this.modal.content = "Контрагент успешно удалён";
+                    this.modal.title = "Эвент успешно обновлён";
+                    this.modal.content = "Эвент успешно обновлён";
                     this.setSharedModalIsOpen(true);
                 })
                 .catch((error) => {
@@ -217,12 +193,11 @@ export default {
                 id: this.id
             })
                 .then(({data}) => {
-                    this.contractor.INN = data.INN;
-                    this.contractor.KPP = data.KPP;
-                    this.contractor.name = data.name;
-                    this.contractor.field_of_activity = data.field_of_activity;
-                    this.contractor.description = data.description;
-                    this.contractor.contact = data.contact;
+                    this.event.name = data.name;
+                    this.event.description = data.description;
+                    this.event.start = data.start;
+                    this.event.end = data.end;
+                    this.event.contractor_id = data.contractor_id;
                 })
                 .catch((error) => {
                     console.error(error);
