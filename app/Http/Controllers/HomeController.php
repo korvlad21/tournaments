@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Helpers\Discipline\DisciplineHelper;
+use App\Helpers\Discipline\DisciplineInterface;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $disciplineHelper = new DisciplineHelper();
+        /** @var DisciplineInterface $d */
+        $d = $disciplineHelper->getHelper('poker');
+        dd($d->getInfo());
         return view('home');
     }
 }
