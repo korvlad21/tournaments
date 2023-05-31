@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Discipline\DisciplineHelper;
 use App\Helpers\Discipline\DisciplineInterface;
+use App\Helpers\Generation\GenerationCalendarHelper;
 
 class HomeController extends Controller
 {
@@ -26,8 +27,13 @@ class HomeController extends Controller
     {
         $disciplineHelper = new DisciplineHelper();
         /** @var DisciplineInterface $d */
-        $d = $disciplineHelper->getHelper('poker');
-        dd($d->getInfo());
+        $discipline = $disciplineHelper->getHelper('poker');
+        $teams = ['Barcelona', 'Real', 'Milan', 'Inter'];
+
+        $generationCalendarHelper = new GenerationCalendarHelper();
+
+        dd($generationCalendarHelper->getOneLeague($teams, 1));
+
         return view('home');
     }
 }
