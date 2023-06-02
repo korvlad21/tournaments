@@ -6,7 +6,13 @@ class GenerationCalendarHelper
 {
     public const HOME = 'home';
     public const AWAY = 'away';
-    public function getOneLeague(array $teams, int $rounds)
+
+    /**
+     * @param array $teams
+     * @param int $rounds
+     * @return array
+     */
+    public function generateOneLeague(array $teams, int $rounds) : array
     {
         shuffle($teams);
 // Проверка, является ли количество команд четным или нечетным

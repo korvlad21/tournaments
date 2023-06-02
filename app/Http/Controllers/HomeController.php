@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Discipline\DisciplineHelper;
 use App\Helpers\Discipline\DisciplineInterface;
 use App\Helpers\Generation\GenerationCalendarHelper;
+use App\Helpers\Generation\GenerationDrawHelper;
 
 class HomeController extends Controller
 {
@@ -28,12 +29,40 @@ class HomeController extends Controller
         $disciplineHelper = new DisciplineHelper();
         /** @var DisciplineInterface $d */
         $discipline = $disciplineHelper->getHelper('poker');
-        $teams = ['Barcelona', 'Real', 'Milan', 'Inter'];
+        $teams = [
+            'Barcelona',
+            'Real',
+            'Milan',
+            'Inter',
+            'Bayern',
+            'Borussia',
+            'Chelsea',
+            'Liverpool',
+            'MU',
+            'MC',
+            'Napoli',
+            'Ajax',
+            'Benfica',
+            'Porto',
+            'PSG',
+            'Atletico',
+            'Valencia',
+            'Juventus',
+            'Roma',
+            'Arsenal'
+            ];
 
         $generationCalendarHelper = new GenerationCalendarHelper();
 
-        dd($generationCalendarHelper->getOneLeague($teams, 1));
+        $generationDrawHelper = new GenerationDrawHelper();
 
+        $baskets = $generationDrawHelper->generateBaskets($teams, 6);
+        dd($baskets);
+        $calendar = [];
+        foreach ($baskets as $basket) {
+            $calendar[] =$generationCalendarHelper->generateOneLeague($basket, 1);
+        }
+        dd($calendar);
         return view('home');
     }
 }

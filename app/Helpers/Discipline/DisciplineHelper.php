@@ -12,10 +12,19 @@ class DisciplineHelper
         self::DISCIPLINE_POKER => PokerHelper::class
     ];
 
+    /**
+     * @param string $type
+     * @return mixed
+     */
     public function getHelper(string $type)
     {
         return new self::$arrayHelpers[$type]();
     }
+
+    /**
+     * @param DisciplineInterface $discipline
+     * @return mixed
+     */
 
     public function getInfo(DisciplineInterface $discipline)
     {
