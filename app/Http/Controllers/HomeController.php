@@ -35,28 +35,14 @@ class HomeController extends Controller
             'Milan',
             'Inter',
             'Bayern',
-            'Borussia',
-            'Chelsea',
-            'Liverpool',
-            'MU',
-            'MC',
-            'Napoli',
-            'Ajax',
-            'Benfica',
-            'Porto',
-            'PSG',
-            'Atletico',
-            'Valencia',
-            'Juventus',
-            'Roma',
-            'Arsenal'
             ];
 
         $generationCalendarHelper = new GenerationCalendarHelper();
 
         $generationDrawHelper = new GenerationDrawHelper();
 
-        $baskets = $generationDrawHelper->generateBaskets($teams, 6);
+        shuffle($teams);
+        $baskets = $generationDrawHelper->generatePlayOffBracket($teams);
         dd($baskets);
         $calendar = [];
         foreach ($baskets as $basket) {
