@@ -35,6 +35,11 @@ class HomeController extends Controller
             'Milan',
             'Inter',
             'Bayern',
+            'Ajax',
+            'Atletico',
+            'Borussia',
+            'PSG',
+            'PSV'
             ];
 
         $generationCalendarHelper = new GenerationCalendarHelper();

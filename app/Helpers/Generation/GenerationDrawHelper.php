@@ -44,7 +44,7 @@ class GenerationDrawHelper
 
         $playOff = [];
 
-        while($teamOnStage/2 < $countTeams) {
+        while($teamOnStage < $countTeams) {
             $stage++;
             $teamOnStage*=2;
             if (2 * $teamOnStage > $countTeams) {
@@ -52,9 +52,6 @@ class GenerationDrawHelper
                 $this->generateLastStage($playOff, $teams, $stage+1);
                 break;
             }
-//            elseif ($teamOnStage === $countTeams) {
-//
-//            }
             else {
                 $numGame = 0;
                 for($i=1; $i<=$teamOnStage; $i+=2) {
@@ -78,7 +75,7 @@ class GenerationDrawHelper
      */
     public function generatePreLastStage(array &$playOff, array &$teams, int $stage, int $teamOnStage, int $countTeams)
     {
-        $teamsOnThisStage = $countTeams - $teamOnStage;
+        $teamsOnThisStage = $countTeams - 2 * ($countTeams - $teamOnStage);
         $countGame = $teamOnStage / 2;
         $num = 0;
         $numTotal = 0;
@@ -112,12 +109,7 @@ class GenerationDrawHelper
             if ($num + $numTotal > $teamsOnThisStage) {
                 break;
             }
-            if (0 === $num % 2) {
-                $playOff[$stage][2+$countGame-$num][] = $team;
-            }
-            else{
-                $playOff[$stage][$num][] = $team;
-            }
+            $playOff[$stage][$num][] = $team;
             unset($teams[$key]);
             if($num === $countGame) {
                 $numTotal = $num;
