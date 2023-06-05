@@ -6,6 +6,12 @@ class DisciplineHelper
 {
     public const DISCIPLINE_FOOTBALL = 'football';
     public const DISCIPLINE_POKER = 'poker';
+    public const DISCIPLINE_COUNTER_STRIKE = 'counter-strike';
+    public const DISCIPLINE_DOTA = 'dota';
+    public const DISCIPLINE_RACING = 'racing';
+    public const DISCIPLINE_PAINTBALL = 'paintball';
+    public const DISCIPLINE_TENNIS = 'tennis';
+    public const DISCIPLINE_FIGHTING = 'fighting';
 
     public static $arrayHelpers = [
         self::DISCIPLINE_FOOTBALL => FootballHelper::class,

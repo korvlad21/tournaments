@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
+
+
+
     use SoftDeletes;
     /**
      * The attributes that are mass assignable.

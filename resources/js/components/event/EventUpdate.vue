@@ -121,7 +121,6 @@ export default {
                 end: "",
                 contractor_id: "",
             },
-            logo: "",
             contractorOptions: [],
             modal: {
                 title: "",

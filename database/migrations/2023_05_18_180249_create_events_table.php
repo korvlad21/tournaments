@@ -25,7 +25,7 @@ class CreateEventsTable extends Migration
                 ->on('contractors');
             $table->string('name', 200);
             $table->text('description')->nullable();
-            $table->enum('status', ['Анонс', 'Текущий', 'Завершённый'])->nullable();
+            $table->string('status', 30)->nullable()->default('announce');
             $table->dateTime('start');
             $table->dateTime('end');
             $table->timestamps();

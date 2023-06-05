@@ -55,6 +55,12 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::middleware(['event'])->post('update/{id}', 'update');
             Route::middleware(['event'])->post('delete/{id}', 'delete');
             Route::post('get_info', 'getInfo');
+            Route::post('is_own', 'isOwn');
+        });
+    });
+    Route::prefix('tournament')->group(function () {
+        Route::controller(API\TournamentController::class)->group(function () {
+            Route::post('get_discipline_options', 'getDisciplineOptions');
         });
     });
     Route::prefix('image')->group(function () {

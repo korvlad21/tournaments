@@ -86,4 +86,19 @@ class EventController extends Controller
         $event = Event::find($request->post('id'));
         return response()->json(new EventResource($event));
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function isOwn(Request $request)
+    {
+        $event = Event::find($request->post('id'));
+        $user = Auth::user();
+        return response()->json([
+            'success'=> true,
+            'isOwn' => $user->id === $event->user_id
+        ]);
+    }
 }

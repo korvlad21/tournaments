@@ -58,6 +58,9 @@ Route::middleware(['auth'])->group(function() {
     Route::prefix('event')->group(function () {
         Route::get('create', 'EventController@create')->name('event.create');
         Route::middleware(['event'])->get('edit/{id}', 'EventController@edit')->name('event.edit');
-//        Route::get('{id}', 'EventController@show')->name('event.show');
+        Route::get('{id}', 'EventController@show')->name('event.show');
+    });
+    Route::prefix('tournament')->group(function () {
+        Route::get('create/{event_id}', 'TournamentController@create')->name('tournament.create');
     });
 });
