@@ -28,6 +28,44 @@ class GenerationDrawHelper
         return $groupStage ;
     }
 
+
+    /**
+     * @param array $teams
+     * @param int $countGroup
+     * @return array
+     */
+
+    public function generateDoubleElimination(array $teams) :array
+    {
+        $input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        $result = $this->splitArray($input2);
+        while(count($result) !== 1)
+        {
+            $result = $this->generatepar($result);
+        }
+
+        return $playOff ;
+    }
+
+    /**
+     * @param array $playOff
+     * @return array
+     */
+    protected function generateBottomPlayOff(array $playOff): array
+    {
+        krsort($playOff);
+        $playOffBottom = [];
+        foreach ($playOff as $stage => $games) {
+            $numGames = count($games);
+
+            for ($game = 1; $game <= $numGames/2; $game++) {
+                $playOffBottom[$stage + 1][$game] = [null, null];
+            }
+        }
+
+        return $playOffBottom;
+    }
+
     /**
      * @param array $teams
      * @param int $countGroup
@@ -56,7 +94,7 @@ class GenerationDrawHelper
                 $numGame = 0;
                 for($i=1; $i<=$teamOnStage; $i+=2) {
                     $numGame++;
-                    $playOff[$stage][$numGame] = [null, null];
+                    $playOff[$stage][$numGame] = [($numGame-1)*2+1, 2*$numGame];
                 }
 
             }
@@ -64,6 +102,53 @@ class GenerationDrawHelper
         }
         return $playOff ;
     }
+
+//    public function generatePlayOffBracket2(array $teams) :array
+//    {
+//        $countTeams = count($teams);
+//
+//        $playOff = [];
+//
+//        $stage = 0;
+//        $currentTeams = 1;
+//
+//        while($currentTeams < $countTeams) {
+//            $stage++;
+//            $currentTeams*=2;
+//        }
+//        for ($i = $stage; $i>=1; $i--) {
+//            $game = 1;
+//            $playOff[]
+//            $
+//        }
+//        return $playOff ;
+//    }
+
+    function splitArray($array) {
+        $length = count($array);
+        $result = [];
+
+        // Создание пар элементов
+        for ($i = 0; $i < $length / 2; $i++) {
+            $result[] = [$array[$i], $array[$length - $i - 1]];
+        }
+
+        return $result;
+    }
+    protected function generatepar($array){
+        $newArray= [];
+        $start = 0;
+        $finish = count($array)-1;
+        $k = true;
+        while($start<count($array)/2)
+        {
+                $newArray[] = array_merge($array[$start], $array[$finish]);
+                $start++;
+                $finish--;
+        }
+        return $newArray;
+    }
+
 
     /**
      * @param array $playOff
@@ -73,10 +158,11 @@ class GenerationDrawHelper
      * @param int $countTeams
      * @return void
      */
-    public function generatePreLastStage(array &$playOff, array &$teams, int $stage, int $teamOnStage, int $countTeams)
+    protected function generatePreLastStage(array &$playOff, array &$teams, int $stage, int $teamOnStage, int $countTeams)
     {
         $teamsOnThisStage = $countTeams - 2 * ($countTeams - $teamOnStage);
         $countGame = $teamOnStage / 2;
+        $empty =
         $num = 0;
         $numTotal = 0;
         foreach ($teams as $key => $team) {
@@ -98,7 +184,7 @@ class GenerationDrawHelper
         }
     }
 
-    public function generateLastStage(array &$playOff, array &$teams, int $stage)
+    protected function generateLastStage(array &$playOff, array &$teams, int $stage)
     {
         $teamsOnThisStage = count($teams);
         $countGame = $teamsOnThisStage / 2;

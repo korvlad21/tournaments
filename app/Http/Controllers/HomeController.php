@@ -46,8 +46,8 @@ class HomeController extends Controller
 
         $generationDrawHelper = new GenerationDrawHelper();
 
-        shuffle($teams);
-        $baskets = $generationDrawHelper->generatePlayOffBracket($teams);
+//        shuffle($teams);
+        $baskets = $generationDrawHelper->generateDoubleElimination($teams);
         dd($baskets);
         $calendar = [];
         foreach ($baskets as $basket) {
