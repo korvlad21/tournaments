@@ -43,7 +43,7 @@ class GenerationDrawHelper
         {
             $result = $this->generatepar($result);
         }
-
+        dd($result);
         return $playOff ;
     }
 
@@ -65,6 +65,83 @@ class GenerationDrawHelper
 
         return $playOffBottom;
     }
+    /**
+     * @param array $teams
+     * @param int $countGroup
+     * @return array
+     */
+
+    public function generatePlayoff(array $teams) :array
+    {
+        $startStagePlayOff = $this->getStartStagePlayOff($teams);
+        $result = $this->splitArray($teams);
+        while(count($result) !== 1)
+        {
+            $result = $this->generatePar($result);
+        }
+
+        return $this->buldingPlayOffBracket($result[0], $startStagePlayOff);
+    }
+
+    /**
+     * @param array $teams
+     * @return int
+     */
+    protected function getStartStagePlayOff(array &$teams): int {
+        $countTeams = count($teams);
+        $stageCountTeams = 0;
+        $teamsOnStage = 1;
+        while ($teamsOnStage < $countTeams) {
+            $stageCountTeams++;
+            $teamsOnStage*=2;
+        }
+        for ($i = 0; $i < $teamsOnStage - $countTeams; $i++) {
+            $teams[] = null;
+        }
+        return $stageCountTeams;
+    }
+
+    /**
+     * @param array $result
+     * @param int $startStagePlayOff
+     * @return array
+     */
+    protected function buldingPlayOffBracket(array $teams, int $stage): array {
+        $playOff = [];
+        $countTeams = count($teams);
+        if (2 === $countTeams) {
+            return [1 => $teams];
+        }
+        $numGame = 0;
+        for ($i=0; $i<$countTeams; $i+=2) {
+            $numGame++;
+            $playOff[$stage][$numGame] = [$teams[$i], $teams[$i+1]];
+        }
+
+        $stage--;
+
+        $numGame = 0;
+        for ($i=1; $i<=count($playOff[$stage+1]); $i+=2) {
+            $numGame++;
+            $playOff[$stage][$numGame] = [
+                (null === $playOff[$stage+1][$i][1]) ? $playOff[$stage+1][$i][0] : $i,
+                (null === $playOff[$stage+1][$i+1][1]) ? $playOff[$stage+1][$i+1][0] : $i+1,];
+        }
+
+        $stage--;
+
+        while (0 < $stage) {
+            $numGame = 0;
+            for ($i=1; $i<=count($playOff[$stage+1]); $i+=2) {
+                $numGame++;
+                $playOff[$stage][$numGame] = [$i, $i+1];
+            }
+            $stage--;
+        }
+        return $playOff;
+    }
+
+
 
     /**
      * @param array $teams
@@ -139,7 +216,7 @@ class GenerationDrawHelper
         $newArray= [];
         $start = 0;
         $finish = count($array)-1;
-        $k = true;
+
         while($start<count($array)/2)
         {
                 $newArray[] = array_merge($array[$start], $array[$finish]);
