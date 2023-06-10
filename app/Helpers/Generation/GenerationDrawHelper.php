@@ -31,19 +31,13 @@ class GenerationDrawHelper
 
     /**
      * @param array $teams
-     * @param int $countGroup
      * @return array
      */
 
     public function generateDoubleElimination(array $teams) :array
     {
-        $input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        $result = $this->splitArray($input2);
-        while(count($result) !== 1)
-        {
-            $result = $this->generatepar($result);
-        }
-        dd($result);
+        $playOff[1] = $this->generatePlayoff($teams);
+        $playOff[2] = $this->bottomDoubleElimination($playOff[1]);
         return $playOff ;
     }
 
@@ -51,19 +45,62 @@ class GenerationDrawHelper
      * @param array $playOff
      * @return array
      */
-    protected function generateBottomPlayOff(array $playOff): array
+    protected function bottomDoubleElimination(array $playOff): array
     {
-        krsort($playOff);
-        $playOffBottom = [];
-        foreach ($playOff as $stage => $games) {
-            $numGames = count($games);
+        $playOffTopLoser = $this->getTopLosersDoubleElimination($playOff);
 
-            for ($game = 1; $game <= $numGames/2; $game++) {
-                $playOffBottom[$stage + 1][$game] = [null, null];
+        $playOffBottom = [];
+
+        foreach ($playOff as $key => $games) {
+            $stage = $key;
+            $currentStage = 2 * ($stage - 1);
+            break;
+        }
+
+        $numGame = 0;
+        for ($i = 0; $i < count($playOffTopLoser[$stage]); $i+=2) {
+            $numGame++;
+            $playOffBottom[$currentStage][$numGame] = [$playOffTopLoser[$stage][$i], $playOffTopLoser[$stage][$i+1]];
+        }
+        $countGames = count($playOffBottom[$currentStage]);
+        $currentStage--;
+        $existLoser = true;
+
+        while ($currentStage > 0) {
+            $numGame = 0;
+            if ($existLoser) {
+                for ($i = 0; $i < $countGames; $i++) {
+                    $numGame++;
+                    $playOffBottom[$currentStage][$numGame] = ['T'.$numGame, 'B'.$numGame];
+                }
+                $countGames/=2;
+            }
+            else {
+                for ($i = 0; $i < $countGames*2; $i+=2) {
+                    $numGame++;
+                    $playOffBottom[$currentStage][$numGame] = ['B'.$i+1, 'B'.$i+2];
+                }
+            }
+            $existLoser = !$existLoser;
+            $currentStage--;
+        }
+        return $playOffBottom;
+    }
+
+    /**
+     * @param array $playOff
+     * @return array
+     */
+    protected function getTopLosersDoubleElimination(array $playOff): array
+    {
+        $playOffLoser = [];
+        foreach ($playOff as $stage => $games) {
+            foreach ($games as $numGame => $game) {
+                $playOffLoser[$stage][] = (in_array(null, $game)) ? null : 'T'.$numGame;
             }
         }
 
-        return $playOffBottom;
+        return $playOffLoser;
     }
     /**
      * @param array $teams
@@ -254,7 +291,7 @@ class GenerationDrawHelper
                 $playOff[$stage][$num][] = $team;
             }
             unset($teams[$key]);
-            if($num === $countGame) {
+            if ($num === $countGame) {
                 $numTotal = $num;
                 $num = 0;
             }

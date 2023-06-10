@@ -39,7 +39,16 @@ class HomeController extends Controller
             'Atletico',
             'Borussia',
             'PSG',
-            'PSV'
+            'PSV',
+            'Juventus',
+            'Roma',
+            'Lazio',
+            'Valencia',
+            'Chelsea',
+            'Liverpool',
+            'MU',
+            'MC',
+            'Arsenal'
             ];
 
         $generationCalendarHelper = new GenerationCalendarHelper();
@@ -47,7 +56,7 @@ class HomeController extends Controller
         $generationDrawHelper = new GenerationDrawHelper();
 
 //        shuffle($teams);
-        $baskets = $generationDrawHelper->generatePlayoff($teams);
+        $baskets = $generationDrawHelper->generateDoubleElimination($teams);
         dd($baskets);
         $calendar = [];
         foreach ($baskets as $basket) {
