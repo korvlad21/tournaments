@@ -58,6 +58,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('is_own', 'isOwn');
         });
     });
+    Route::prefix('place')->group(function () {
+        Route::controller(API\PlaceController::class)->group(function () {
+            Route::post('create', 'create');
+        });
+    });
     Route::prefix('tournament')->group(function () {
         Route::controller(API\TournamentController::class)->group(function () {
             Route::post('get_discipline_options', 'getDisciplineOptions');

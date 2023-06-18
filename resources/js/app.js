@@ -13,6 +13,7 @@ import ContractorShow from "./components/contractor/ContractorShow.vue";
 import EventUpdate from "./components/event/EventUpdate.vue";
 import EventShow from "./components/event/EventShow.vue";
 import TournamentUpdate from "./components/tournament/TournamentUpdate.vue";
+import PlaceUpdate from "./components/place/PlaceUpdate.vue";
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -37,6 +38,7 @@ app.component('contractor-update', ContractorUpdate)
 app.component('contractor-show', ContractorShow)
 app.component('event-update', EventUpdate)
 app.component('event-show', EventShow)
+app.component('place-update', PlaceUpdate)
 app.component('tournament-update', TournamentUpdate)
 
 app.use(vuetify).mount('#app')

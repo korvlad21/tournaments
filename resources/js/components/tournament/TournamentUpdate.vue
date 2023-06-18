@@ -14,7 +14,7 @@
                 <input v-model="tournament.description" type="text" class="form-control" />
             </div>
             <div class="form-group col-md-4">
-                <span>Контрагент</span>
+                <span>Дисциплина</span>
                 <select v-model="tournament.discipline" class="form-control">
                     <option
                         v-for="disciplineOption in disciplineOptions"

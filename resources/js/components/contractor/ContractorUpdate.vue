@@ -157,8 +157,8 @@ export default {
                     },
                 })
                 .then(({ data }) => {
-                    this.modal.title = "Контрагент успешно создан успешно создана";
-                    this.modal.content = "Контрагент успешно создан создана";
+                    this.modal.title = "Контрагент успешно создан";
+                    this.modal.content = "Контрагент успешно создан";
                     this.setSharedModalIsOpen(true);
                 })
                 .catch((error) => {
