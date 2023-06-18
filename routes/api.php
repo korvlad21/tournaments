@@ -61,6 +61,9 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('place')->group(function () {
         Route::controller(API\PlaceController::class)->group(function () {
             Route::post('create', 'create');
+            Route::post('get_info', 'getInfo');
+            Route::middleware(['place'])->post('update/{id}', 'update');
+            Route::middleware(['place'])->post('delete/{id}', 'delete');
         });
     });
     Route::prefix('tournament')->group(function () {

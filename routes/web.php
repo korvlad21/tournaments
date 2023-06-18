@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function() {
     });
     Route::prefix('place')->group(function () {
         Route::get('create', 'PlaceController@create')->name('place.create');
+        Route::middleware(['place'])->get('edit/{id}', 'PlaceController@edit')->name('place.edit');
     });
     Route::prefix('tournament')->group(function () {
         Route::get('create/{event_id}', 'TournamentController@create')->name('tournament.create');

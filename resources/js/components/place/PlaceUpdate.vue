@@ -33,6 +33,13 @@
             >
                 Изменить площадку
             </button>
+            <button v-if="undefined !== this.id"
+                    type="submit"
+                    class="btn btn-primary btn15"
+                    @click="deletePlace"
+            >
+                Удалить контрагента
+            </button>
         </div>
     </div>
     <ModalDialog
@@ -102,7 +109,7 @@ export default {
             formData.append("description", this.place.description);
             formData.append("address", this.place.address);
             axios
-                .post("/api/contractor/update/" +this.id, formData, {
+                .post("/api/place/update/" +this.id, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -117,7 +124,7 @@ export default {
                 })
                 .finally(() => {});
         },
-        deleteContractor() {
+        deletePlace() {
             axios
                 .post("/api/place/delete/" +this.id, {
                     headers: {

@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'team' => \App\Http\Middleware\TeamMiddleware::class,
         'profile' => \App\Http\Middleware\ProfileMiddleware::class,
         'contractor' => \App\Http\Middleware\ContractorMiddleware::class,
-        'event' => \App\Http\Middleware\EventMiddleware::class
+        'event' => \App\Http\Middleware\EventMiddleware::class,
+        'place' => \App\Http\Middleware\PlaceMiddleware::class,
     ];
 }
