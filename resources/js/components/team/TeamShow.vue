@@ -59,7 +59,7 @@
 
 <script>
 export default {
-  name: "ProfileShow",
+  name: "TeamShow",
   props: {
       id: Number,
   },

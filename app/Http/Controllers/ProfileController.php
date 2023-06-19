@@ -50,9 +50,6 @@ class ProfileController extends Controller
      */
     public function show($slug)
     {
-        if (!User::where('slug', $slug)->exists()) {
-            abort(404);
-        }
         return view('profile.show', compact('slug'));
     }
 

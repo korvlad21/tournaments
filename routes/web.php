@@ -43,26 +43,27 @@ Route::middleware(['auth'])->group(function() {
 //    Route::get('/profile', 'ProfileController@index')->name('profile.index');
     Route::prefix('team')->group(function () {
         Route::get('create', 'TeamController@create')->name('team.create');
-        Route::get('{id}', 'TeamController@show')->name('team.show');
+        Route::middleware(['exist.team'])->get('{id}', 'TeamController@show')->name('team.show');
         Route::middleware(['team'])->get('edit/{id}', 'TeamController@edit')->name('team.edit');
     });
     Route::prefix('profile')->group(function () {
-        Route::get('{slug}', 'ProfileController@show')->name('profile.show');
+        Route::middleware(['exist.profile'])->get('{slug}', 'ProfileController@show')->name('profile.show');
         Route::middleware(['profile'])->get('edit/{slug}', 'ProfileController@edit')->name('profile.update');
     });
     Route::prefix('contractor')->group(function () {
         Route::get('create', 'ContractorController@create')->name('contractor.create');
         Route::middleware(['contractor'])->get('edit/{id}', 'ContractorController@edit')->name('contractor.edit');
-        Route::get('{id}', 'ContractorController@show')->name('contractor.show');
+        Route::middleware(['exist.contractor'])->get('{id}', 'ContractorController@show')->name('contractor.show');
     });
     Route::prefix('event')->group(function () {
         Route::get('create', 'EventController@create')->name('event.create');
         Route::middleware(['event'])->get('edit/{id}', 'EventController@edit')->name('event.edit');
-        Route::get('{id}', 'EventController@show')->name('event.show');
+        Route::middleware(['exist.event'])->get('{id}', 'EventController@show')->name('event.show');
     });
     Route::prefix('place')->group(function () {
         Route::get('create', 'PlaceController@create')->name('place.create');
         Route::middleware(['place'])->get('edit/{id}', 'PlaceController@edit')->name('place.edit');
+        Route::middleware(['exist.place'])->get('{id}', 'PlaceController@show')->name('place.show');
     });
     Route::prefix('tournament')->group(function () {
         Route::get('create/{event_id}', 'TournamentController@create')->name('tournament.create');
