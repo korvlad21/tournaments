@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Middleware\Exist;
+namespace App\Http\Middleware\Profile;
 
-use App\Models\Team;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ExistProfileMiddleware
 {

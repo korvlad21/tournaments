@@ -101,4 +101,19 @@ class EventController extends Controller
             'isOwn' => $user->id === $event->user_id
         ]);
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getEventOptions()
+    {
+        $user = Auth::user();
+        $eventOptions = Event::where('user_id', $user->id)->select('id', 'name')->get();
+        return response()->json([
+            'success'=> true,
+            'eventOptions' => $eventOptions
+        ]);
+    }
 }

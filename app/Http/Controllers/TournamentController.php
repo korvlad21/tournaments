@@ -21,7 +21,7 @@ class TournamentController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function create($event_id)
+    public function create($event_id = null)
     {
         return view('tournament.update', compact('event_id'));
     }

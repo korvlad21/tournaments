@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Middleware\Exist;
+namespace App\Http\Middleware\Contractor;
 
-use App\Models\Team;
+use App\Models\Contractor;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ExistTeamMiddleware
+class ExistContractorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,10 +17,10 @@ class ExistTeamMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $teamId = $request->route('id'); // получаем идентификатор команды из маршрута
-        $team = Team::find($teamId);
+        $id = $request->route('id'); // получаем идентификатор команды из маршрута
+        $contractor = Contractor::find($id);
 
-        if ($team === null) {
+        if ($contractor === null) {
             abort(404, 'Страницы не существует'); // если текущий пользователь не владелец команды, то возвращаем ошибку 403
         }
         return $next($request);

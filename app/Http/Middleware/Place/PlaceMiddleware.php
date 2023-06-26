@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Place;
 
-use App\Models\Team;
+use App\Models\Place;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileMiddleware
+class PlaceMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,9 +18,11 @@ class ProfileMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $slug = $request->route('slug'); // получаем идентификатор команды из маршрута
+        $id = $request->route('id'); // получаем идентификатор команды из маршрута
         $user = Auth::user();
-        if ($user->slug !== $slug) {
+        $place = Place::find($id);
+
+        if ($place === null || $user->id !== $place->user_id) {
             abort(404, 'Страницы не существует'); // если текущий пользователь не владелец команды, то возвращаем ошибку 403
         }
         return $next($request);

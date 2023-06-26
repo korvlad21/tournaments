@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Event;
 
-use App\Models\Place;
+use App\Models\Contractor;
+use App\Models\Event;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PlaceMiddleware
+class EventMiddleware
 {
     /**
      * Handle an incoming request.
@@ -20,9 +21,14 @@ class PlaceMiddleware
     {
         $id = $request->route('id'); // получаем идентификатор команды из маршрута
         $user = Auth::user();
-        $place = Place::find($id);
+        $contractors = Contractor::where('user_id', $user->id)->exists();
+        if (!$contractors) {
+            return redirect()->route('contractor.create')->with('danger', "Для начала необходимо создать контрагента!");
+        }
+        $event = Event::find($id);
 
-        if ($place === null || $user->id !== $place->user_id) {
+
+        if ($event === null || $user->id !== $event->user_id) {
             abort(404, 'Страницы не существует'); // если текущий пользователь не владелец команды, то возвращаем ошибку 403
         }
         return $next($request);

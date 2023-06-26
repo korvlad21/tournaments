@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function() {
         Route::middleware(['exist.contractor'])->get('{id}', 'ContractorController@show')->name('contractor.show');
     });
     Route::prefix('event')->group(function () {
-        Route::get('create', 'EventController@create')->name('event.create');
+        Route::middleware(['create.event'])->get('create', 'EventController@create')->name('event.create');
         Route::middleware(['event'])->get('edit/{id}', 'EventController@edit')->name('event.edit');
         Route::middleware(['exist.event'])->get('{id}', 'EventController@show')->name('event.show');
     });
@@ -66,6 +66,6 @@ Route::middleware(['auth'])->group(function() {
         Route::middleware(['exist.place'])->get('{id}', 'PlaceController@show')->name('place.show');
     });
     Route::prefix('tournament')->group(function () {
-        Route::get('create/{event_id}', 'TournamentController@create')->name('tournament.create');
+        Route::middleware(['create.tournament'])->get('create/{event_id?}', 'TournamentController@create')->name('tournament.create');
     });
 });

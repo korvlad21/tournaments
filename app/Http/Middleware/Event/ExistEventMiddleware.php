@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Middleware\Exist;
+namespace App\Http\Middleware\Event;
 
 use App\Models\Event;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ExistEventMiddleware
 {

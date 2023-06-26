@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::middleware(['event'])->post('delete/{id}', 'delete');
             Route::post('get_info', 'getInfo');
             Route::post('is_own', 'isOwn');
+            Route::post('get_event_options', 'getEventOptions');
         });
     });
     Route::prefix('place')->group(function () {

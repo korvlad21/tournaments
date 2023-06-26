@@ -2,6 +2,17 @@
     <div>
         <div class="form-row p-6">
             <div class="form-group col-md-4">
+                <span>Эвент</span>
+                <select v-model="tournament.event_id" class="form-control">
+                    <option
+                        v-for="eventOption in eventOptions"
+                        :value="eventOption.id"
+                    >
+                        {{ eventOption.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
                 <span>Название</span>
                 <input
                     v-model="tournament.name"
@@ -12,17 +23,6 @@
             <div class="form-group col-md-4">
                 <span>Описание</span>
                 <input v-model="tournament.description" type="text" class="form-control" />
-            </div>
-            <div class="form-group col-md-4">
-                <span>Дисциплина</span>
-                <select v-model="tournament.discipline" class="form-control">
-                    <option
-                        v-for="disciplineOption in disciplineOptions"
-                        :value="disciplineOption.slug"
-                    >
-                        {{ disciplineOption.name }}
-                    </option>
-                </select>
             </div>
         </div>
         <div class="form-row p-6">
@@ -41,6 +41,17 @@
         </div>
         <div class="form-row p-6">
             <div class="form-group col-md-4">
+                <span>Дисциплина</span>
+                <select v-model="tournament.discipline" class="form-control">
+                    <option
+                        v-for="disciplineOption in disciplineOptions"
+                        :value="disciplineOption.slug"
+                    >
+                        {{ disciplineOption.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
                 <span>Публичность</span>
                 <select v-model="tournament.public" class="form-control">
                     <option
@@ -48,17 +59,6 @@
                         :value="publicOption.slug"
                     >
                         {{ publicOption.name }}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group col-md-4">
-                <span>Тип</span>
-                <select v-model="tournament.type" class="form-control">
-                    <option
-                        v-for="typeOption in typeOptions"
-                        :value="typeOption.slug"
-                    >
-                        {{ typeOption.name }}
                     </option>
                 </select>
             </div>
@@ -93,8 +93,10 @@ export default {
                 end: "",
                 discipline: "",
                 count_teams: 1,
+                event_id: 0,
             },
             disciplineOptions: [],
+            eventOptions: [],
             publicOptions: [
                 { slug: "open", name: "Открытый" },
                 { slug: "closed", name: "Закрытый" },
@@ -107,12 +109,27 @@ export default {
     },
     created() {
         this.getDisciplineOptions();
+        this.getEventOptions();
     },
     methods: {
         getDisciplineOptions() {
             axios.post('/api/tournament/get_discipline_options/')
                 .then(({data}) => {
                     this.disciplineOptions = data.disciplineOptions
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                });
+        },
+        getEventOptions() {
+            if (undefined !== this.event_id) {
+                this.tournament.event_id = this.event_id
+            }
+            axios.post('/api/event/get_event_options/')
+                .then(({data}) => {
+                    this.eventOptions = data.eventOptions
                 })
                 .catch((error) => {
                     console.error(error);
