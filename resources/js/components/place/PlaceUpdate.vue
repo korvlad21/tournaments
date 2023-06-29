@@ -2,41 +2,54 @@
     <div class="form-row p-6">
         <div class="form-group col-md-4">
             <span>Название</span>
+            <input v-model="place.name" type="text" class="form-control" />
+        </div>
+        <div class="form-group col-md-4">
+            <span>Описание</span>
             <input
-                v-model="place.name"
+                v-model="place.description"
                 type="text"
                 class="form-control"
             />
         </div>
         <div class="form-group col-md-4">
-            <span>Описание</span>
-            <input v-model="place.description" type="text" class="form-control" />
-        </div>
-        <div class="form-group col-md-4">
             <span>Адрес</span>
             <input v-model="place.address" type="text" class="form-control" />
+        </div>
+        <div class="form-group col-md-4">
+            <label for="multiple_files">Загрузите несколько файлов</label>
+            <input
+                class="form-control"
+                id="multiple_files"
+                type="file"
+                ref="file"
+                multiple
+            />
         </div>
     </div>
     <div class="form-row p-6">
         <div class="form-group col-md-4">
-            <button v-if="undefined === this.id"
-                    type="submit"
-                    class="btn btn-primary btn15"
-                    @click="createPlace"
+            <button
+                v-if="undefined === this.id"
+                type="submit"
+                class="btn btn-primary btn15"
+                @click="createPlace"
             >
                 Создать площадку
             </button>
-            <button v-else
-                    type="submit"
-                    class="btn btn-primary btn15"
-                    @click="updatePlace"
+            <button
+                v-else
+                type="submit"
+                class="btn btn-primary btn15"
+                @click="updatePlace"
             >
                 Изменить площадку
             </button>
-            <button v-if="undefined !== this.id"
-                    type="submit"
-                    class="btn btn-primary btn15"
-                    @click="deletePlace"
+            <button
+                v-if="undefined !== this.id"
+                type="submit"
+                class="btn btn-primary btn15"
+                @click="deletePlace"
             >
                 Удалить контрагента
             </button>
@@ -52,7 +65,6 @@
 </template>
 
 <script>
-
 import { ref } from "vue";
 import ModalDialog from "../shared/ModalDialog.vue";
 const isOpen = ref(false);
@@ -81,12 +93,20 @@ export default {
     created() {
         this.getPlaceInfo();
     },
+
     methods: {
         createPlace() {
             let formData = new FormData();
+
+            for (var i = 0; i < this.$refs.file.files.length; i++) {
+                let file = this.$refs.file.files[i];
+                formData.append("files[" + i + "]", file);
+            }
+
             formData.append("name", this.place.name);
             formData.append("description", this.place.description);
             formData.append("address", this.place.address);
+
             axios
                 .post("/api/place/create/", formData, {
                     headers: {
@@ -105,11 +125,17 @@ export default {
         },
         updatePlace() {
             let formData = new FormData();
+
+            for (var i = 0; i < this.$refs.file.files.length; i++) {
+                let file = this.$refs.file.files[i];
+                formData.append("files[" + i + "]", file);
+            }
+
             formData.append("name", this.place.name);
             formData.append("description", this.place.description);
             formData.append("address", this.place.address);
             axios
-                .post("/api/place/update/" +this.id, formData, {
+                .post("/api/place/update/" + this.id, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -126,7 +152,7 @@ export default {
         },
         deletePlace() {
             axios
-                .post("/api/place/delete/" +this.id, {
+                .post("/api/place/delete/" + this.id, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -145,10 +171,11 @@ export default {
             if (undefined === this.id) {
                 return;
             }
-            axios.post('/api/place/get_info/', {
-                id: this.id
-            })
-                .then(({data}) => {
+            axios
+                .post("/api/place/get_info/", {
+                    id: this.id,
+                })
+                .then(({ data }) => {
                     this.place.name = data.name;
                     this.place.description = data.description;
                     this.place.address = data.address;
@@ -156,9 +183,7 @@ export default {
                 .catch((error) => {
                     console.error(error);
                 })
-                .finally(() => {
-                });
-
+                .finally(() => {});
         },
         setModalIsOpen(value) {
             isOpen.value = value;

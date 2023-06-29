@@ -150,7 +150,7 @@
                                     d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"
                                 ></path>
                             </svg>
-                            <span class="flex-1 ml-3 whitespace-nowrap">Сообщения</span>
+                            <span class="flex-1 ml-3 whitespace-nowrap">Оповещения</span>
                             <span
                                 class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300"
                             >3</span
@@ -176,6 +176,104 @@
                                 ></path>
                             </svg>
                             <span class="flex-1 ml-3 whitespace-nowrap">Профиль</span>
+                        </a>
+                    </li> <li>
+                        <a
+                            href="#"
+                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            <svg
+                                aria-hidden="true"
+                                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                            <span class="flex-1 ml-3 whitespace-nowrap">Места</span>
+                        </a>
+                        <ul>
+                         <li>
+                        <a
+                            href="{{ route('place.show', 'create') }}"
+                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                     
+                                   <div
+                                aria-hidden="true"
+                                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                   
+                            >
+                          </div>
+                            <span class="flex-1 ml-3 whitespace-nowrap">Создать</span>
+                        </a>
+                    </li>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('profile.show', $user->slug) }}"
+                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            <svg
+                                aria-hidden="true"
+                                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                            <span class="flex-1 ml-3 whitespace-nowrap">Команда</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('profile.show', $user->slug) }}"
+                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            <svg
+                                aria-hidden="true"
+                                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                            <span class="flex-1 ml-3 whitespace-nowrap">Эвенты</span>
+                        </a>
+                    </li>        <li>
+                        <a
+                            href="{{ route('profile.show', $user->slug) }}"
+                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            <svg
+                                aria-hidden="true"
+                                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                            <span class="flex-1 ml-3 whitespace-nowrap">Контрагент</span>
                         </a>
                     </li>
                     <!-- <li>
