@@ -71,7 +71,7 @@ const isOpen = ref(false);
 const isSharedOpen = ref(false);
 
 export default {
-    name: "ContractorUpdate",
+    name: "PlaceUpdate",
     props: {
         id: String,
     },

@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PlaceRequest;
 use App\Http\Resources\PlaceResource;
 use App\Http\Resources\TeamResource;
+use App\Models\ImagesPlace;
 use App\Models\Place;
 use App\Models\Team;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class PlaceController extends Controller
 {
@@ -20,6 +24,7 @@ class PlaceController extends Controller
      */
     public function create(PlaceRequest $request)
     {
+        $files = $request->file('files');
         $user = Auth::user();
         $place = new Place();
         $place->name = $request->post('name');
@@ -27,6 +32,17 @@ class PlaceController extends Controller
         $place->address = $request->post('address');
         $place->user_id = $user->id;
         $place->save();
+        if ($files) {
+            foreach ($files as $file) {
+                $filename = md5(Carbon::now().'_'.$file->getClientOriginalName()). '.' . $file->getClientOriginalExtension();
+                $image = Image::make($file);
+                Storage::put('public/images/place/logo/user'.$user->id.'/thumbnail/'.$filename, $image->fit(100, 100)->encode());
+                Storage::put('public/images/place/logo/user'.$user->id.'/medium/'.$filename, $image->fit(500, 500)->encode());
+                Storage::put('public/images/place/logo/user'.$user->id.'/large/'.$filename, $image->fit(1000, 1000)->encode());
+                $imagesPlace = new ImagesPlace(['image' => $filename]);
+                $place->images()->save($imagesPlace);
+            }
+        }
         return response()->json([
             'success' => true
         ]);
