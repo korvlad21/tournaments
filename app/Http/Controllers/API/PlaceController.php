@@ -36,9 +36,9 @@ class PlaceController extends Controller
             foreach ($files as $file) {
                 $filename = md5(Carbon::now().'_'.$file->getClientOriginalName()). '.' . $file->getClientOriginalExtension();
                 $image = Image::make($file);
-                Storage::put('public/images/place/logo/user'.$user->id.'/thumbnail/'.$filename, $image->fit(100, 100)->encode());
-                Storage::put('public/images/place/logo/user'.$user->id.'/medium/'.$filename, $image->fit(500, 500)->encode());
-                Storage::put('public/images/place/logo/user'.$user->id.'/large/'.$filename, $image->fit(1000, 1000)->encode());
+                Storage::put('public/images/place/'.$place->id.'/thumbnail/'.$filename, $image->fit(100, 100)->encode());
+                Storage::put('public/images/place/'.$place->id.'/medium/'.$filename, $image->fit(500, 500)->encode());
+                Storage::put('public/images/place/'.$place->id.'/large/'.$filename, $image->fit(1000, 1000)->encode());
                 $imagesPlace = new ImagesPlace(['image' => $filename]);
                 $place->images()->save($imagesPlace);
             }
@@ -56,11 +56,23 @@ class PlaceController extends Controller
      */
     public function update(PlaceRequest $request, $id)
     {
+        $files = $request->file('files');
         $place = Place::find($id);
         $place->name = $request->post('name');
         $place->description = $request->post('description');
         $place->address = $request->post('address');
         $place->save();
+        if ($files) {
+            foreach ($files as $file) {
+                $filename = md5(Carbon::now().'_'.$file->getClientOriginalName()). '.' . $file->getClientOriginalExtension();
+                $image = Image::make($file);
+                Storage::put('public/images/place/'.$place->id.'/thumbnail/'.$filename, $image->fit(100, 100)->encode());
+                Storage::put('public/images/place/'.$place->id.'/medium/'.$filename, $image->fit(500, 500)->encode());
+                Storage::put('public/images/place/'.$place->id.'/large/'.$filename, $image->fit(1000, 1000)->encode());
+                $imagesPlace = new ImagesPlace(['image' => $filename]);
+                $place->images()->save($imagesPlace);
+            }
+        }
         return response()->json([
             'success' => true
         ]);
@@ -87,9 +99,27 @@ class PlaceController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    public function deleteImage($id)
+    {
+        $imagePlace = ImagesPlace::find($id);
+        Storage::delete('public/images/place/'.$imagePlace->place_id.'/thumbnail/'.$imagePlace->image);
+        Storage::delete('public/images/place/'.$imagePlace->place_id.'/medium/'.$imagePlace->image);
+        Storage::delete('public/images/place/'.$imagePlace->place_id.'/large/'.$imagePlace->image);
+        $imagePlace->delete();
+        return response()->json([
+            'success' => true
+        ]);
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getInfo(Request $request)
     {
-        $team = Place::find($request->post('id'));
-        return response()->json(new PlaceResource($team));
+        $place = Place::find($request->post('id'));
+        return response()->json(new PlaceResource($place));
     }
 }

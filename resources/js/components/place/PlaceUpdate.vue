@@ -26,6 +26,39 @@
                 multiple
             />
         </div>
+        <div
+            v-for="image in place.images"
+            class="form-group col-md-4">
+                <button
+                    type="submit"
+                    class="btn btn-primary btn15"
+                    @click="deleteImage(image)"
+                >
+                    Удалить фото
+                </button>
+            <div class="image overflow-hidden">
+                <img
+                    class="h-auto w-full mx-auto"
+                    src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+                    alt=""
+                />
+            </div>
+            <span
+                class="inline-block h-12 w-12 overflow-hidden rounded-full bg-gray-100"
+            >
+                    <img :src="getThumbImage(image)">
+                <!-- Если аватар есть прячем свг и показивыаем <img> -->
+                    <svg
+                        class="h-full w-full text-gray-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"
+                        />
+                    </svg>
+                </span>
+        </div>
     </div>
     <div class="form-row p-6">
         <div class="form-group col-md-4">
@@ -81,6 +114,7 @@ export default {
                 name: "",
                 description: "",
                 address: "",
+                images: []
             },
             logo: "",
             modal: {
@@ -144,6 +178,7 @@ export default {
                     this.modal.title = "Площадка успешно обновлёна";
                     this.modal.content = "Площадка успешно обновлёна";
                     this.setSharedModalIsOpen(true);
+                    this.getPlaceInfo();
                 })
                 .catch((error) => {
                     console.error(error);
@@ -179,6 +214,30 @@ export default {
                     this.place.name = data.name;
                     this.place.description = data.description;
                     this.place.address = data.address;
+                    this.place.images = data.images;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getThumbImage(image) {
+            return '/storage/images/place/'+this.id+'/thumbnail/'+image['image']
+        },
+        getMediumImage(image) {
+            return '/storage/images/place/'+this.id+'/medium/'+image['image']
+        },
+        getLargeImage(image) {
+            return '/storage/images/place/'+this.id+'/large/'+image['image']
+        },
+        deleteImage(image) {
+            axios
+                .post("/api/place/delete_image/"+image['id'])
+                .then(({ data }) => {
+                    this.modal.title = "Фото успешно удалено";
+                    this.modal.content = "Фото успешно удалено";
+                    this.setSharedModalIsOpen(true);
+                    this.getPlaceInfo();
                 })
                 .catch((error) => {
                     console.error(error);

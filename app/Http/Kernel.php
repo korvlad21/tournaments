@@ -76,6 +76,7 @@ class Kernel extends HttpKernel
         'exist.contractor' => Middleware\Contractor\ExistContractorMiddleware::class,
         'exist.event' => Middleware\Event\ExistEventMiddleware::class,
         'create.tournament' => Middleware\Tournament\TournamentCreateMiddleware::class,
-        'create.event' => Middleware\Event\EventCreateMiddleware::class
+        'create.event' => Middleware\Event\EventCreateMiddleware::class,
+        'image.place' => Middleware\Place\ImagePlaceMiddleware::class
     ];
 }

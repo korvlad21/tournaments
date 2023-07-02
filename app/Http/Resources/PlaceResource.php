@@ -18,6 +18,7 @@ class PlaceResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'address' => $this->address,
+            'images' => $this->images()->select('image', 'id')->get()->toArray()
         ];
     }
 }

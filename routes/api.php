@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_info', 'getInfo');
             Route::middleware(['place'])->post('update/{id}', 'update');
             Route::middleware(['place'])->post('delete/{id}', 'delete');
+            Route::middleware(['image.place'])->post('delete_image/{id}', 'deleteImage');
         });
     });
     Route::prefix('tournament')->group(function () {
