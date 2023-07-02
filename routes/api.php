@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::controller(API\PlaceController::class)->group(function () {
             Route::post('create', 'create');
             Route::post('get_info', 'getInfo');
+            Route::post('get_all_info', 'getAllInfo');
             Route::middleware(['place'])->post('update/{id}', 'update');
             Route::middleware(['place'])->post('delete/{id}', 'delete');
             Route::middleware(['image.place'])->post('delete_image/{id}', 'deleteImage');

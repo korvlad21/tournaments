@@ -87,6 +87,12 @@ class PlaceController extends Controller
     public function delete($id)
     {
         $place = Place::find($id);
+        foreach ($place->images()->get() as $imagePlace) {
+            Storage::delete('public/images/place/'.$imagePlace->place_id.'/thumbnail/'.$imagePlace->image);
+            Storage::delete('public/images/place/'.$imagePlace->place_id.'/medium/'.$imagePlace->image);
+            Storage::delete('public/images/place/'.$imagePlace->place_id.'/large/'.$imagePlace->image);
+            $imagePlace->delete();
+        }
         $place->delete();
         return response()->json([
             'success' => true
@@ -121,5 +127,17 @@ class PlaceController extends Controller
     {
         $place = Place::find($request->post('id'));
         return response()->json(new PlaceResource($place));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllInfo(Request $request)
+    {
+        $user = Auth::user();
+        $places = Place::where('user_id', $user->id)->get();
+        return response()->json(PlaceResource::collection($places));
     }
 }

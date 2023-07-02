@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function() {
         Route::middleware(['exist.event'])->get('{id}', 'EventController@show')->name('event.show');
     });
     Route::prefix('place')->group(function () {
+        Route::get('', 'PlaceController@index')->name('place.index');
         Route::get('create', 'PlaceController@create')->name('place.create');
         Route::middleware(['place'])->get('edit/{id}', 'PlaceController@edit')->name('place.edit');
         Route::middleware(['exist.place'])->get('{id}', 'PlaceController@show')->name('place.show');
