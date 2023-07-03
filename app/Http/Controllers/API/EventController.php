@@ -116,4 +116,16 @@ class EventController extends Controller
             'eventOptions' => $eventOptions
         ]);
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllInfo(Request $request)
+    {
+        $user = Auth::user();
+        $events = Event::where('owner_id', $user->id)->get();
+        return response()->json(EventResource::collection($events));
+    }
 }

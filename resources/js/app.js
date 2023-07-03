@@ -6,12 +6,14 @@ import TestComponent from './components/TestComponent'
 import ProfileUpdate from "./components/profile/ProfileUpdate.vue";
 import TeamUpdate from "./components/team/TeamUpdate.vue";
 import TeamShow from "./components/team/TeamShow.vue";
+import TeamIndex from "./components/team/TeamIndex.vue";
 import ProfileShow from "./components/profile/ProfileShow.vue";
 import Profile from "./components/profile/ProfileTest.vue";
 import ContractorUpdate from "./components/contractor/ContractorUpdate.vue";
 import ContractorShow from "./components/contractor/ContractorShow.vue";
 import EventUpdate from "./components/event/EventUpdate.vue";
 import EventShow from "./components/event/EventShow.vue";
+import EventIndex from "./components/event/EventIndex.vue";
 import TournamentUpdate from "./components/tournament/TournamentUpdate.vue";
 import PlaceUpdate from "./components/place/PlaceUpdate.vue";
 import PlaceShow from "./components/place/PlaceShow.vue";
@@ -36,10 +38,12 @@ app.component('profile-update', ProfileUpdate)
 app.component('profile', Profile)
 app.component('team-update', TeamUpdate)
 app.component('team-show', TeamShow)
+app.component('team-index', TeamIndex)
 app.component('contractor-update', ContractorUpdate)
 app.component('contractor-show', ContractorShow)
 app.component('event-update', EventUpdate)
 app.component('event-show', EventShow)
+app.component('event-index', EventIndex)
 app.component('place-update', PlaceUpdate)
 app.component('place-show', PlaceShow)
 app.component('place-index', PlaceIndex)

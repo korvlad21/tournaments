@@ -15,11 +15,13 @@ class EventResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'start' => date('Y-m-d', strtotime($this->start)),
             'end' => date('Y-m-d', strtotime($this->end)),
             'contractor_id' => $this->contractor_id,
+            'path' => ($this->logo) ? '/storage/images/team/logo/thumbnail/'.$this->logo : '',
         ];
     }
 }

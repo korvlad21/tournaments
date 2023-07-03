@@ -84,6 +84,18 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    public function getAllInfo(Request $request)
+    {
+        $user = Auth::user();
+        $teams = Team::where('owner_id', $user->id)->get();
+        return response()->json(TeamResource::collection($teams));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function isOwn(Request $request)
     {
         $team = Team::find($request->post('id'));

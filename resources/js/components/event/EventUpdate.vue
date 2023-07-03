@@ -150,8 +150,8 @@ export default {
                     },
                 })
                 .then(({ data }) => {
-                    this.modal.title = "Эвент успешно создан успешно создана";
-                    this.modal.content = "Эвент успешно создан создана";
+                    this.modal.title = "Эвент успешно создан";
+                    this.modal.content = "Эвент успешно создан";
                     this.setSharedModalIsOpen(true);
                 })
                 .catch((error) => {

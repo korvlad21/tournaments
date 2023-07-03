@@ -15,6 +15,7 @@ class TeamResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'path' => ($this->logo) ? '/storage/images/team/logo/thumbnail/'.$this->logo : '',

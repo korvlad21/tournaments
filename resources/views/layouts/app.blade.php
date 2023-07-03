@@ -213,10 +213,9 @@
                             <span class="flex-1 ml-3 whitespace-nowrap">Создать</span>
                         </a>
                     </li>
-                    </li>
                     <li>
                         <a
-                            href="{{ route('profile.show', $user->slug) }}"
+                            href="{{ route('team.index') }}"
                             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                             <svg
@@ -234,10 +233,27 @@
                             </svg>
                             <span class="flex-1 ml-3 whitespace-nowrap">Команда</span>
                         </a>
+
                     </li>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="{{ route('team.create') }}"
+                                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    >
+
+                                        <div
+                                            aria-hidden="true"
+                                            class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+
+                                        >
+                                        </div>
+                                        <span class="flex-1 ml-3 whitespace-nowrap">Создать</span>
+                                    </a>
+                                </li>
                     <li>
                         <a
-                            href="{{ route('profile.show', $user->slug) }}"
+                            href="{{ route('event.index') }}"
                             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                             <svg
@@ -255,7 +271,24 @@
                             </svg>
                             <span class="flex-1 ml-3 whitespace-nowrap">Эвенты</span>
                         </a>
-                    </li>        <li>
+                    </li>
+                                <ul>
+                                    <li>
+                                        <a
+                                            href="{{ route('event.create') }}"
+                                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        >
+
+                                            <div
+                                                aria-hidden="true"
+                                                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+
+                                            >
+                                            </div>
+                                            <span class="flex-1 ml-3 whitespace-nowrap">Создать</span>
+                                        </a>
+                                    </li>
+                                <li>
                         <a
                             href="{{ route('profile.show', $user->slug) }}"
                             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"

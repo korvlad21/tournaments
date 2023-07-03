@@ -42,6 +42,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 Route::middleware(['auth'])->group(function() {
 //    Route::get('/profile', 'ProfileController@index')->name('profile.index');
     Route::prefix('team')->group(function () {
+        Route::get('', 'TeamController@index')->name('team.index');
         Route::get('create', 'TeamController@create')->name('team.create');
         Route::middleware(['exist.team'])->get('{id}', 'TeamController@show')->name('team.show');
         Route::middleware(['team'])->get('edit/{id}', 'TeamController@edit')->name('team.edit');
@@ -56,6 +57,7 @@ Route::middleware(['auth'])->group(function() {
         Route::middleware(['exist.contractor'])->get('{id}', 'ContractorController@show')->name('contractor.show');
     });
     Route::prefix('event')->group(function () {
+        Route::get('', 'EventController@index')->name('event.index');
         Route::middleware(['create.event'])->get('create', 'EventController@create')->name('event.create');
         Route::middleware(['event'])->get('edit/{id}', 'EventController@edit')->name('event.edit');
         Route::middleware(['exist.event'])->get('{id}', 'EventController@show')->name('event.show');

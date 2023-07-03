@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('create', 'create');
             Route::middleware(['team'])->post('update/{id}', 'update');
             Route::post('get_info', 'getInfo');
+            Route::post('get_all_info', 'getAllInfo');
             Route::post('is_own', 'isOwn');
         });
     });
@@ -55,6 +56,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::middleware(['event'])->post('update/{id}', 'update');
             Route::middleware(['event'])->post('delete/{id}', 'delete');
             Route::post('get_info', 'getInfo');
+            Route::post('get_all_info', 'getAllInfo');
             Route::post('is_own', 'isOwn');
             Route::post('get_event_options', 'getEventOptions');
         });
