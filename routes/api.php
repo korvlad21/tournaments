@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::middleware(['contractor'])->post('delete/{id}', 'delete');
             Route::post('get_info', 'getInfo');
             Route::post('get_options', 'getOptions');
+            Route::post('get_all_info', 'getAllInfo');
         });
     });
     Route::prefix('event')->group(function () {

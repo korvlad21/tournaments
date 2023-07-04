@@ -28,7 +28,7 @@ class EventRequest extends FormRequest
             'description' => ['string'],
             'start' => ['date', 'before_or_equal:end'],
             'end' => ['date'],
-            'contractor_id' => ['required', 'numeric'],
+            'contractor_id' => ['nullable', 'numeric'],
         ];
     }
 }

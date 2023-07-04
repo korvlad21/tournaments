@@ -15,6 +15,7 @@ class ContractorResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'INN' => $this->INN,
             'KPP' => $this->KPP,
             'name' => $this->name,

@@ -11,6 +11,7 @@ import ProfileShow from "./components/profile/ProfileShow.vue";
 import Profile from "./components/profile/ProfileTest.vue";
 import ContractorUpdate from "./components/contractor/ContractorUpdate.vue";
 import ContractorShow from "./components/contractor/ContractorShow.vue";
+import ContractorIndex from "./components/contractor/ContractorIndex.vue";
 import EventUpdate from "./components/event/EventUpdate.vue";
 import EventShow from "./components/event/EventShow.vue";
 import EventIndex from "./components/event/EventIndex.vue";
@@ -39,6 +40,7 @@ app.component('profile', Profile)
 app.component('team-update', TeamUpdate)
 app.component('team-show', TeamShow)
 app.component('team-index', TeamIndex)
+app.component('contractor-index', ContractorIndex)
 app.component('contractor-update', ContractorUpdate)
 app.component('contractor-show', ContractorShow)
 app.component('event-update', EventUpdate)

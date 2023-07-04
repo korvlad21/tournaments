@@ -118,4 +118,16 @@ class ContractorController extends Controller
             'contractorOptions' => $contractorOptions
         ]);
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllInfo(Request $request)
+    {
+        $user = Auth::user();
+        $contractors = Contractor::where('user_id', $user->id)->get();
+        return response()->json(ContractorResource::collection($contractors));
+    }
 }

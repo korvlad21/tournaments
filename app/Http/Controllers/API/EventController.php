@@ -125,7 +125,7 @@ class EventController extends Controller
     public function getAllInfo(Request $request)
     {
         $user = Auth::user();
-        $events = Event::where('owner_id', $user->id)->get();
+        $events = Event::where('user_id', $user->id)->get();
         return response()->json(EventResource::collection($events));
     }
 }

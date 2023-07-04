@@ -52,13 +52,14 @@ Route::middleware(['auth'])->group(function() {
         Route::middleware(['profile'])->get('edit/{slug}', 'ProfileController@edit')->name('profile.update');
     });
     Route::prefix('contractor')->group(function () {
+        Route::get('', 'ContractorController@index')->name('contractor.index');
         Route::get('create', 'ContractorController@create')->name('contractor.create');
         Route::middleware(['contractor'])->get('edit/{id}', 'ContractorController@edit')->name('contractor.edit');
         Route::middleware(['exist.contractor'])->get('{id}', 'ContractorController@show')->name('contractor.show');
     });
     Route::prefix('event')->group(function () {
         Route::get('', 'EventController@index')->name('event.index');
-        Route::middleware(['create.event'])->get('create', 'EventController@create')->name('event.create');
+        Route::get('create', 'EventController@create')->name('event.create');
         Route::middleware(['event'])->get('edit/{id}', 'EventController@edit')->name('event.edit');
         Route::middleware(['exist.event'])->get('{id}', 'EventController@show')->name('event.show');
     });

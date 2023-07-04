@@ -19,7 +19,7 @@ class CreateEventsTable extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->unsignedBigInteger('contractor_id');
+            $table->unsignedBigInteger('contractor_id')->nullable();
             $table->foreign('contractor_id')
                 ->references('id')
                 ->on('contractors');

@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  name: "ProfileShow",
+  name: "ContractorShow",
   props: {
       id: Number,
   },
