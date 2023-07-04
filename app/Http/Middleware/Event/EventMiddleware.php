@@ -21,10 +21,6 @@ class EventMiddleware
     {
         $id = $request->route('id'); // получаем идентификатор команды из маршрута
         $user = Auth::user();
-        $contractors = Contractor::where('user_id', $user->id)->exists();
-        if (!$contractors) {
-            return redirect()->route('contractor.create')->with('danger', "Для начала необходимо создать контрагента!");
-        }
         $event = Event::find($id);
 
 
