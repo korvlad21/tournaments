@@ -19,12 +19,6 @@ class UserSeeder extends Seeder
     {
         $admin = Role::where('slug','admin')->first();
         $accessAccount = Permission::where('slug','access-account')->first();;
-//        $user1 = new User();
-//        $user1->name = 'Jhon Deo';
-//        $user1->email = 'jhon@deo.com';
-//        $user1->password = bcrypt('secret');
-//        $user1->save();
-//        $user1->roles()->attach($admin);
         $user1 = new User();
         $user1->username = 'leomessi';
         $user1->name = 'Леонид';
@@ -60,5 +54,18 @@ class UserSeeder extends Seeder
         $user3->birthday = '2000-06-24';
         $user3->description = 'Я Хвича выиграл множество турниров, включая Чмепионат мира, Лигу Чемпионов и много много другого';
         $user3->save();
+        for ($i = 0; $i < 100; $i++) {
+            $user = new User();
+            $user->username = 'user_' . $i;
+            $user->name = 'User ' . $i;
+            $user->email = 'user' . $i . '@example.com';
+            $user->password = bcrypt('secret');
+            $user->phone = '+7' . rand(900, 999) . rand(1000000, 9999999);
+            $user->status = 'Когда ты поднимаешься, друзья узнают тебя, когда ты падаешь ты узнаёшь друзей!';
+            $user->sex = rand(0, 1) ? UserSexEnum::WOMAN : UserSexEnum::MAN;
+            $user->birthday = date('Y-m-d', strtotime('-'. rand(18, 60) .' years'));
+            $user->description = 'Я пользователь ' . $i;
+            $user->save();
+        }
     }
 }

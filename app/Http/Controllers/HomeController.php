@@ -26,43 +26,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $disciplineHelper = new DisciplineHelper();
-        /** @var DisciplineInterface $d */
-        $discipline = $disciplineHelper->getHelper('poker');
-        $teams = [
-            'Barcelona',
-            'Real',
-            'Milan',
-            'Inter',
-            'Bayern',
-            'Ajax',
-            'Atletico',
-            'Borussia',
-            'PSG',
-            'PSV',
-            'Juventus',
-            'Roma',
-            'Lazio',
-            'Valencia',
-            'Chelsea',
-            'Liverpool',
-            'MU',
-            'MC',
-            'Arsenal'
-            ];
-
-        $generationCalendarHelper = new GenerationCalendarHelper();
-
-        $generationDrawHelper = new GenerationDrawHelper();
-
-//        shuffle($teams);
-        $baskets = $generationDrawHelper->generateDoubleElimination($teams);
-        dd($baskets);
-        $calendar = [];
-        foreach ($baskets as $basket) {
-            $calendar[] =$generationCalendarHelper->generateOneLeague($basket, 1);
-        }
-        dd($calendar);
         return view('home');
     }
 }
