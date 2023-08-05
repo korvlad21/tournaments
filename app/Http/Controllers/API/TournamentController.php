@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Helpers\Discipline\DisciplineStructure;
+use App\Helpers\Stage\StageStructure;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Http\Resources\EventResource;
@@ -53,6 +54,27 @@ class TournamentController extends Controller
         return response()->json([
             'success'=> true,
             'disciplineOptions' => $disciplineOptions
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTypeStageOptions()
+    {
+        $stageStructure = new StageStructure();
+        $typeStages = $stageStructure->getTypeStages();
+        $typeStageOptions = array_map(function($slug, $name) {
+            return [
+                'slug' => $slug,
+                'name' => $name
+            ];
+        }, array_keys($typeStages),$typeStages);
+        return response()->json([
+            'success'=> true,
+            'typeStageOptions' => $typeStageOptions
         ]);
     }
 

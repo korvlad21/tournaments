@@ -3,8 +3,8 @@ const props = defineProps({
     stageCount: Number,
     discipline: String,
     stagesData: Object,
-    stageName: Object,
     discipline: Array,
+    typeStageOptions: Array,
 });
 </script>
 
@@ -15,7 +15,7 @@ const props = defineProps({
             <div class="form-group col-md-4">
                 <span>Название стадии</span>
                 <input
-                    v-model="stagesData[stageName[stageCount]].name"
+                    v-model="stagesData[stageCount].name"
                     type="text"
                     class="form-control"
                 />
@@ -23,7 +23,7 @@ const props = defineProps({
             <div class="form-group col-md-4">
                 <span>Количество групп</span>
                 <input
-                    v-model="stagesData[stageName[stageCount]].groupCount"
+                    v-model="stagesData[stageCount].groupCount"
                     type="number"
                     class="form-control"
                 />
@@ -33,7 +33,7 @@ const props = defineProps({
             <div class="form-group col-md-4">
                 <span>Количество игр</span>
                 <input
-                    v-model="stagesData[stageName[stageCount]].gamesCount"
+                    v-model="stagesData[stageCount].gamesCount"
                     type="number"
                     class="form-control"
                 />
@@ -41,10 +41,21 @@ const props = defineProps({
             <div class="form-group col-md-4">
                 <span>Количество команд для перехода</span>
                 <input
-                    v-model="stagesData[stageName[stageCount]].teamsCount"
+                    v-model="stagesData[stageCount].teamsCount"
                     type="number"
                     class="form-control"
                 />
+            </div>
+            <div class="form-group col-md-4">
+                <span>Тип</span>
+                <select v-model="stagesData[stageCount].type" class="form-control">
+                    <option
+                        v-for="typeStageOption in typeStageOptions"
+                        :value="typeStageOption.slug"
+                    >
+                        {{ typeStageOption.name }}
+                    </option>
+                </select>
             </div>
         </div>
         <div class="form-row p-6"></div>

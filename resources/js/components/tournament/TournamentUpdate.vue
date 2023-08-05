@@ -105,8 +105,8 @@
             :stageCount="stages.count"
             :stagesData="stagesData"
             :clearStageForm="clearStageForm"
-            :stageName="stageName"
             :discipline="tournament.discipline"
+            :type-stage-options="typeStageOptions"
         />
         <div class="flex p-6 gap-2">
             <button
@@ -156,12 +156,11 @@ export default {
     data() {
         return {
             stagesData: {
-                stageOne: {},
-                stageTwo: {},
-                stageThree: {},
+                1: {},
+                2: {},
+                3: {},
             },
             // Кастыль
-            stageName: { 1: "stageOne", 2: "stageTwo", 3: "stageThree" },
             tournament: {
                 name: "",
                 description: "",
@@ -181,6 +180,7 @@ export default {
                 { slug: "main", name: "Главный" },
                 { slug: "qualifying", name: "Отборочный" },
             ],
+            typeStageOptions: [],
             stages: {
                 count: stageCount,
             },
@@ -189,6 +189,7 @@ export default {
     created() {
         this.getDisciplineOptions();
         this.getEventOptions();
+        this.getTypeStageOptions();
     },
     methods: {
         getDisciplineOptions() {
@@ -210,6 +211,18 @@ export default {
                 .post("/api/event/get_event_options/")
                 .then(({ data }) => {
                     this.eventOptions = data.eventOptions;
+                    console.log(this.stagesData, this.stagesData[1])
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getTypeStageOptions() {
+            axios
+                .post("/api/tournament/get_type_stage_options/")
+                .then(({ data }) => {
+                    this.typeStageOptions = data.typeStageOptions;
                 })
                 .catch((error) => {
                     console.error(error);
@@ -220,7 +233,7 @@ export default {
             i ? stageCount.value++ : stageCount.value--;
         },
         clearStageForm() {
-            this.stagesData[this.stageName[this.stages.count]] = {};
+            this.stagesData[this.stages.count] = {};
             this.stages.count > 1 && stageCount.value--;
         },
         logData(data) {
