@@ -192,6 +192,12 @@
                   >
                       {{ !friend.subscription ? "Добавить в друзья" : "Вы подписаны" }}
                   </button>
+                  <button
+                      class="btn bg-red-500"
+                      @click="setModalIsOpen(true)"
+                  >
+                     Добавить в команду
+                  </button>
               </div>
 
             <button
@@ -302,9 +308,15 @@
       </div>
     </div>
   </div>
+    <ModalInviteTeam :is-open="isOpen" :setModalIsOpen="setModalIsOpen"></ModalInviteTeam>
 </template>
 
 <script>
+import ModalInviteTeam from "../shared/ModalInviteTeam.vue";
+
+import {ref} from "vue";
+const isOpen = ref(false);
+
 export default {
   name: "ProfileShow",
   props: {
@@ -441,7 +453,10 @@ export default {
                 console.error(error);
             })
             .finally(() => {});
-    }
+    },
+    setModalIsOpen(value) {
+        isOpen.value = value;
+    },
   }
 };
 </script>

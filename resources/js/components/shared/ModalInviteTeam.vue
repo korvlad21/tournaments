@@ -3,7 +3,11 @@
         <div v-if="isOpen" class="modal-overlay">
             <div class="modal-container">
                 <div class="modal-content">
-                    <slot></slot>
+                    Выбрать команду(-ы) в которую пригласить
+                    <label v-for="team in teams" :key="team.id">
+                        <input type="checkbox" v-model="invitedTeams" :value="team.id">
+                        {{ team.name }}
+                    </label>
                 </div>
                 <button class="modal-close-button" @click="closeModal">
                     Закрыть
@@ -15,13 +19,36 @@
 
 <script>
 export default {
+    data() {
+        return {
+            teams: [],
+            invitedTeams: [],
+        };
+    },
     props: {
         isOpen: Boolean,
         setModalIsOpen: Function,
+        userId: Number
+    },
+    created() {
+        this.getAllTeamInfo()
     },
     methods: {
         closeModal() {
             this.$emit("update:isOpen", false);
+        },
+        getAllTeamInfo() {
+            axios
+                .post("/api/team/get_all_info/", {
+                    id: this.id,
+                })
+                .then(({ data }) => {
+                    this.teams = data
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
         },
     },
 };

@@ -96,6 +96,7 @@
         :content="modal.content"
         :buttonText="modal.button"
     />
+    <ModalWithChild :is-open="isOpen" :setModalIsOpen="setModalIsOpen"></ModalWithChild>
 </template>
 
 <script>
@@ -228,6 +229,8 @@ export default {
 </script>
 
 <script setup>
+import ModalWithChild from "../shared/ModalWithChild.vue";
+
 const verified = ref(false);
 
 function handleVerifiedClick() {
