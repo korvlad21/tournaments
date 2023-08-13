@@ -20,7 +20,7 @@ class CreateTournamentsTable extends Migration
                 ->references('id')
                 ->on('users');
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('discipline', 30);
             $table->string('public', 20)->default('open');
             $table->string('type', 20);

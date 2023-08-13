@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tournament extends Model
 {
     use SoftDeletes;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
+    public const PUBLIC_OPEN = 'open';
+    public const PUBLIC_CLOSED = 'closed';
+    public const TYPE_MAIN = 'Mmain';
+    public const TYPE_QUALIFYING = 'qualifying';
+
     protected $fillable = [
+        'id',
         'user_id',
         'name',
         'description',
@@ -22,5 +24,13 @@ class Tournament extends Model
         'discipline',
         'type',
         'status',
+        'count_teams',
+        'start',
+        'end',
     ];
+
+    public function stages()
+    {
+        return $this->hasMany(Stage::class);
+    }
 }
