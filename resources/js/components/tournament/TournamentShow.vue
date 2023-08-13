@@ -3,7 +3,7 @@
         <div class="container mx-auto my-5 p-5">
             <div class="md:flex no-wrap md:-mx-2">
                 <!-- Left Side -->
-                <div class="w-full md:w-3/12 md:mx-2">
+                <div class="w-full md:w-8/12 md:mx-2">
                     <!-- Profile Card -->
                     <div class="bg-white p-3 border-t-4 border-green-400">
                         <div class="image overflow-hidden">
@@ -13,46 +13,19 @@
                                 alt=""
                             />
                         </div>
-                        <span
-                            class="inline-block h-12 w-12 overflow-hidden rounded-full bg-gray-100"
-                        >
-                            <img :src="path" />
-                            <!-- Если аватар есть прячем свг и показивыаем <img> -->
-                            <svg
-                                class="h-full w-full text-gray-300"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"
-                                />
-                            </svg>
-                        </span>
-                        <label
-                            v-show="isOwn"
-                            for="file-upload"
-                            class="ml-5 rounded-md border border-gray-300 bg-white py-1.5 px-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50"
-                        >
-                            <span>Выбрать изображение</span>
-                            <input
-                                v-on:change="handleFileUpload()"
-                                id="file-upload"
-                                name="file-upload"
-                                ref="file-upload"
-                                type="file"
-                                class="sr-only"
-                            />
-                        </label>
                         <h1
                             class="text-gray-900 font-bold text-xl leading-8 my-1"
                         >
-                            {{ team.name }}
+                            {{ tournament.name }}
                         </h1>
                         <h3
                             class="text-gray-600 font-lg text-semibold leading-6"
                         >
-                            {{ team.description }}
+                            {{ tournament.description }}
                         </h3>
+                        <div v-for="team in teams" class="bg-gray-100">
+                            {{team['number']}}.{{team['name']}}
+                        </div>
 
                     </div>
                 </div>
@@ -64,35 +37,35 @@
 
 <script>
 export default {
-    name: "TeamShow",
+    name: "TournamentShow",
     props: {
         id: Number,
     },
     data() {
         return {
-            team: {
+            tournament: {
                 name: "",
                 description: "",
             },
-            logo: "",
-            path: "",
+            teams:{},
             isOwn: false,
         };
     },
     created() {
-        this.getTeamInfo();
+        this.getTournamentInfo();
         this.getOwn();
         this.getRoles();
+        this.getTeams();
     },
     methods: {
-        getTeamInfo() {
+        getTournamentInfo() {
             axios
-                .post("/api/team/get_info/", {
+                .post("/api/tournament/get_info/", {
                     id: this.id,
                 })
                 .then(({ data }) => {
-                    this.team.name = data.name;
-                    this.team.description = data.description;
+                    this.tournament.name = data.name;
+                    this.tournament.description = data.description;
                     this.path = data.path;
                 })
                 .catch((error) => {
@@ -119,6 +92,19 @@ export default {
                 .then(({ data }) => {
                     this.roles = data.roles;
                     this.is_admin = this.roles.indexOf("admin") !== -1;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getTeams() {
+            axios
+                .post("/api/tournament/get_teams/", {
+                    id: this.id,
+                })
+                .then(({ data }) => {
+                    this.teams = data;
                 })
                 .catch((error) => {
                     console.error(error);

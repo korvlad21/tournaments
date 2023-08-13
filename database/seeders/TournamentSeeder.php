@@ -50,8 +50,6 @@ class TournamentSeeder extends Seeder
                 'place_id' => $i
             ];
         }
-        dump($dataTournamentTeam);
-        dump($dataTournamentPlace);
         TournamentTeam::insert($dataTournamentTeam);
         TournamentPlace::insert($dataTournamentPlace);
     }

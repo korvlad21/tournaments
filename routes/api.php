@@ -76,6 +76,9 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::controller(API\TournamentController::class)->group(function () {
             Route::post('get_discipline_options', 'getDisciplineOptions');
             Route::post('get_type_stage_options', 'getTypeStageOptions');
+            Route::post('get_all_info', 'getAllInfo');
+            Route::post('get_info', 'getInfo');
+            Route::post('get_teams', 'getTeams');
         });
     });
     Route::prefix('image')->group(function () {

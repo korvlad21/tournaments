@@ -9,11 +9,11 @@ class TournamentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        return view('tournament.index');
     }
 
     /**
@@ -34,18 +34,18 @@ class TournamentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+        return view('tournament.show', compact('id'));
     }
 
     /**

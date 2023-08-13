@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TeamResource extends JsonResource
+class TournamentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,8 +18,8 @@ class TeamResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'number' => ($this->pivot->number) ?? null,
-            'path' => ($this->logo) ? '/storage/images/team/logo/thumbnail/'.$this->logo : '',
+            'count_teams' => $this->count_teams,
+            'current_count_teams' => $this->tournamentTeams->count()
         ];
     }
 }

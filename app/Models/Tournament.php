@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tournament extends Model
@@ -33,4 +34,15 @@ class Tournament extends Model
     {
         return $this->hasMany(Stage::class);
     }
+    public function tournamentTeams()
+    {
+        return $this->hasMany(TournamentTeam::class);
+    }
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'tournament_teams')
+            ->using(TournamentTeam::class)
+            ->withPivot('number');
+    }
+
 }
