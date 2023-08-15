@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Helpers\Discipline\DisciplineHelper;
 use App\Helpers\Stage\StageHelper;
+use App\Models\StageTeam;
 use App\Models\Tournament;
 use App\Models\TournamentPlace;
 use App\Models\TournamentTeam;
@@ -42,6 +43,11 @@ class TournamentSeeder extends Seeder
                 'team_id' => $i,
                 'number' => $i
             ];
+            $stagesTeamData[] = [
+                'stage_id' => 1,
+                'team_id' => $i,
+                'number' => $i
+            ];
         }
         $dataTournamentPlace = [];
         for($i=1; $i<4; $i++) {
@@ -50,7 +56,9 @@ class TournamentSeeder extends Seeder
                 'place_id' => $i
             ];
         }
+
         TournamentTeam::insert($dataTournamentTeam);
         TournamentPlace::insert($dataTournamentPlace);
+        StageTeam::insert($stagesTeamData);
     }
 }

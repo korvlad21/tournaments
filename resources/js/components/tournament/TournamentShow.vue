@@ -26,7 +26,13 @@
                         <div v-for="team in teams" class="bg-gray-100">
                             {{team['number']}}.{{team['name']}}
                         </div>
-
+                        <button
+                            v-if="existGroups"
+                            @click="generateGroups()"
+                            class="form-control max-w-[190px]"
+                        >
+                            Cгенерировать группы
+                        </button>
                     </div>
                 </div>
                 <!-- Right Side -->
@@ -49,13 +55,20 @@ export default {
             },
             teams:{},
             isOwn: false,
+            groups: {},
         };
+    },
+    computed:{
+        existGroups() {
+            return Object.keys(this.groups).length === 0;
+        }
     },
     created() {
         this.getTournamentInfo();
         this.getOwn();
         this.getRoles();
         this.getTeams();
+        // this.getGroupsInfo();
     },
     methods: {
         getTournamentInfo() {
@@ -102,6 +115,33 @@ export default {
             axios
                 .post("/api/tournament/get_teams/", {
                     id: this.id,
+                })
+                .then(({ data }) => {
+                    this.teams = data;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getGroupsInfo() {
+            axios
+                .post("/api/tournament/get_groups_info/", {
+                    id: this.id,
+                })
+                .then(({ data }) => {
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        generateGroups() {
+            axios
+                .post("/api/tournament/generate_groups/", {
+                    id: this.id,
+                    stage_id: 1,
                 })
                 .then(({ data }) => {
                     this.teams = data;

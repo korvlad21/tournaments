@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class StageTeam extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'stage_id',
+        'team_id',
+        'number',
+    ];
 }

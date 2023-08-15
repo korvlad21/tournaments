@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Helpers\Discipline\DisciplineStructure;
+use App\Helpers\Generation\GenerationCalendarHelper;
+use App\Helpers\Generation\GenerationDrawHelper;
+use App\Helpers\Stage\StageHelper;
 use App\Helpers\Stage\StageStructure;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
@@ -10,6 +13,7 @@ use App\Http\Resources\EventResource;
 use App\Http\Resources\TeamResource;
 use App\Http\Resources\TournamentResource;
 use App\Models\Event;
+use App\Models\StageTeam;
 use App\Models\Tournament;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -112,6 +116,33 @@ class TournamentController extends Controller
     public function getTeams(Request $request)
     {
         $tournament = Tournament::find($request->post('id'));
+        return response()->json(TeamResource::collection($tournament->teams));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getGroupsInfo(Request $request)
+    {
+        $tournament = Tournament::find($request->post('id'));
+        return response()->json(TeamResource::collection($tournament->teams));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function generateGroups(Request $request)
+    {
+        $stageHelper = new StageHelper();
+        $generationDrawHelper = new GenerationDrawHelper();
+        //здесь получить Stage и от него stageTeams
+        $teamsId = $stageHelper->getTeamsId($request->post('stage_id'));
+        $groups = $generationDrawHelper->generateGroupStage($teamsId, 4);
+        dd($groups);
         return response()->json(TeamResource::collection($tournament->teams));
     }
 
