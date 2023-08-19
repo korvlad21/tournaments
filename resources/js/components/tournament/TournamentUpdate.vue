@@ -210,50 +210,50 @@ export default {
     },
     computed: {
         isNextStageDisabled() {
+            const { currentStageData } = this;
             return (
-                this.currentStageData.teamsToNextStage <= 1 ||
-                this.currentStageData.teamsToNextStage ===
-                    this.currentStageData.teamsCount
+                currentStageData.teamsToNextStage <= 1 ||
+                currentStageData.teamsToNextStage ===
+                    currentStageData.teamsCount
             );
         },
     },
     methods: {
-        getDisciplineOptions() {
-            axios
-                .post("/api/tournament/get_discipline_options/")
-                .then(({ data }) => {
-                    this.disciplineOptions = data.disciplineOptions;
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
+        async getDisciplineOptions() {
+            try {
+                const response = await axios.post(
+                    "/api/tournament/get_discipline_options/"
+                );
+                this.disciplineOptions = response.data.disciplineOptions;
+            } catch (error) {
+                console.error(error);
+            }
         },
-        getEventOptions() {
-            if (undefined !== this.event_id) {
+        async getEventOptions() {
+            if (this.event_id !== undefined) {
                 this.tournament.event_id = this.event_id;
             }
-            axios
-                .post("/api/event/get_event_options/")
-                .then(({ data }) => {
-                    this.eventOptions = data.eventOptions;
-                    console.log(this.stagesData, this.stagesData[1]);
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
+
+            try {
+                const response = await axios.post(
+                    "/api/event/get_event_options/"
+                );
+                this.eventOptions = response.data.eventOptions;
+                console.log(this.stagesData, this.stagesData[1]);
+            } catch (error) {
+                console.error(error);
+            }
         },
-        getTypeStageOptions() {
-            axios
-                .post("/api/tournament/get_type_stage_options/")
-                .then(({ data }) => {
-                    this.typeStageOptions = data.typeStageOptions;
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
+
+        async getTypeStageOptions() {
+            try {
+                const response = await axios.post(
+                    "/api/tournament/get_type_stage_options/"
+                );
+                this.typeStageOptions = response.data.typeStageOptions;
+            } catch (error) {
+                console.error(error);
+            }
         },
         createStage(stageNumber) {
             this.currentStage = stageNumber;
