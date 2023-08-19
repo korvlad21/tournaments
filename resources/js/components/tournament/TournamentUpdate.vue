@@ -257,22 +257,27 @@ export default {
         },
         createStage(stageNumber) {
             this.currentStage = stageNumber;
-            this.currentStageData.name = `Стадия ${stageNumber}`;
-            this.currentStageData.teamsCount = this.tournament.teamsCount;
-            this.currentStageData.teamsAllowed === 0 &&
-                (this.currentStageData.teamsAllowed =
-                    this.tournament.teamsCount);
-            this.currentStageData.teamsToNextStage === 0 &&
-                (this.currentStageData.teamsToNextStage =
-                    this.tournament.teamsCount);
+            const { currentStageData, tournament } = this;
+
+            currentStageData.name = `Стадия ${stageNumber}`;
+            currentStageData.teamsCount = tournament.teamsCount;
+
+            if (currentStageData.teamsAllowed === 0) {
+                currentStageData.teamsAllowed = tournament.teamsCount;
+            }
+
+            if (currentStageData.teamsToNextStage === 0) {
+                currentStageData.teamsToNextStage = tournament.teamsCount;
+            }
         },
         createNextStage() {
-            this.tournament.stages.push({ ...this.currentStageData });
+            const { tournament, currentStageData } = this;
+
+            tournament.stages.push({ ...currentStageData });
+
             const nextStageNumber = this.currentStage + 1;
-            this.currentStageData.teamsToNextStage =
-                this.currentStageData.teamsToNextStage;
-            this.currentStageData.teamsAllowed =
-                this.currentStageData.teamsToNextStage;
+
+            currentStageData.teamsAllowed = currentStageData.teamsToNextStage;
             this.createStage(nextStageNumber);
         },
         deleteStage() {
@@ -284,8 +289,9 @@ export default {
             }
         },
         sendData() {
-            !this.tournament.stages[this.currentStage - 1] &&
+            if (!this.tournament.stages[this.currentStage - 1]) {
                 this.tournament.stages.push({ ...this.currentStageData });
+            }
 
             console.log(this.tournament.stages);
         },
