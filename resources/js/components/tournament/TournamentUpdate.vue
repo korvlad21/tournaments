@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="stages.count === 0">
+        <div v-if="currentStage === 0">
             <div class="form-row p-6">
                 <div class="form-group col-md-4">
                     <span>Эвент</span>
@@ -54,7 +54,7 @@
                 <div class="form-group col-md-4">
                     <span>Количество команд</span>
                     <input
-                        v-model="tournament.count_teams"
+                        v-model="tournament.teamsCount"
                         type="number"
                         class="form-control"
                     />
@@ -98,55 +98,73 @@
                         </option>
                     </select>
                 </div>
+                <div class="form-group col-md-4">
+                    <button @click="createStage(1)" class="form-control">
+                        Создать стадию
+                    </button>
+                </div>
             </div>
         </div>
-        <Stage
-            v-if="stages.count > 0"
-            :stageCount="stages.count"
-            :stagesData="stagesData"
-            :clearStageForm="clearStageForm"
-            :discipline="tournament.discipline"
-            :type-stage-options="typeStageOptions"
-        />
-        <div class="flex p-6 gap-2">
-            <button
-                v-if="stages.count < 3"
-                @click="toggleStageCount(true)"
-                class="form-control max-w-[137px]"
-            >
-                Далее
-            </button>
-            <button
-                v-if="stages.count > 0"
-                @click="toggleStageCount()"
-                class="form-control max-w-[137px]"
-            >
-                Назад
-            </button>
-            <button
-                v-if="stages.count > 0"
-                @click="clearStageForm()"
-                class="form-control max-w-[137px]"
-            >
-                Удалить
-            </button>
-            <button
-                v-if="stages.count > 0"
-                @click="logData(stagesData)"
-                class="form-control max-w-[137px]"
-            >
-                Сохранить
-            </button>
+        <div v-else class="p-6">
+            <h2 class="p-6">Стадия {{ currentStage }}</h2>
+            <div class="form-row p-6">
+                <div class="form-group col-md-4">
+                    <label>Название стадии:</label>
+                    <input
+                        v-model="currentStageData.name"
+                        type="text"
+                        class="form-control"
+                    />
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Количество команд, идущих дальше:</label>
+                    <input
+                        v-model="currentStageData.teamsToNextStage"
+                        type="number"
+                        :max="currentStageData.teamsAllowed"
+                        :min="1"
+                        class="form-control"
+                    />
+                </div>
+            </div>
+            <div class="form-row p-6">
+                <div class="form-group col-md-4">
+                    <button
+                        @click="createNextStage"
+                        :disabled="isNextStageDisabled"
+                        class="form-control"
+                    >
+                        Создать следующую стадию
+                    </button>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <button @click="deleteStage" class="form-control">
+                        Удалить стадию
+                    </button>
+                </div>
+            </div>
         </div>
+        <div
+            v-if="currentStageData.teamsToNextStage < 2 && currentStage != 0"
+            class="p-6"
+        >
+            <h2 class="p-6">Последняя стадия</h2>
+            <div class="form-row p-6">
+                <div class="form-group col-md-4">
+                    <button @click="sendData" class="form-control">
+                        Отправить данные
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex p-6 gap-2"></div>
     </div>
 </template>
 
 <script>
-import { ref } from "vue";
-import Stage from "../shared/Stage.vue";
-
-const stageCount = ref(0);
-
 export default {
     name: "TournamentUpdate",
     props: {
@@ -155,20 +173,22 @@ export default {
     },
     data() {
         return {
-            stagesData: {
-                1: {},
-                2: {},
-                3: {},
+            currentStage: 0,
+            currentStageData: {
+                name: "",
+                teamsCount: 0,
+                teamsToNextStage: 0,
+                teamsAllowed: 0,
             },
-            // Кастыль
             tournament: {
                 name: "",
                 description: "",
                 start: "",
                 end: "",
                 discipline: "",
-                count_teams: 1,
+                teamsCount: 0,
                 event_id: 0,
+                stages: [],
             },
             disciplineOptions: [],
             eventOptions: [],
@@ -181,9 +201,6 @@ export default {
                 { slug: "qualifying", name: "Отборочный" },
             ],
             typeStageOptions: [],
-            stages: {
-                count: stageCount,
-            },
         };
     },
     created() {
@@ -191,56 +208,94 @@ export default {
         this.getEventOptions();
         this.getTypeStageOptions();
     },
-    methods: {
-        getDisciplineOptions() {
-            axios
-                .post("/api/tournament/get_discipline_options/")
-                .then(({ data }) => {
-                    this.disciplineOptions = data.disciplineOptions;
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
-        },
-        getEventOptions() {
-            if (undefined !== this.event_id) {
-                this.tournament.event_id = this.event_id;
-            }
-            axios
-                .post("/api/event/get_event_options/")
-                .then(({ data }) => {
-                    this.eventOptions = data.eventOptions;
-                    console.log(this.stagesData, this.stagesData[1])
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
-        },
-        getTypeStageOptions() {
-            axios
-                .post("/api/tournament/get_type_stage_options/")
-                .then(({ data }) => {
-                    this.typeStageOptions = data.typeStageOptions;
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
-        },
-        toggleStageCount(i) {
-            i ? stageCount.value++ : stageCount.value--;
-        },
-        clearStageForm() {
-            this.stagesData[this.stages.count] = {};
-            this.stages.count > 1 && stageCount.value--;
-        },
-        logData(data) {
-            console.log(data);
+    computed: {
+        isNextStageDisabled() {
+            const { currentStageData } = this;
+            return (
+                currentStageData.teamsToNextStage <= 1 ||
+                currentStageData.teamsToNextStage ===
+                    currentStageData.teamsCount
+            );
         },
     },
-    components: { Stage },
+    methods: {
+        async getDisciplineOptions() {
+            try {
+                const response = await axios.post(
+                    "/api/tournament/get_discipline_options/"
+                );
+                this.disciplineOptions = response.data.disciplineOptions;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async getEventOptions() {
+            if (this.event_id !== undefined) {
+                this.tournament.event_id = this.event_id;
+            }
+
+            try {
+                const response = await axios.post(
+                    "/api/event/get_event_options/"
+                );
+                this.eventOptions = response.data.eventOptions;
+                console.log(this.stagesData, this.stagesData[1]);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async getTypeStageOptions() {
+            try {
+                const response = await axios.post(
+                    "/api/tournament/get_type_stage_options/"
+                );
+                this.typeStageOptions = response.data.typeStageOptions;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        createStage(stageNumber) {
+            this.currentStage = stageNumber;
+            const { currentStageData, tournament } = this;
+
+            currentStageData.name = `Стадия ${stageNumber}`;
+            currentStageData.teamsCount = tournament.teamsCount;
+
+            if (currentStageData.teamsAllowed === 0) {
+                currentStageData.teamsAllowed = tournament.teamsCount;
+            }
+
+            if (currentStageData.teamsToNextStage === 0) {
+                currentStageData.teamsToNextStage = tournament.teamsCount;
+            }
+        },
+        createNextStage() {
+            const { tournament, currentStageData } = this;
+
+            tournament.stages.push({ ...currentStageData });
+
+            const nextStageNumber = this.currentStage + 1;
+
+            currentStageData.teamsAllowed = currentStageData.teamsToNextStage;
+            this.createStage(nextStageNumber);
+        },
+        deleteStage() {
+            if (this.currentStage > 1) {
+                this.tournament.stages.pop();
+                this.currentStage -= 1;
+                this.currentStageData =
+                    this.tournament.stages[this.currentStage - 1];
+            }
+        },
+        sendData() {
+            if (!this.tournament.stages[this.currentStage - 1]) {
+                this.tournament.stages.push({ ...this.currentStageData });
+            }
+
+            console.log(this.tournament.stages);
+        },
+    },
 };
 </script>
 
