@@ -5,7 +5,11 @@
                 <div class="modal-content">
                     Выбрать команду(-ы) в которую пригласить
                     <label v-for="team in teams" :key="team.id">
-                        <input type="checkbox" v-model="invitedTeams" :value="team.id">
+                        <input
+                            type="checkbox"
+                            v-model="invitedTeams"
+                            :value="team.id"
+                        />
                         {{ team.name }}
                     </label>
                 </div>
@@ -28,22 +32,22 @@ export default {
     props: {
         isOpen: Boolean,
         setModalIsOpen: Function,
-        userId: Number
+        userId: Number,
     },
     created() {
-        this.getAllTeamInfo()
+        this.getAllTeamInfo();
     },
     methods: {
         closeModal() {
             this.$emit("update:isOpen", false);
         },
-        getAllTeamInfo() {
-            axios
+        async getAllTeamInfo() {
+            await axios
                 .post("/api/team/get_all_info/", {
                     id: this.id,
                 })
                 .then(({ data }) => {
-                    this.teams = data
+                    this.teams = data;
                 })
                 .catch((error) => {
                     console.error(error);
