@@ -38,6 +38,11 @@
                         >
                             Команды: {{ tournament['current_count_teams'] }}/{{ tournament['count_teams'] }}
                         </h1>
+                        <h1 v-if="tournament['current_count_teams']<tournament['count_teams']"
+                            class="text-red-900 font-bold text-xl leading-8 my-1"
+                        >
+                            Идёт регистрация
+                        </h1>
                         <h3
                             class="text-gray-600 font-lg text-semibold leading-6"
                         >

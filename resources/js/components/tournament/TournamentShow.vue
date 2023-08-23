@@ -27,7 +27,7 @@
                             {{team['number']}}.{{team['name']}}
                         </div>
                         <button
-                            v-if="existGroups"
+                            v-if="!existGroups"
                             @click="generateGroups()"
                             class="form-control max-w-[190px]"
                         >
@@ -42,6 +42,13 @@
                                 {{team['number']}}.{{team['name']}}
                             </div>
                         </div>
+                        <button
+                            v-if="existGroups"
+                            @click="generateCalendar()"
+                            class="form-control max-w-[190px]"
+                        >
+                            Cгенерировать календарь
+                        </button>
                     </div>
                 </div>
                 <!-- Right Side -->
@@ -69,7 +76,7 @@ export default {
     },
     computed:{
         existGroups() {
-            return Object.keys(this.groups).length === 0;
+            return Object.keys(this.groups).length !== 0;
         }
     },
     created() {
@@ -145,8 +152,6 @@ export default {
                 })
                 .then(({ data }) => {
                     this.groups = data;
-                    console.log(data)
-                    console.log(Object.keys(this.groups).length === 0)
                 })
                 .catch((error) => {
                     console.error(error);
@@ -160,7 +165,21 @@ export default {
                     stage_id: 1,
                 })
                 .then(({ data }) => {
-                    this.teams = data;
+                    this.getGroupsInfo()
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        generateCalendar() {
+            axios
+                .post("/api/tournament/generate_calendar/", {
+                    id: this.id,
+                    stage_id: 1,
+                })
+                .then(({ data }) => {
+                    // this.teams = data;
                 })
                 .catch((error) => {
                     console.error(error);

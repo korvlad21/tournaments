@@ -10,4 +10,9 @@ class FootballHelper implements DisciplineInterface
     {
         dd(2);
     }
+
+    public function generateCalendar()
+    {
+        dd(124);
+    }
 }

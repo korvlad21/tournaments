@@ -8,4 +8,9 @@ class PokerHelper implements DisciplineInterface
     {
         dd(3);
     }
+
+    public function generateCalendar()
+    {
+        dd(1244);
+    }
 }

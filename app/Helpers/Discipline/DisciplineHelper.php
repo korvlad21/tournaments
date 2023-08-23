@@ -19,6 +19,23 @@ class DisciplineHelper
     ];
 
     /**
+     * @var DisciplineInterface
+     */
+    protected DisciplineInterface $helperInstance;
+
+    public function __construct(string $discipline)
+    {
+        $helperClass = self::$arrayHelpers[$discipline] ?? null;
+
+        if ($helperClass && is_subclass_of($helperClass, DisciplineInterface::class)) {
+            $this->helperInstance = new $helperClass();
+        } else {
+            throw new \InvalidArgumentException('Invalid discipline or helper not found.');
+        }
+    }
+
+
+    /**
      * @param string $type
      * @return mixed
      */
@@ -28,12 +45,16 @@ class DisciplineHelper
     }
 
     /**
-     * @param DisciplineInterface $discipline
      * @return mixed
      */
 
-    public function getInfo(DisciplineInterface $discipline)
+    public function getInfo()
     {
-        return $discipline->getInfo();
+        return $this->helperInstance->getInfo();
+    }
+
+    public function generateCalendar()
+    {
+        return $this->helperInstance->generateCalendar();
     }
 }

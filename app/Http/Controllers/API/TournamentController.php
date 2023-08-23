@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Discipline\DisciplineHelper;
 use App\Helpers\Discipline\DisciplineStructure;
 use App\Helpers\Generation\GenerationCalendarHelper;
 use App\Helpers\Generation\GenerationDrawHelper;
@@ -95,9 +96,8 @@ class TournamentController extends Controller
      */
     public function getAllInfo(Request $request)
     {
-        $user = Auth::user();
-        $teams = Tournament::all();
-        return response()->json(TournamentResource::collection($teams));
+        $tournaments = Tournament::all();
+        return response()->json(TournamentResource::collection($tournaments));
     }
 
     /**
@@ -107,8 +107,8 @@ class TournamentController extends Controller
      */
     public function getInfo(Request $request)
     {
-        $team = Tournament::find($request->post('id'));
-        return response()->json(new TournamentResource($team));
+        $tournament = Tournament::find($request->post('id'));
+        return response()->json(new TournamentResource($tournament));
     }
 
     /**
@@ -160,6 +160,55 @@ class TournamentController extends Controller
             }
         }
         return response()->json(TeamResource::collection($groups));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function generateCalendar(Request $request)
+    {
+        $tournament = Tournament::with(['teams'])->find($request->post('id'));
+        $disciplineHelper = new DisciplineHelper($tournament->discipline);
+        $calendar = $disciplineHelper->generateCalendar();
+        dd($calendar);
+        return response()->json(TeamResource::collection($groups));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function saveTournament(Request $request)
+    {
+        $user = Auth::user();
+        $dataTournament = $request->post('tournament');
+        $tournament = new Tournament();
+        $tournament->name = $dataTournament['name'];
+        $tournament->description = $dataTournament['description'];
+        $tournament->public = $dataTournament['public'];
+        $tournament->discipline = $dataTournament['discipline'];
+        $tournament->type = $dataTournament['type'];
+        $tournament->count_teams = $dataTournament['teamsCount'];
+        $tournament->start = $dataTournament['start'];
+        $tournament->end = $dataTournament['end'];
+        $tournament->user_id = $user->id;
+        $tournament->save();
+        $number = 0;
+        foreach ($dataTournament['stages'] as $stage) {
+            $tournament->stages()->create([
+                'number' => ++$number,
+                'name' => $stage['name'],
+                'type' => $stage['type'],
+                'count_group' => $stage['groupCount'],
+                'count_games' => $stage['gamesCount'],
+                'count_teams' => $stage['teamsAllowed'],
+            ]);
+
+        }
+        return response()->json(['success' => true]);
     }
 
 

@@ -321,7 +321,22 @@ export default {
             if (!this.tournament.stages[this.currentStage - 1]) {
                 this.tournament.stages.push({ ...this.currentStageData });
             }
-            console.log(this.tournament.stages);
+            axios.post('/api/tournament/save_tournament/', {
+                tournament: this.tournament
+            })
+                .then(({data}) => {
+                    console.log(this.tournament)
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {
+                });
+
+        },
+        saveTournament() {
+
+
         },
     },
 };
