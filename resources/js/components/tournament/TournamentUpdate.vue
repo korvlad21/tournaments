@@ -127,6 +127,33 @@
                         class="form-control"
                     />
                 </div>
+                <div class="form-group col-md-4">
+                    <span>Тип</span>
+                    <select v-model="currentStageData.type" class="form-control">
+                        <option
+                            v-for="typeStageOption in typeStageOptions"
+                            :value="typeStageOption.slug"
+                        >
+                            {{ typeStageOption.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <span>Количество групп</span>
+                    <input
+                        v-model="currentStageData.groupCount"
+                        type="number"
+                        class="form-control"
+                    />
+                </div>
+                <div class="form-group col-md-4">
+                    <span>Количество игр</span>
+                    <input
+                        v-model="currentStageData.gamesCount"
+                        type="number"
+                        class="form-control"
+                    />
+                </div>
             </div>
             <div class="form-row p-6">
                 <div class="form-group col-md-4">
@@ -179,6 +206,8 @@ export default {
                 teamsCount: 0,
                 teamsToNextStage: 0,
                 teamsAllowed: 0,
+                groupCount: 1,
+                gamesCount: 1,
             },
             tournament: {
                 name: "",
@@ -292,7 +321,6 @@ export default {
             if (!this.tournament.stages[this.currentStage - 1]) {
                 this.tournament.stages.push({ ...this.currentStageData });
             }
-
             console.log(this.tournament.stages);
         },
     },

@@ -33,6 +33,15 @@
                         >
                             Cгенерировать группы
                         </button>
+                        <br>
+                        <br>
+                        <br>
+                        <div v-for="group in groups" class="bg-green-100">
+                            Группа №{{group['number']}}
+                            <div v-for="team in group['teams']" class="bg-red-100">
+                                {{team['number']}}.{{team['name']}}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Right Side -->
@@ -68,7 +77,7 @@ export default {
         this.getOwn();
         this.getRoles();
         this.getTeams();
-        // this.getGroupsInfo();
+        this.getGroupsInfo();
     },
     methods: {
         getTournamentInfo() {
@@ -117,7 +126,11 @@ export default {
                     id: this.id,
                 })
                 .then(({ data }) => {
-                    this.teams = data;
+                    this.teams = data.reduce((result, team) => {
+                        result[team.id] = team;
+                        return result;
+                    }, {});
+                    console.log(this.teams);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -125,12 +138,15 @@ export default {
                 .finally(() => {});
         },
         getGroupsInfo() {
+            console.log(Object.keys(this.groups).length === 0)
             axios
                 .post("/api/tournament/get_groups_info/", {
                     id: this.id,
                 })
                 .then(({ data }) => {
-
+                    this.groups = data;
+                    console.log(data)
+                    console.log(Object.keys(this.groups).length === 0)
                 })
                 .catch((error) => {
                     console.error(error);

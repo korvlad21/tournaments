@@ -14,15 +14,17 @@ class GenerationDrawHelper
     public function generateGroupStage(array $teams, int $countGroup) :array
     {
         $count = 0;
+        $number = 1;
         $groupStage = [];
 
         shuffle($teams);
 
         foreach ($teams as $team) {
             $count++;
-            $groupStage[$count][] = $team;
+            $groupStage[$count][$number] = $team;
             if ($count === $countGroup) {
                 $count=0;
+                $number++;
             }
         }
         return $groupStage ;

@@ -30,6 +30,7 @@ class CreateStagesTable extends Migration
             ]);
             $table->integer('count_group');
             $table->integer('count_teams');
+            $table->integer('count_games');
             $table->text('settings')->nullable();
             $table->timestamps();
         });

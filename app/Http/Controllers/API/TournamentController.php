@@ -10,9 +10,12 @@ use App\Helpers\Stage\StageStructure;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Http\Resources\EventResource;
+use App\Http\Resources\GroupTeamResource;
 use App\Http\Resources\TeamResource;
 use App\Http\Resources\TournamentResource;
 use App\Models\Event;
+use App\Models\Group;
+use App\Models\Stage;
 use App\Models\StageTeam;
 use App\Models\Tournament;
 use Carbon\Carbon;
@@ -115,8 +118,8 @@ class TournamentController extends Controller
      */
     public function getTeams(Request $request)
     {
-        $tournament = Tournament::find($request->post('id'));
-        return response()->json(TeamResource::collection($tournament->teams));
+        $tournament = Tournament::with(['teams'])->find($request->post('id'));
+        return response()->json(TeamResource::collection($tournament->teams->keyBy('id')));
     }
 
     /**
@@ -126,8 +129,8 @@ class TournamentController extends Controller
      */
     public function getGroupsInfo(Request $request)
     {
-        $tournament = Tournament::find($request->post('id'));
-        return response()->json(TeamResource::collection($tournament->teams));
+        $groups = Group::with(['teams'])->where('stage_id' , $request->post('id'))->get();
+        return response()->json(GroupTeamResource::collection($groups));
     }
 
     /**
@@ -139,11 +142,24 @@ class TournamentController extends Controller
     {
         $stageHelper = new StageHelper();
         $generationDrawHelper = new GenerationDrawHelper();
+        $stageId = $request->post('stage_id');
         //здесь получить Stage и от него stageTeams
-        $teamsId = $stageHelper->getTeamsId($request->post('stage_id'));
+        $teamsId = $stageHelper->getTeamsId($stageId);
         $groups = $generationDrawHelper->generateGroupStage($teamsId, 4);
-        dd($groups);
-        return response()->json(TeamResource::collection($tournament->teams));
+        $groupTeams = [];
+        foreach ($groups as $numberGroup => $teams_id) {
+            $group = new Group();
+            $group->stage_id = $stageId;
+            $group->number = $numberGroup;
+            $group->save();
+            foreach ($teams_id as $numberTeam => $team_id) {
+                $group->groupTeams()->create([
+                    'team_id' => $team_id,
+                    'number' => $numberTeam,
+                ]);
+            }
+        }
+        return response()->json(TeamResource::collection($groups));
     }
 
 

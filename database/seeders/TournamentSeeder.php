@@ -31,11 +31,20 @@ class TournamentSeeder extends Seeder
         $tournament->user_id = 1;
         $tournament->save();
         $stagesData = [
-            ['number' => 1, 'name' => 'Групповой этап', 'type' => StageHelper::TYPE_ROUND_ROBIN, 'count_group' => 8, 'count_teams' => 32],
-            ['number' => 2, 'name' => 'Плей-офф', 'type' => StageHelper::TYPE_SINGLE_ELIMINATION, 'count_group' => 1, 'count_teams' => 16],
+            ['number' => 1, 'name' => 'Групповой этап', 'type' => StageHelper::TYPE_ROUND_ROBIN, 'count_group' => 8, 'count_games' => 1, 'count_teams' => 32],
+            ['number' => 2, 'name' => 'Плей-офф', 'type' => StageHelper::TYPE_SINGLE_ELIMINATION, 'count_group' => 1, 'count_games' => 1, 'count_teams' => 16],
         ];
+        foreach ($stagesData as $stageData) {
+            $tournament->stages()->create([
+                'number' => $stageData['number'],
+                'name' => $stageData['name'],
+                'type' => $stageData['type'],
+                'count_group' => $stageData['count_group'],
+                'count_games' => $stageData['count_games'],
+                'count_teams' => $stageData['count_teams'],
+            ]);
+        }
 
-        $tournament->stages()->insert($stagesData);
         $dataTournamentTeam = [];
         for($i=1; $i<33; $i++) {
             $dataTournamentTeam[] = [
