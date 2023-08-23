@@ -379,21 +379,32 @@
                         <!-- End of  grid -->
                     </div>
                     <!-- End of profile -->
-                    <button @click="setModalIsOpen(true)">
+                    <button @click="openModal" class="btn btn-blue">
                         открыть модалку
                     </button>
                 </div>
             </div>
+            <ModalWithChild
+                :isOpen="isModalOpen"
+                @update:isOpen="isModalOpen = $event"
+            >
+                <span>Выбрать команду(-ы) в которую пригласить</span>
+
+                <label v-for="team in teams" :key="team.id">
+                    <input
+                        type="checkbox"
+                        v-model="invitedTeams"
+                        :value="team.id"
+                    />
+                    {{ team.name }}
+                </label>
+            </ModalWithChild>
         </div>
     </div>
-    <ModalInviteTeam
-        :isOpen="isOpen"
-        :setModalIsOpen="setModalIsOpen"
-    ></ModalInviteTeam>
 </template>
 
 <script>
-import ModalInviteTeam from "../shared/ModalInviteTeam.vue";
+import ModalWithChild from "../shared/ModalWithChild.vue";
 
 import { ref } from "vue";
 const isOpen = ref(false);
@@ -405,6 +416,8 @@ export default {
     },
     data() {
         return {
+            teams: [],
+            invitedTeams: [],
             user: {
                 username: "",
                 name: "",
@@ -434,6 +447,7 @@ export default {
         this.getAuthUser();
         this.getRoles();
         this.getFriends();
+        this.getAllTeamInfo();
     },
     methods: {
         getUserInfo() {
@@ -538,11 +552,38 @@ export default {
                 })
                 .finally(() => {});
         },
-        setModalIsOpen(value) {
-            isOpen.value = value;
+        // setModalIsOpen(value) {
+        //     isOpen.value = value;
+        // },
+        openModal() {
+            this.isModalOpen = true;
+        },
+        async getAllTeamInfo() {
+            await axios
+                .post("/api/team/get_all_info/", {
+                    id: this.id,
+                })
+                .then(({ data }) => {
+                    this.teams = data;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
         },
     },
+    components: { ModalWithChild },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn {
+    @apply font-bold py-2 px-4 rounded;
+}
+.btn-blue {
+    @apply bg-blue-500 text-white;
+}
+.btn-blue:hover {
+    @apply bg-blue-700;
+}
+</style>
