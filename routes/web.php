@@ -73,5 +73,6 @@ Route::middleware(['auth'])->group(function() {
         Route::middleware(['create.tournament'])->get('create/{event_id?}', 'TournamentController@create')->name('tournament.create');
         Route::get('', 'TournamentController@index')->name('tournament.index');
         Route::get('{id}', 'TournamentController@show')->name('tournament.show');
+        Route::get('add-teams/{id}', 'TournamentController@addTeams')->name('tournament.add-teams');
     });
 });

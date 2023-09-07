@@ -16,10 +16,10 @@ class TeamSeeder extends Seeder
     {
         $teams = [
             ['name' => 'Спартак', 'description' => 'Спартак Москва', 'owner_id' => 1],
-            ['name' => 'ЦСКА', 'description' => 'Центральный спортивный клуб армии', 'owner_id' => 2],
-            ['name' => 'Локомотив', 'description' => 'Футбольный клуб Локомотив', 'owner_id' => 3],
-            ['name' => 'Зенит', 'description' => 'Футбольный клуб Зенит', 'owner_id' => 4],
-            ['name' => 'Динамо', 'description' => 'Футбольный клуб Динамо', 'owner_id' => 5],
+            ['name' => 'ЦСКА', 'description' => 'Центральный спортивный клуб армии', 'owner_id' => 1],
+            ['name' => 'Локомотив', 'description' => 'Футбольный клуб Локомотив', 'owner_id' => 1],
+            ['name' => 'Зенит', 'description' => 'Футбольный клуб Зенит', 'owner_id' => 1],
+            ['name' => 'Динамо', 'description' => 'Футбольный клуб Динамо', 'owner_id' => 1],
             ['name' => 'Рубин', 'description' => 'Футбольный клуб Рубин', 'owner_id' => 6],
             ['name' => 'Амкар', 'description' => 'Футбольный клуб Амкар', 'owner_id' => 7],
             ['name' => 'Анжи', 'description' => 'Футбольный клуб Анжи', 'owner_id' => 8],

@@ -77,6 +77,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_discipline_options', 'getDisciplineOptions');
             Route::post('get_type_stage_options', 'getTypeStageOptions');
             Route::post('get_all_info', 'getAllInfo');
+            Route::post('get_teams_ready_invitation', 'getTeamsReadyInvitation');
+            Route::post('add_teams', 'addTeams');
             Route::post('get_info', 'getInfo');
             Route::post('get_teams', 'getTeams');
             Route::post('get_groups_info', 'getGroupsInfo');

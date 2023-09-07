@@ -38,6 +38,12 @@
                         >
                             Команды: {{ tournament['current_count_teams'] }}/{{ tournament['count_teams'] }}
                         </h1>
+                        <a
+                            v-if="tournament['current_count_teams'] !== tournament['count_teams']"
+                            :href="getHrefAddTeam(tournament)"
+                        >
+                            Добавить команды
+                        </a>
                         <h1 v-if="tournament['current_count_teams']<tournament['count_teams']"
                             class="text-red-900 font-bold text-xl leading-8 my-1"
                         >
@@ -87,6 +93,9 @@ export default {
         },
         getHrefTournamentShow(tournament) {
             return window.location.origin + '/tournament/' + tournament['id'];
+        },
+        getHrefAddTeam(tournament) {
+            return window.location.origin + '/tournament/add-teams/' + tournament['id'];
         },
     },
 };

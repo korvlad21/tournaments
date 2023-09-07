@@ -18,7 +18,9 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Stage;
 use App\Models\StageTeam;
+use App\Models\Team;
 use App\Models\Tournament;
+use App\Models\TournamentTeam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -210,6 +212,43 @@ class TournamentController extends Controller
         }
         return response()->json(['success' => true]);
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTeamsReadyInvitation(Request $request)
+    {
+        $user = Auth::user();
+        $tournamentId = $request->post('id');
+        $teamsNotInTournament = Team::where('owner_id', $user->id)
+            ->whereDoesntHave('tournaments', function ($query) use ($tournamentId) {
+                $query->where('tournaments.id', $tournamentId);
+            })->get();
+        return response()->json(TeamResource::collection($teamsNotInTournament));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addTeams(Request $request)
+    {
+        $tournament = Tournament::with(['tournamentTeams'])->find($request->post('id'));
+        $number = ($tournament->tournamentTeams->isEmpty()) ? 0 : $tournament->tournamentTeams->max('number');;
+        $teamsId = $request->post('teamsId');
+        foreach ($teamsId as $teamId) {
+            $number++;
+            TournamentTeam::create([
+                'tournament_id' => $tournament->id,
+                'team_id' => $teamId,
+                'number' => $number
+            ]);
+        }
+        return response()->json(['success' => true]);
+    }
+
 
 
 }
