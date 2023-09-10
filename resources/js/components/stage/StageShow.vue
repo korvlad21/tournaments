@@ -6,59 +6,43 @@
                 <div class="w-full md:w-8/12 md:mx-2">
                     <!-- Profile Card -->
                     <div class="bg-white p-3 border-t-4 border-green-400">
-                        <div class="image overflow-hidden">
-                            <img
-                                class="h-auto w-full mx-auto"
-                                src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
-                                alt=""
-                            />
-                        </div>
                         <h1
                             class="text-gray-900 font-bold text-xl leading-8 my-1"
                         >
-                            {{ tournament.name }}
+                            {{ stage.name }}
                         </h1>
                         <h3
                             class="text-gray-600 font-lg text-semibold leading-6"
                         >
-                            {{ tournament.description }}
+                            {{ stage.description }}
                         </h3>
-                        <a
-                            v-if="!teamsFull"
-                            :href="getHrefAddTeam()"
-                        >
-                            Добавить команды
-                        </a>
                         <h1>Список участников</h1>
                         <div v-for="team in teams" class="bg-gray-100">
                             {{team['number']}}.{{team['name']}}
                         </div>
                         <button
-                            v-if="teamsFull && tournament.status === 'registration_teams'"
-                            @click="acceptTeams()"
+                            v-if="!existGroups && teamsFull"
+                            @click="generateGroups()"
                             class="form-control max-w-[190px]"
                         >
-                            Утвердить участников
+                            Cгенерировать группы
                         </button>
-                        <h1>Стадии</h1>
-                        <div
-                            v-if="tournament.status !== 'registration_teams'"
-                            v-for="stage in stages"
-                            class="bg-green-100"
-                        >
-                            Стадия №{{stage['number']}}<br>
-                            {{stage['name']}}<br>
-                            Количество команд: {{stage['current_count_teams']}}/{{stage['count_teams']}}<br>
-                            Количество групп: {{stage['count_group']}}<br>
-                            Количество игр: {{stage['count_games']}}<br>
-                            <a
-                                class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
-                                :href="this.getHrefStageShow(stage)"
-                                target="_blank"
-                            >
-                                Смотреть
-                            </a>
+                        <br>
+                        <br>
+                        <br>
+                        <div v-for="group in groups" class="bg-green-100">
+                            Группа №{{group['number']}}
+                            <div v-for="team in group['teams']" class="bg-red-100">
+                                {{team['number']}}.{{team['name']}}
+                            </div>
                         </div>
+                        <button
+                            v-if="existGroups"
+                            @click="generateCalendar()"
+                            class="form-control max-w-[190px]"
+                        >
+                            Cгенерировать календарь
+                        </button>
                     </div>
                 </div>
                 <!-- Right Side -->
@@ -69,20 +53,19 @@
 
 <script>
 export default {
-    name: "TournamentShow",
+    name: "StageShow",
     props: {
         id: Number,
     },
     data() {
         return {
-            tournament: {
+            stage: {
                 name: "",
                 description: "",
                 countTeams: 0,
             },
-            stages: {},
             teams:{},
-            isOwn: false,
+            groups: {},
         };
     },
     computed:{
@@ -90,27 +73,27 @@ export default {
             return Object.keys(this.groups).length !== 0;
         },
         teamsFull() {
-            return Object.keys(this.teams).length === this.tournament.countTeams;
+            return Object.keys(this.teams).length === this.stage.countTeams;
         }
     },
     created() {
-        this.getTournamentInfo();
+        this.getStageInfo();
         this.getOwn();
         this.getRoles();
         this.getTeams();
+        this.getGroupsInfo();
     },
     methods: {
-        getTournamentInfo() {
+        getStageInfo() {
             axios
-                .post("/api/tournament/get_info_stages/", {
+                .post("/api/stage/get_info/", {
                     id: this.id,
                 })
                 .then(({ data }) => {
-                    this.tournament.name = data.name;
-                    this.tournament.description = data.description;
-                    this.tournament.countTeams = data.count_teams;
-                    this.tournament.status = data.status;
-                    this.stages = data.stages
+                    this.stage.name = data.name;
+                    this.stage.description = data.description;
+                    this.stage.countTeams = data.count_teams;
+                    console.log(this.stage);
                     this.path = data.path;
                 })
                 .catch((error) => {
@@ -145,7 +128,7 @@ export default {
         },
         getTeams() {
             axios
-                .post("/api/tournament/get_teams/", {
+                .post("/api/stage/get_teams/", {
                     id: this.id,
                 })
                 .then(({ data }) => {
@@ -160,12 +143,10 @@ export default {
                 })
                 .finally(() => {});
         },
-        getHrefStageShow(stage) {
-            return window.location.origin + '/stage/' + stage['id'];
-        },
-        getStagesInfo() {
+        getGroupsInfo() {
+            console.log(Object.keys(this.groups).length === 0)
             axios
-                .post("/api/tournament/get_stages_info/", {
+                .post("/api/stage/get_groups_info/", {
                     id: this.id,
                 })
                 .then(({ data }) => {
@@ -178,9 +159,8 @@ export default {
         },
         generateGroups() {
             axios
-                .post("/api/tournament/generate_groups/", {
+                .post("/api/stage/generate_groups/", {
                     id: this.id,
-                    stage_id: 1,
                 })
                 .then(({ data }) => {
                     this.getGroupsInfo()
@@ -198,19 +178,6 @@ export default {
                 })
                 .then(({ data }) => {
                     // this.teams = data;
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {});
-        },
-        acceptTeams() {
-            axios
-                .post("/api/tournament/accept_teams/", {
-                    id: this.id,
-                })
-                .then(({ data }) => {
-                    this.getTournamentInfo();
                 })
                 .catch((error) => {
                     console.error(error);

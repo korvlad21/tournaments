@@ -80,10 +80,12 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_teams_ready_invitation', 'getTeamsReadyInvitation');
             Route::post('add_teams', 'addTeams');
             Route::post('get_info', 'getInfo');
+            Route::post('get_info_stages', 'getInfoStages');
             Route::post('get_teams', 'getTeams');
             Route::post('get_groups_info', 'getGroupsInfo');
             Route::post('generate_groups', 'generateGroups');
             Route::post('generate_calendar', 'generateCalendar');
+            Route::post('accept_teams', 'acceptTeams');
             Route::post('save_tournament', 'saveTournament');
 
         });
@@ -94,6 +96,14 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('logo_team_upload', 'logoTeamUpload');
             Route::post('passport_upload', 'passportUpload');
             Route::post('get_avatar', 'getAvatar');
+        });
+    });
+    Route::prefix('stage')->group(function () {
+        Route::controller(API\StageController::class)->group(function () {
+            Route::post('get_info', 'getInfo');
+            Route::post('get_teams', 'getTeams');
+            Route::post('get_groups_info', 'getGroupsInfo');
+            Route::post('generate_groups', 'generateGroups');
         });
     });
     Route::get('/get', 'GetController');

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TournamentResource extends JsonResource
+class TournamentStageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,6 +21,7 @@ class TournamentResource extends JsonResource
             'count_teams' => $this->count_teams,
             'current_count_teams' => $this->tournamentTeams->count(),
             'status' => $this->status,
+            'stages' => ($this->stages) ? StageResource::collection($this->stages) : null
         ];
     }
 }

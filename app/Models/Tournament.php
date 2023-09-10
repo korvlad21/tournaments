@@ -13,8 +13,11 @@ class Tournament extends Model
 
     public const PUBLIC_OPEN = 'open';
     public const PUBLIC_CLOSED = 'closed';
-    public const TYPE_MAIN = 'Mmain';
+    public const TYPE_MAIN = 'main';
     public const TYPE_QUALIFYING = 'qualifying';
+
+    public const STATUS_ACCEPTED_TEAMS = 'accepted_teams';
+    public const STATUS_REGISTRAION_TEAMS = 'registration_teams';
 
     protected $fillable = [
         'id',
@@ -32,7 +35,7 @@ class Tournament extends Model
 
     public function stages()
     {
-        return $this->hasMany(Stage::class);
+        return $this->hasMany(Stage::class)->with(['stageTeams']);
     }
     public function tournamentTeams()
     {

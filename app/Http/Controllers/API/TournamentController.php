@@ -12,8 +12,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\GroupTeamResource;
+use App\Http\Resources\StageResource;
 use App\Http\Resources\TeamResource;
 use App\Http\Resources\TournamentResource;
+use App\Http\Resources\TournamentStageResource;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\Stage;
@@ -118,6 +120,17 @@ class TournamentController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    public function getInfoStages(Request $request)
+    {
+        $tournament = Tournament::with(['stages'])->find($request->post('id'));
+        return response()->json(new TournamentStageResource($tournament));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTeams(Request $request)
     {
         $tournament = Tournament::with(['teams'])->find($request->post('id'));
@@ -135,6 +148,7 @@ class TournamentController extends Controller
         return response()->json(GroupTeamResource::collection($groups));
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -144,11 +158,11 @@ class TournamentController extends Controller
     {
         $stageHelper = new StageHelper();
         $generationDrawHelper = new GenerationDrawHelper();
-        $stageId = $request->post('stage_id');
+        $stageId = $request->post('id');
+        $stage = Stage::find($stageId);
         //здесь получить Stage и от него stageTeams
         $teamsId = $stageHelper->getTeamsId($stageId);
-        $groups = $generationDrawHelper->generateGroupStage($teamsId, 4);
-        $groupTeams = [];
+        $groups = $generationDrawHelper->generateGroupStage($teamsId, $stage->count_groups);
         foreach ($groups as $numberGroup => $teams_id) {
             $group = new Group();
             $group->stage_id = $stageId;
@@ -197,6 +211,7 @@ class TournamentController extends Controller
         $tournament->start = $dataTournament['start'];
         $tournament->end = $dataTournament['end'];
         $tournament->user_id = $user->id;
+        $tournament->status = Tournament::STATUS_REGISTRAION_TEAMS;
         $tournament->save();
         $number = 0;
         foreach ($dataTournament['stages'] as $stage) {
@@ -239,10 +254,36 @@ class TournamentController extends Controller
         $number = ($tournament->tournamentTeams->isEmpty()) ? 0 : $tournament->tournamentTeams->max('number');;
         $teamsId = $request->post('teamsId');
         foreach ($teamsId as $teamId) {
+            if ($tournament->count_teams === $number) {
+                break;
+            }
             $number++;
             TournamentTeam::create([
                 'tournament_id' => $tournament->id,
                 'team_id' => $teamId,
+                'number' => $number
+            ]);
+        }
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function acceptTeams(Request $request)
+    {
+        $tournament = Tournament::with(['tournamentTeams', 'stages'])->find($request->post('id'));
+        $firstStage = $tournament->stages->where('number', 1)->first();
+        $tournament->status = Tournament::STATUS_ACCEPTED_TEAMS;
+        $tournament->save();
+        $number = 0;
+        foreach ($tournament->tournamentTeams as $tournamentTeam) {
+            $number++;
+            StageTeam::create([
+                'stage_id' => $firstStage->id,
+                'team_id' => $tournamentTeam->team_id,
                 'number' => $number
             ]);
         }

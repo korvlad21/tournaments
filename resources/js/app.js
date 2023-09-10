@@ -20,6 +20,7 @@ import TournamentUpdate from "./components/tournament/TournamentUpdate.vue";
 import TournamentIndex from "./components/tournament/TournamentIndex.vue";
 import TournamentShow from "./components/tournament/TournamentShow.vue";
 import TournamentAddTeams from "./components/tournament/TournamentAddTeams.vue";
+import StageShow from "./components/stage/StageShow.vue";
 import PlaceUpdate from "./components/place/PlaceUpdate.vue";
 import PlaceShow from "./components/place/PlaceShow.vue";
 import PlaceIndex from "./components/place/PlaceIndex.vue";
@@ -58,5 +59,6 @@ app.component("tournament-update", TournamentUpdate);
 app.component("tournament-index", TournamentIndex);
 app.component("tournament-show", TournamentShow);
 app.component("tournament-add-teams", TournamentAddTeams);
+app.component("stage-show", StageShow);
 
 app.use(vuetify).mount("#app");

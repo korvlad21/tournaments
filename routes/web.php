@@ -75,4 +75,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('{id}', 'TournamentController@show')->name('tournament.show');
         Route::get('add-teams/{id}', 'TournamentController@addTeams')->name('tournament.add-teams');
     });
+    Route::prefix('stage')->group(function () {
+        Route::get('{id}', 'StageController@show')->name('stage.show');
+    });
 });

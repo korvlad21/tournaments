@@ -29,6 +29,7 @@ class TournamentSeeder extends Seeder
         $tournament->start = date('Y-m-d', strtotime('+1 day'));
         $tournament->end = date('Y-m-d', strtotime('+9 day'));
         $tournament->user_id = 1;
+        $tournament->status = Tournament::STATUS_ACCEPTED_TEAMS;
         $tournament->save();
         $stagesData = [
             ['number' => 1, 'name' => 'Групповой этап', 'type' => StageHelper::TYPE_ROUND_ROBIN, 'count_group' => 8, 'count_games' => 1, 'count_teams' => 32],
