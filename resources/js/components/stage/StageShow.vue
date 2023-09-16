@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <button
-                            v-if="existGroups"
+                            v-if="existGames"
                             @click="generateCalendar()"
                             class="form-control max-w-[190px]"
                         >
@@ -66,10 +66,14 @@ export default {
             },
             teams:{},
             groups: {},
+            games: {},
         };
     },
     computed:{
         existGroups() {
+            return Object.keys(this.groups).length !== 0;
+        },
+        existGames() {
             return Object.keys(this.groups).length !== 0;
         },
         teamsFull() {
@@ -82,6 +86,7 @@ export default {
         this.getRoles();
         this.getTeams();
         this.getGroupsInfo();
+        this.getGamesInfo();
     },
     methods: {
         getStageInfo() {
@@ -144,13 +149,26 @@ export default {
                 .finally(() => {});
         },
         getGroupsInfo() {
-            console.log(Object.keys(this.groups).length === 0)
             axios
                 .post("/api/stage/get_groups_info/", {
                     id: this.id,
                 })
                 .then(({ data }) => {
                     this.groups = data;
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+                .finally(() => {});
+        },
+        getGamesInfo() {
+            console.log(Object.keys(this.groups).length === 0)
+            axios
+                .post("/api/stage/get_games_info/", {
+                    id: this.id,
+                })
+                .then(({ data }) => {
+                    this.games = data;
                 })
                 .catch((error) => {
                     console.error(error);
@@ -172,9 +190,8 @@ export default {
         },
         generateCalendar() {
             axios
-                .post("/api/tournament/generate_calendar/", {
+                .post("/api/stage/generate_calendar/", {
                     id: this.id,
-                    stage_id: 1,
                 })
                 .then(({ data }) => {
                     // this.teams = data;

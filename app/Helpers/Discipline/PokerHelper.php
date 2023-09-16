@@ -2,6 +2,8 @@
 
 namespace App\Helpers\Discipline;
 
+use App\Helpers\Generation\GenerationCalendarHelper;
+
 class PokerHelper implements DisciplineInterface
 {
     public function getInfo()
@@ -9,8 +11,13 @@ class PokerHelper implements DisciplineInterface
         dd(3);
     }
 
-    public function generateCalendar()
+    public function generateCalendar(array $teams, int $count_games): array
     {
-        dd(1244);
+
+    }
+
+    public function createCalendar(array $calendar, int $groupId): void
+    {
+
     }
 }

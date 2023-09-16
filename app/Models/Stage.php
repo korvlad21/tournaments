@@ -39,4 +39,14 @@ class Stage extends Model
     {
         return $this->hasMany(Group::class)->with(['teams']);
     }
+
+    public function groupsTeamsId(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Group::class)->with(['groupTeams']);
+    }
+
+    public function tournament()
+    {
+        return $this->belongsTo(Tournament::class);
+    }
 }

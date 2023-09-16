@@ -18,7 +18,7 @@ class GenerationCalendarHelper
 // Проверка, является ли количество команд четным или нечетным
         if (count($teams) % 2 == 1) {
             // Количество команд нечетное, добавляем фиктивную команду
-            $teams[] = "Фиктивная команда";
+            $teams[] = "-";
         }
 
         $numTeams = count($teams);
@@ -45,7 +45,7 @@ class GenerationCalendarHelper
                     $away = $temp;
                 }
 
-                $matches[$match] = array("Домашняя команда" => $teams[$home], "Гостевая команда" => $teams[$away]);
+                $matches[$match] = array(self::HOME => $teams[$home], self::AWAY => $teams[$away]);
             }
             $rounds[$round] = $matches;
         }

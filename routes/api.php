@@ -84,7 +84,6 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_teams', 'getTeams');
             Route::post('get_groups_info', 'getGroupsInfo');
             Route::post('generate_groups', 'generateGroups');
-            Route::post('generate_calendar', 'generateCalendar');
             Route::post('accept_teams', 'acceptTeams');
             Route::post('save_tournament', 'saveTournament');
 
@@ -104,6 +103,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_teams', 'getTeams');
             Route::post('get_groups_info', 'getGroupsInfo');
             Route::post('generate_groups', 'generateGroups');
+            Route::post('generate_calendar', 'generateCalendar');
         });
     });
     Route::get('/get', 'GetController');

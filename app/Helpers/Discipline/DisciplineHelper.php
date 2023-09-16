@@ -53,8 +53,13 @@ class DisciplineHelper
         return $this->helperInstance->getInfo();
     }
 
-    public function generateCalendar()
+    public function generateCalendar(array $teams, int $count_games): array
     {
-        return $this->helperInstance->generateCalendar();
+        return $this->helperInstance->generateCalendar($teams, $count_games);
+    }
+
+    public function createCalendar(array $calendar, int $groupId): void
+    {
+        $this->helperInstance->createCalendar($calendar, $groupId);
     }
 }
