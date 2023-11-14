@@ -62,4 +62,9 @@ class DisciplineHelper
     {
         $this->helperInstance->createCalendar($calendar, $groupId);
     }
+
+    public function createCalendarPlayoff(array $calendar, int $groupId): void
+    {
+        $this->helperInstance->createCalendarPlayoff($calendar, $groupId);
+    }
 }

@@ -43,9 +43,50 @@
                         >
                             Cгенерировать календарь
                         </button>
-                        <div v-for="game in games" class="bg-green-100 p-3">
-                            Группа №{{game['group']['number']}}
-                            {{game['football_game']['team1']['name']}} - {{game['football_game']['team2']['name']}}
+                        <div
+                            v-if="'single_elimination' !== stage.type"
+                            v-for="(groups, group) in games"
+                            class="bg-green-100 p-3"
+                        >
+                            Группа №{{group}}
+                            <div
+                                v-for="game in groups"
+                                class="bg-green-100 p-3"
+                            >
+                                Тур №{{game['tour']}} {{game['football_game']['team1']['name']}} - {{game['football_game']['team2']['name']}}
+                            </div>
+                        </div>
+                        <div
+                            v-else
+                            v-for="(groups, group) in games"
+                            class="bg-green-100 p-3"
+                        >
+                            Группа №{{group}}
+                            <div
+                                v-for="(rounds, level) in groups"
+                                class="bg-green-100 p-3"
+                            >
+                                {{level}}
+                                <div
+                                    v-for="game in rounds"
+                                    class="bg-green-100 p-3 d-flex"
+                                >
+                                    {{game['number']}}.
+                                    <div v-if="game['team1_exist'] === 1">
+                                        {{(game['team1'] ? game['team1']['name'] : 'Нет соперника')}}
+                                    </div>
+                                    <div v-else>
+                                        Победитель №{{game['team1_win_play_off_id']}}
+                                    </div>
+                                    -
+                                    <div v-if="game['team2_exist'] === 1">
+                                        {{(game['team2'] ? game['team2']['name'] : 'Нет соперника')}}
+                                    </div>
+                                    <div v-else>
+                                        Победитель №{{game['team2_win_play_off_id']}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,6 +108,7 @@ export default {
                 name: "",
                 description: "",
                 countTeams: 0,
+                type: "",
             },
             teams:{},
             groups: {},
@@ -102,6 +144,7 @@ export default {
                     this.stage.name = data.name;
                     this.stage.description = data.description;
                     this.stage.countTeams = data.count_teams;
+                    this.stage.type = data.type;
                     console.log(this.stage);
                     this.path = data.path;
                 })
@@ -166,7 +209,6 @@ export default {
                 .finally(() => {});
         },
         getGamesInfo() {
-            console.log(Object.keys(this.groups).length === 0)
             axios
                 .post("/api/stage/get_games_info/", {
                     id: this.id,

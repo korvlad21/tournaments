@@ -15,17 +15,22 @@ class CreatePlayoffsTable extends Migration
     {
         Schema::create('playoffs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('team_win_play_off_id')->nullable();
-            $table->foreign('team_win_play_off_id')
-                ->references('id')
-                ->on('playoffs');
-            $table->unsignedBigInteger('team_lost_play_off_id')->nullable();
-            $table->foreign('team_lost_play_off_id')
-                ->references('id')
-                ->on('playoffs');
+            $table->unsignedBigInteger('team1_win_play_off_id')->nullable();
+            $table->unsignedBigInteger('team2_win_play_off_id')->nullable();
+            $table->boolean('team1_exist');
+            $table->boolean('team2_exist');
             $table->unsignedTinyInteger('level')->length(3);
             $table->integer('number');
+            $table->unsignedBigInteger('game_id')->nullable();
+            $table->foreign('game_id')
+                ->references('id')
+                ->on('games');
+            $table->unsignedBigInteger('group_id')->nullable();
+            $table->foreign('group_id')
+                ->references('id')
+                ->on('groups');
             $table->timestamps();
+
         });
     }
 

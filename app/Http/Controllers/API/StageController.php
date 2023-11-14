@@ -11,6 +11,7 @@ use App\Http\Resources\StageResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Game;
 use App\Models\Group;
+use App\Models\Playoff;
 use App\Models\Stage;
 use Illuminate\Http\Request;
 
@@ -55,8 +56,22 @@ class StageController extends Controller
      */
     public function getGamesInfo(Request $request)
     {
+        $stage = Stage::find($request->post('id'));
         $groups = Group::with(['teams'])->where('stage_id' , $request->post('id'))->get()->pluck('id')->toArray();
-        $games = Game::with(['footballGame', 'group'])->whereIn('group_id' , $groups)->get();
+        $games = [];
+        if (StageHelper::TYPE_SINGLE_ELIMINATION === $stage->type) {
+            $playoffs = Playoff::with(['group', 'team1', 'team2'])->whereIn('group_id' , $groups)->get();
+
+            foreach ($playoffs as $playoff) {
+                $games[$playoff->group_id]['Раунд '.$playoff->level][] = $playoff;
+            }
+            return response()->json($games);
+        }
+        $gamesModel = Game::with(['footballGame', 'group'])->whereIn('group_id' , $groups)->get();
+        foreach ($gamesModel as $gameModel) {
+            $games[$gameModel->group->number][] = $gameModel;
+        }
+
         return response()->json($games);
     }
 
@@ -69,10 +84,18 @@ class StageController extends Controller
     {
         $stage = Stage::with(['tournament','groupsTeamsId'])->find($request->post('id'));
         $disciplineHelper = new DisciplineHelper($stage->tournament->discipline);
+        $generationHelper = new GenerationDrawHelper();
         foreach ($stage->groupsTeamsId as $group) {
             $teamsId = $group->groupTeams->pluck('team_id')->toArray();
-            $calendar = $disciplineHelper->generateCalendar($teamsId, $stage->count_games);
-            $disciplineHelper->createCalendar($calendar, $group->id);
+            if (StageHelper::TYPE_SINGLE_ELIMINATION === $stage->type) {
+                $calendar = $generationHelper->generatePlayoff($teamsId);
+                $disciplineHelper->createCalendarPlayoff($calendar, $group->id);
+            }
+            else{
+                $calendar = $disciplineHelper->generateCalendar($teamsId, $stage->count_games);
+                $disciplineHelper->createCalendar($calendar, $group->id);
+            }
+
         }
         return response()->json(['success' => true]);
     }

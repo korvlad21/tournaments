@@ -163,8 +163,8 @@ class GenerationDrawHelper
         for ($i=1; $i<=count($playOff[$stage+1]); $i+=2) {
             $numGame++;
             $playOff[$stage][$numGame] = [
-                (null === $playOff[$stage+1][$i][1]) ? $playOff[$stage+1][$i][0] : $i,
-                (null === $playOff[$stage+1][$i+1][1]) ? $playOff[$stage+1][$i+1][0] : $i+1,];
+                (null === $playOff[$stage+1][$i][1]) ? $playOff[$stage+1][$i][0] : 'n'.$i,
+                (null === $playOff[$stage+1][$i+1][1]) ? $playOff[$stage+1][$i+1][0] : 'n'.$i+1,];
         }
 
         $stage--;
@@ -173,7 +173,7 @@ class GenerationDrawHelper
             $numGame = 0;
             for ($i=1; $i<=count($playOff[$stage+1]); $i+=2) {
                 $numGame++;
-                $playOff[$stage][$numGame] = [$i, $i+1];
+                $playOff[$stage][$numGame] = ['n'.$i, 'n'.$i+1];
             }
             $stage--;
         }

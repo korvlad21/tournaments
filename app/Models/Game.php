@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Game extends Model
 {
     protected $fillable = [
+        'id',
         'group_id',
         'date_game',
         'number',
