@@ -162,7 +162,7 @@ class TournamentController extends Controller
         $stage = Stage::find($stageId);
         //здесь получить Stage и от него stageTeams
         $teamsId = $stageHelper->getTeamsId($stageId);
-        $groups = $generationDrawHelper->generateGroupStage($teamsId, $stage->count_groups);
+        $groups = $generationDrawHelper->generateGroupStage($teamsId, $stage->count_group);
         foreach ($groups as $numberGroup => $teams_id) {
             $group = new Group();
             $group->stage_id = $stageId;
@@ -175,7 +175,7 @@ class TournamentController extends Controller
                 ]);
             }
         }
-        return response()->json(TeamResource::collection($groups));
+        return response()->json(['success' => true]);
     }
 
     /**

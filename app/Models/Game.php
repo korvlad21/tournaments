@@ -17,7 +17,7 @@ class Game extends Model
 
     public function footballGame(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(FootballGame::class);
+        return $this->hasOne(FootballGame::class)->with(['team1', 'team2']);
     }
 
     /**

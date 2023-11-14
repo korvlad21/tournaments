@@ -55,8 +55,9 @@ class StageController extends Controller
      */
     public function getGamesInfo(Request $request)
     {
-        $groups = Game::with(['teams'])->where('stage_id' , $request->post('id'))->get();
-        return response()->json(GroupTeamResource::collection($groups));
+        $groups = Group::with(['teams'])->where('stage_id' , $request->post('id'))->get()->pluck('id')->toArray();
+        $games = Game::with(['footballGame', 'group'])->whereIn('group_id' , $groups)->get();
+        return response()->json($games);
     }
 
     /**
@@ -72,6 +73,30 @@ class StageController extends Controller
             $teamsId = $group->groupTeams->pluck('team_id')->toArray();
             $calendar = $disciplineHelper->generateCalendar($teamsId, $stage->count_games);
             $disciplineHelper->createCalendar($calendar, $group->id);
+        }
+        return response()->json(['success' => true]);
+    }
+
+    public function generateGroups(Request $request)
+    {
+        $stageHelper = new StageHelper();
+        $generationDrawHelper = new GenerationDrawHelper();
+        $stageId = $request->post('id');
+        $stage = Stage::find($stageId);
+        //здесь получить Stage и от него stageTeams
+        $teamsId = $stageHelper->getTeamsId($stageId);
+        $groups = $generationDrawHelper->generateGroupStage($teamsId, $stage->count_group);
+        foreach ($groups as $numberGroup => $teams_id) {
+            $group = new Group();
+            $group->stage_id = $stageId;
+            $group->number = $numberGroup;
+            $group->save();
+            foreach ($teams_id as $numberTeam => $team_id) {
+                $group->groupTeams()->create([
+                    'team_id' => $team_id,
+                    'number' => $numberTeam,
+                ]);
+            }
         }
         return response()->json(['success' => true]);
     }

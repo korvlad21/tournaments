@@ -43,6 +43,10 @@
                         >
                             Cгенерировать календарь
                         </button>
+                        <div v-for="game in games" class="bg-green-100 p-3">
+                            Группа №{{game['group']['number']}}
+                            {{game['football_game']['team1']['name']}} - {{game['football_game']['team2']['name']}}
+                        </div>
                     </div>
                 </div>
                 <!-- Right Side -->
@@ -194,7 +198,7 @@ export default {
                     id: this.id,
                 })
                 .then(({ data }) => {
-                    // this.teams = data;
+                    this.getGamesInfo();
                 })
                 .catch((error) => {
                     console.error(error);

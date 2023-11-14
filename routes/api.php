@@ -102,6 +102,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::post('get_info', 'getInfo');
             Route::post('get_teams', 'getTeams');
             Route::post('get_groups_info', 'getGroupsInfo');
+            Route::post('get_games_info', 'getGamesInfo');
             Route::post('generate_groups', 'generateGroups');
             Route::post('generate_calendar', 'generateCalendar');
         });

@@ -15,4 +15,13 @@ class FootballGame extends Model
         'score2',
         'status',
     ];
+
+    public function team1(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Team::class, 'id', 'team1_id');
+    }
+    public function team2(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Team::class, 'id', 'team2_id');
+    }
 }
